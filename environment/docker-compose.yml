@@ -1,0 +1,80 @@
+# File: docker-compose.yml
+# Access via "http://localhost:8081"
+#
+# Call example:
+# $ docker-compose up
+
+version: "3.7"
+
+networks:
+  inside:
+    external: false
+
+services:
+  smtp:
+    container_name: "ojs_smtp_${COMPOSE_PROJECT_NAME:-demo}"
+    hostname: "smtp"
+    image: maildev/maildev:2.0.5
+    restart: on-failure
+    ports:
+      - "25:25" # smtp server
+      - "1080:1080" # web ui
+    environment:
+      - MAILDEV_SMTP_PORT=25
+      - MAILDEV_MAIL_DIRECTORY=/mail
+    networks:
+      - inside
+    #volumes:
+    #  - ./docker-dev-volumes/smtp/data:/mail
+    tmpfs:
+      - /mail:mode=770,size=128M,uid=1000,gid=1000
+
+  db:
+    image: mariadb:10.2
+#    env_file:
+#      - .env
+    container_name: "ojs_db_${COMPOSE_PROJECT_NAME:-demo}"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-ojsPwd}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-ojs}"
+      MYSQL_USER: "${MYSQL_USER:-ojs}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-ojsPwd}"
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - ./data/db/data:/var/lib/mysql
+      - ./data/db/logs:/var/log/mysql
+#      - ./volumes/config/db.charset.conf:/etc/mysql/conf.d/charset.cnf
+#      - ./volumes/migration:/docker-entrypoint-initdb.d
+    networks:
+      - inside
+    restart: always
+
+  ojs:
+    image: ${PPR_OJS_IMAGE}
+#    env_file:
+#      - .env
+    container_name: "ojs_app_${COMPOSE_PROJECT_NAME:-demo}"
+    ports:
+      - "${HTTP_PORT:-8081}:80"
+      - "${HTTPS_PORT:-443}:443"
+    volumes:
+      - ./config.inc.php:/var/www/html/config.inc.php
+      - ../ppr-ojs-plugin:/var/www/html/plugins/generic/ppr-ojs-plugin
+      - ./data/ojs/public:/var/www/html/public
+      - ./data/ojs/files:/var/www/files
+      - ./data/ojs/logs:/var/log/apache2
+#      - /etc/localtime:/etc/localtime
+#      - ./volumes/private:/var/www/files
+#      - ./volumes/public:/var/www/html/public
+#      - ./volumes/logs/app:/var/log/apache2
+#      # WARNING: You can only enable file-volumes if file exists in the container.
+#      - ./volumes/config/ojs.config.inc.php:/var/www/html/config.inc.php
+#      - ./volumes/config/apache.htaccess:/var/www/html/.htaccess
+#      - ./volumes/php.custom.ini:/etc/php8/php.custom.ini
+
+    networks:
+      - inside
+    depends_on:
+      - db
+    restart: always

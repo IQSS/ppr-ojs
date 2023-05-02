@@ -1,0 +1,41 @@
+name: release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-release-plugin:
+    runs-on: ubuntu-latest
+    env:
+      PLUGIN_NAME: "ppr-ojs-plugin"
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+      - name: Creates plugin release and tar.gz
+        working-directory: .
+        run: make release
+      - name: Get plugin Version
+        id: get_plugin_version
+        run: echo ::set-output name=PLUGIN_ARTIFACT_NAME::${{ env.PLUGIN_NAME }}-$(cat VERSION)
+      - name: Commit new version
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add -f VERSION ppr-ojs-plugin/version.xml
+          git commit -m "Release created: ${{ steps.get_plugin_version.outputs.PLUGIN_ARTIFACT_NAME }}"
+          git push origin
+      - name: Create release branch
+        run: |
+          git checkout -b releases/${{ steps.get_plugin_version.outputs.PLUGIN_ARTIFACT_NAME }}
+          git push origin releases/${{ steps.get_plugin_version.outputs.PLUGIN_ARTIFACT_NAME }}
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.get_plugin_version.outputs.PLUGIN_ARTIFACT_NAME }}.tar.gz
+          retention-days: 1
+          path: ./releases/${{ steps.get_plugin_version.outputs.PLUGIN_ARTIFACT_NAME }}.tar.gz

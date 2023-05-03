@@ -59,8 +59,7 @@ services:
       - "${HTTP_PORT:-8081}:80"
       - "${HTTPS_PORT:-443}:443"
     volumes:
-      - ./config.inc.php:/var/www/html/config.inc.php
-      - ../ppr-ojs-plugin:/var/www/html/plugins/generic/ppr-ojs-plugin
+      - ../pprOjsPlugin:/var/www/html/plugins/generic/pprOjsPlugin
       - ./data/ojs/public:/var/www/html/public
       - ./data/ojs/files:/var/www/files
       - ./data/ojs/logs:/var/log/apache2

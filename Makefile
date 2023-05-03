@@ -2,9 +2,10 @@
 all::
 
 all:: dev
-.PHONY: dev down up release docker new_version
+.PHONY: dev down up release docker new_version clean
 
-OJS_VERSION := 3_3_0-14
+OJS_VERSION ?= 3_3_0-14
+PHP_VERSION ?= php7
 PPR_OJS_IMAGE := ppr_ojs:$(OJS_VERSION)
 DETACHED_MODE := $(if $(DETACHED),-d,)
 
@@ -24,14 +25,17 @@ release: new_version
 	$(eval RELEASE_VERSION = $(shell cat VERSION))
 	$(eval RELEASE_DATE = $(shell date +%Y-%m-%d))
 	mkdir -p releases
-	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' ppr-ojs-plugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > ppr-ojs-plugin/version.xml.new
-	mv ppr-ojs-plugin/version.xml.new ppr-ojs-plugin/version.xml
-	tar -czvf releases/ppr-ojs-plugin-$(RELEASE_VERSION).tar.gz ppr-ojs-plugin
+	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' pprOjsPlugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > pprOjsPlugin/version.xml.new
+	mv pprOjsPlugin/version.xml.new pprOjsPlugin/version.xml
+	tar -czvf releases/ppr-ojs-plugin-$(RELEASE_VERSION).tar.gz pprOjsPlugin
 
 new_version:
 	./create_version.sh
 
+clean:
+	rm -rf environment/data/db
+	rm -rf environment/data/ojs
+
 docker:
-	docker build --build-arg OJS_VERSION=$(OJS_VERSION) -t $(PPR_OJS_IMAGE) -f environment/Dockerfile ./environment
-	sed -i 's/{OJS_RELEASE_VERSION}/$(NEW_VERSION)/g' ppr-ojs-plugin/version.xml
-	sed -i 's/{OJS_RELEASE_DATE}/$(NEW_VERSION)/g' ppr-ojs-plugin/version.xml
+	docker build --build-arg OJS_VERSION=$(OJS_VERSION) --build-arg PHP_VERSION=$(PHP_VERSION) -t $(PPR_OJS_IMAGE) -f environment/Dockerfile ./environment
+

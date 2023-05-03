@@ -1,6 +1,7 @@
 <?php
 
-import('lib.pkp.classes.plugins.GenericPlugin');
+use PKP\plugins\GenericPlugin;
+use PKP\plugins\Hook;
 
 class PeerPreReviewProgramPlugin extends GenericPlugin {
 
@@ -10,7 +11,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
 	function register($category, $path, $mainContextId = null) {
 		$success = parent::register($category, $path, $mainContextId);
 		if ($success && $this->getEnabled()) {
-			HookRegistry::register('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
+			Hook::add('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
 			$this->setupCustomCss();
 		}
 

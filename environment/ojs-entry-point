@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# COPY THE OJS CODE TO A MOUNTED FOLDER
+if [ ! -f /tmp/ojs-src/config.inc.php ]; then
+  echo "COPYING OJS CODE..."
+  #rsync -rLptDq --stats /var/www/html/ /tmp/ojs-src
+  cp -r /var/www/html/* /tmp/ojs-src
+fi
+# UPDATE APACHE TO USE THE MOUNTED FOLDER
+echo "UPDATING APACHE..."
+cp /etc/apache2/conf.d/ojs.conf /etc/apache2/conf.d/ojs.conf.bak
+sed -i 's/\(.*\)\/var\/www\/html\(.*\)/\1\/tmp\/ojs-src\2/' /etc/apache2/conf.d/ojs.conf
+# START OJS AS USUAL
+echo "STARTING OJS..."
+ojs-start

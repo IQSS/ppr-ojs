@@ -59,9 +59,10 @@ services:
       - "${HTTP_PORT:-8081}:80"
       - "${HTTPS_PORT:-443}:443"
     volumes:
-      - ../pprOjsPlugin:/var/www/html/plugins/generic/pprOjsPlugin
+      - ./data/ojs/src:/tmp/ojs-src
+      - ../pprOjsPlugin:/tmp/ojs-src/plugins/generic/pprOjsPlugin
+      - ./data/ojs/files:/tmp/files
       - ./data/ojs/public:/var/www/html/public
-      - ./data/ojs/files:/var/www/files
       - ./data/ojs/logs:/var/log/apache2
 #      - /etc/localtime:/etc/localtime
 #      - ./volumes/private:/var/www/files

@@ -10,20 +10,26 @@ make release
 ```
 
 ## Installation
-Deploy the root folder ``pr-ojs-plugin`` into the ``generic`` plugins folder of the OJS installation.
+Deploy the plugin root folder ``pprOjsPlugin`` into the ``generic`` plugins folder of the OJS installation.
 
 This is typically ``ojs/plugins/generic``
 
 ## Local Environment
 
 ### Run OJS Locally
-The environments folder contains the Docker configuration to run the OJS application locally mounting the ``ppr-ojs-plugin`` directory as a generic plugin.
+The environments folder contains the Docker configuration to run the OJS application locally mounting the ``pprOjsPlugin`` directory as a generic plugin.
 
-Build the OJS Docker image with XDebug support:
+Build the OJS Docker image with XDebug support for OJS version 3.3:
 ``make docker``
 
-To start the environment, execute:
+Build the OJS Docker image with XDebug support for OJS version 3.4:
+``make docker34``
+
+To start the environment for OJS version 3.3, execute:
 ``make``
+
+To start the environment for OJS version 3.4, execute:
+``make dev34``
 
 ## Technical Notes
 

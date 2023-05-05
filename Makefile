@@ -30,7 +30,7 @@ release: new_version
 	mkdir -p releases
 	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' ppr-ojs-plugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > ppr-ojs-plugin/version.xml.new
 	mv ppr-ojs-plugin/version.xml.new ppr-ojs-plugin/version.xml
-	tar -czvf releases/ppr-ojs-plugin-$(RELEASE_VERSION).tar.gz pprOjsPlugin
+	tar -czvf releases/ppr-ojs-plugin-$(RELEASE_VERSION).tar.gz ppr-ojs-plugin
 
 new_version:
 	./create_version.sh
@@ -38,6 +38,7 @@ new_version:
 clean:
 	rm -rf environment/data/db
 	rm -rf environment/data/ojs
+	rm -rf releases
 
 docker docker34:
 	docker build --build-arg OJS_VERSION=$(OJS_VERSION) --build-arg PHP_VERSION=$(PHP_VERSION) -t $(PPR_OJS_IMAGE) -f environment/Dockerfile ./environment

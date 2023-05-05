@@ -11,6 +11,15 @@
 }
 
 /**
+  WORKFLOW - SUBMISSION
+  HIDE ACCEPT AND SKIP REVIEW BUTTON - NOT REQUIRED BY PPR
+ */
+#submissionWorkflow #editorialActions a.pkp_linkaction_accept {
+	display: none;
+}
+
+/**
+  WORKFLOW - REVIEW
   HIDE ACCEPT REVIEW BUTTON - NOT REQUIRED BY PPR
  */
 #reviewTabs #editorialActions a.pkp_linkaction_accept {
@@ -19,6 +28,7 @@
 
 /**
  MAKE REQUEST REVISIONS MORE PROMINENT
+ TWO SELECTORS FOR OJS VERSIONS 3.3 and 3.4
  */
 #reviewTabs #editorialActions a.pkp_linkaction_requestRevisions {
 	background: #006798;

@@ -4,18 +4,18 @@ import('lib.pkp.classes.plugins.GenericPlugin');
 
 class PeerPreReviewProgramPlugin extends GenericPlugin {
 
-	/**
-	 * @copydoc Plugin::register()
-	 */
-	function register($category, $path, $mainContextId = null) {
-		$success = parent::register($category, $path, $mainContextId);
-		if ($success && $this->getEnabled()) {
-			HookRegistry::register('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
-			$this->setupCustomCss();
-		}
+    /**
+     * @copydoc Plugin::register()
+     */
+    function register($category, $path, $mainContextId = null) {
+        $success = parent::register($category, $path, $mainContextId);
+        if ($success && $this->getEnabled()) {
+            HookRegistry::register('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
+            $this->setupCustomCss();
+        }
 
-		return $success;
-	}
+        return $success;
+    }
 
     /**
      * @copydoc LazyLoadPlugin::setEnabled()

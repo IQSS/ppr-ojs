@@ -1,0 +1,44 @@
+
+/**
+  HIDE COPYEDITING AND PRODUCTION TABS
+ */
+#stageTabs li.stageId4.ui-tab {
+	display: none;
+}
+
+#stageTabs li.stageId5.ui-tab {
+	display: none;
+}
+
+/**
+  WORKFLOW - SUBMISSION
+  HIDE ACCEPT AND SKIP REVIEW BUTTON - NOT REQUIRED BY PPR
+ */
+#submissionWorkflow #editorialActions a.pkp_linkaction_accept {
+	display: none;
+}
+
+/**
+  WORKFLOW - REVIEW
+  HIDE ACCEPT REVIEW BUTTON - NOT REQUIRED BY PPR
+ */
+#reviewTabs #editorialActions a.pkp_linkaction_accept {
+	display: none;
+}
+
+/**
+ MAKE REQUEST REVISIONS MORE PROMINENT
+ TWO SELECTORS FOR OJS VERSIONS 3.3 and 3.4
+ */
+#reviewTabs #editorialActions a.pkp_linkaction_requestRevisions {
+	background: #006798;
+	border-color: #006798;
+	box-shadow: 0 1px 0 #006798;
+	color: #fff;
+}
+
+#reviewTabs #editorialActions a.pkp_linkaction_requestRevisions:hover {
+	background: #008acb;
+	border-color: #006798;
+	outline: 0;
+}

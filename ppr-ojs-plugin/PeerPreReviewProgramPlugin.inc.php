@@ -12,6 +12,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         if ($success && $this->getEnabled()) {
             HookRegistry::register('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
             $this->setupCustomCss();
+
+            $this->import('controllers.PPRWorkflowHandler');
+            $workflowHandler = new PPRWorkflowHandler($this);
+            $workflowHandler->register();
         }
 
         return $success;

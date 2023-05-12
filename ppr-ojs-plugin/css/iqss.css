@@ -42,3 +42,23 @@
 	border-color: #006798;
 	outline: 0;
 }
+
+/**
+  SUGGESTED REVIEWERS
+ */
+#pprSuggestedReviewers {
+	padding: 2rem 2rem 0 2rem;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	background: #fff;
+}
+
+/**
+  CONTRIBUTORS
+ */
+#pprContributorsContainer {
+	padding: 2rem;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	background: #fff;
+}

@@ -3,21 +3,27 @@
 import('lib.pkp.controllers.grid.users.author.PKPAuthorGridCellProvider');
 
 /**
- * Handler to add/update components in the OJS workflow page
- * Workflow page controls the submission and review workflow
+ * Service to add/update components in the OJS workflow page
+ * Workflow page controls the submission and review workflows
  */
-class PPRWorkflowHandler {
+class PPRWorkflowService {
 
-    private $_pprPlugin;
+    private $pprPlugin;
 
     public function __construct($plugin) {
-        $this->_pprPlugin = $plugin;
+        $this->pprPlugin = $plugin;
     }
 
 
     function register() {
-        HookRegistry::register('authorgridhandler::initfeatures', array($this, 'updateContributorsGrid'));
-        HookRegistry::register('Template::Workflow', array($this, 'updateWorkflowTemplate'));
+        if ($this->pprPlugin->getPluginSettings()->displaySuggestedReviewersEnabled()) {
+            HookRegistry::register('Template::Workflow', array($this, 'addSuggestedReviewersToWorkflow'));
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->displayContributorsEnabled()) {
+            HookRegistry::register('authorgridhandler::initfeatures', array($this, 'updateContributorsGrid'));
+            HookRegistry::register('Template::Workflow', array($this, 'addContributorsToWorkflow'));
+        }
     }
 
     /**
@@ -28,7 +34,7 @@ class PPRWorkflowHandler {
      */
     public function updateContributorsGrid($hookName, $hookArgs) {
         $authorGridHandler = $hookArgs[0];
-        $this->_pprPlugin->import('controllers.PPRAuthorGridCellProvider');
+        $this->pprPlugin->import('services.PPRAuthorGridCellProvider');
         $cellProvider = new PPRAuthorGridCellProvider($authorGridHandler->getPublication());
         $authorGridHandler->addColumn(new GridColumn('name')); //NEEDED TO KEEP THE ORDER AND MAKE INSTITUTION THE SECOND COLUMN
         $authorGridHandler->addColumn(
@@ -53,12 +59,22 @@ class PPRWorkflowHandler {
      * @param $hookArgs
      * @return false
      */
-    public function updateWorkflowTemplate($hookName, $hookArgs) {
+    public function addSuggestedReviewersToWorkflow($hookName, $hookArgs) {
+        $smarty =& $hookArgs[1];
+        $output =& $hookArgs[2];
+
+        // ADD THE SUGGESTED REVIEWERS COMPONENT TO THE WORKFLOW TEMPLATE
+        $output .= $smarty->fetch($this->pprPlugin->getTemplateResource('ppr/workflowSuggestedReviewers.tpl'));
+
+        return false;
+    }
+
+    public function addContributorsToWorkflow($hookName, $hookArgs) {
         $smarty =& $hookArgs[1];
         $output =& $hookArgs[2];
 
         // ADD THE CONTRIBUTORS COMPONENT TO THE WORKFLOW TEMPLATE
-        $output .= $smarty->fetch($this->_pprPlugin->getTemplateResource('ppr/workflowContributors.tpl'));
+        $output .= $smarty->fetch($this->pprPlugin->getTemplateResource('ppr/workflowContributors.tpl'));
 
         return false;
     }

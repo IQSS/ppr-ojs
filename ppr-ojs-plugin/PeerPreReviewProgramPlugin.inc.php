@@ -4,21 +4,38 @@ import('lib.pkp.classes.plugins.GenericPlugin');
 
 class PeerPreReviewProgramPlugin extends GenericPlugin {
 
+    private $pprPluginSettings;
+    private $pprPluginSettingsHandler;
+
     /**
      * @copydoc Plugin::register()
      */
     function register($category, $path, $mainContextId = null) {
         $success = parent::register($category, $path, $mainContextId);
+        $currentContextId = ($mainContextId === null) ? $this->getCurrentContextId() : $mainContextId;
+        $this->import('settings.PPRPluginSettings');
+        $this->pprPluginSettings = new PPRPluginSettings($currentContextId, $this);
+        $this->import('settings.PPRPluginSettingsHandler');
+        $this->pprPluginSettingsHandler = new PPRPluginSettingsHandler($this);
+
         if ($success && $this->getEnabled()) {
             HookRegistry::register('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
             $this->setupCustomCss();
 
-            $this->import('controllers.PPRWorkflowHandler');
-            $workflowHandler = new PPRWorkflowHandler($this);
-            $workflowHandler->register();
+            $this->import('services.PPRWorkflowService');
+            $workflowService = new PPRWorkflowService($this);
+            $workflowService->register();
         }
 
         return $success;
+    }
+
+    function getActions($request, $actionArgs) {
+        return $this->pprPluginSettingsHandler->getActions($request, $actionArgs);
+    }
+
+    function manage($args, $request) {
+        return $this->pprPluginSettingsHandler->manage($args, $request);
     }
 
     /**
@@ -57,14 +74,20 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
 	 * @copydoc Plugin::getDisplayName
 	 */
 	function getDisplayName() {
-		return "IQSS Peer Pre-Review Program Plugin";
+		return __("plugins.generic.pprPlugin.displayName");
 	}
 
 	/**
 	 * @copydoc Plugin::getDescription
 	 */
 	function getDescription() {
-		return "Customizations to the OJS registration and submission workflow for use in the Peer Pre-Review Program at Harvard’s IQSS";
+        return __("plugins.generic.pprPlugin.description");
 	}
+
+    public function getPluginSettings() {
+        return $this->pprPluginSettings;
+    }
+
+
 }
 

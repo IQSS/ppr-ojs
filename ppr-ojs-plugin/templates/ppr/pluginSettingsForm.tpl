@@ -17,9 +17,21 @@
 		{csrf}
 		{include file="controllers/notification/inPlaceNotification.tpl" notificationId="pprPluginSettingsFormNotification"}
 
-		{fbvFormSection title="plugins.generic.pprPlugin.settings.featureFlags.title" list="true"}
+		<h2>{translate key="plugins.generic.pprPlugin.settings.section.featureFlags"}</h2>
+
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.workflow" list="true"}
+			{fbvElement type="checkbox" name="displayWorkflowMessageEnabled" label="plugins.generic.pprPlugin.settings.workflowMessage.label" id="displayWorkflowMessageEnabled" checked=$displayWorkflowMessageEnabled}
 			{fbvElement type="checkbox" name="displayContributorsEnabled" label="plugins.generic.pprPlugin.settings.contributors.label" id="displayContributorsEnabled" checked=$displayContributorsEnabled}
 			{fbvElement type="checkbox" name="displaySuggestedReviewersEnabled" label="plugins.generic.pprPlugin.settings.reviewers.label" id="displaySuggestedReviewersEnabled" checked=$displaySuggestedReviewersEnabled}
+		{/fbvFormSection}
+
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.users" list="true"}
+			{fbvElement type="checkbox" name="hidePreferredPublicNameEnabled" label="plugins.generic.pprPlugin.settings.preferredPublicName.label" id="hidePreferredPublicNameEnabled" checked=$hidePreferredPublicNameEnabled}
+		{/fbvFormSection}
+
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.reviews" list="true"}
+			{fbvElement type="checkbox" name="hideReviewMethodEnabled" label="plugins.generic.pprPlugin.settings.reviewMethod.label" id="hideReviewMethodEnabled" checked=$hideReviewMethodEnabled}
+			{fbvElement type="checkbox" name="hideReviewRecommendationEnabled" label="plugins.generic.pprPlugin.settings.reviewRecommendation.label" id="hideReviewRecommendationEnabled" checked=$hideReviewRecommendationEnabled}
 		{/fbvFormSection}
 
 

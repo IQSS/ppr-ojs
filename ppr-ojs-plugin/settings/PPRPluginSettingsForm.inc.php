@@ -5,8 +5,13 @@ import('lib.pkp.classes.form.Form');
 class PPRPluginSettingsForm extends Form {
 
 	const CONFIG_VARS = array(
-		'displayContributorsEnabled' => 'bool',
-		'displaySuggestedReviewersEnabled' => 'bool',
+        // PROPERTY NAME => [TYPE, DEFAULT VALUE]
+        'displayWorkflowMessageEnabled' => ['bool', true],
+        'displayContributorsEnabled' => ['bool', null],
+		'displaySuggestedReviewersEnabled' => ['bool', null],
+		'hideReviewMethodEnabled' => ['bool', null],
+		'hideReviewRecommendationEnabled' => ['bool', null],
+		'hidePreferredPublicNameEnabled' => ['bool', null],
 	);
 
 	/** @var $contextId int */
@@ -35,8 +40,8 @@ class PPRPluginSettingsForm extends Form {
 		$contextId = $this->contextId;
 		$plugin =& $this->plugin;
 		$this->_data = array();
-        foreach (self::CONFIG_VARS as $configVar => $type) {
-            $this->_data[$configVar] = $plugin->getSetting($contextId, $configVar);
+        foreach (self::CONFIG_VARS as $configVar => $varSettings) {
+            $this->_data[$configVar] = $plugin->getSetting($contextId, $configVar) ?? $varSettings[1];
         }
 	}
 
@@ -64,10 +69,12 @@ class PPRPluginSettingsForm extends Form {
 	function execute(...$functionArgs) {
 		$plugin =& $this->plugin;
 		$contextId = $this->contextId;
-		foreach (self::CONFIG_VARS as $configVar => $type) {
-            $plugin->updateSetting($contextId, $configVar, $this->getData($configVar), $type);
+		foreach (self::CONFIG_VARS as $configVar => $varSettings) {
+            $plugin->updateSetting($contextId, $configVar, $this->getData($configVar), $varSettings[0]);
 		}
 
+        // ENSURE NEW/DEFAULT TEMPLATES ARE LOADED CORRECTLY AFTER CHANGES IN SETTINGS
+        $plugin->clearCache();
 		parent::execute(...$functionArgs);
 	}
 }

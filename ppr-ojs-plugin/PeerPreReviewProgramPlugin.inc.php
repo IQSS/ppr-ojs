@@ -19,8 +19,11 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         $this->pprPluginSettingsHandler = new PPRPluginSettingsHandler($this);
 
         if ($success && $this->getEnabled()) {
-            HookRegistry::register('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
             $this->setupCustomCss();
+
+            $this->import('services.PPRTemplateOverrideService');
+            $workflowService = new PPRTemplateOverrideService($this);
+            $workflowService->register();
 
             $this->import('services.PPRWorkflowService');
             $workflowService = new PPRWorkflowService($this);
@@ -43,17 +46,22 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
      */
 	function setEnabled($enabled) {
 		parent::setEnabled($enabled);
-		if (!$enabled) {
-			// CLEAR THE TEMPLATE CACHE TO RELOAD DEFAULT TEMPLATES
-			// THIS IS AN ISSUE WITH TEMPLATE OVERRIDE IN PLUGINS
-			$templateMgr = TemplateManager::getManager(Application::get()->getRequest());
-			$templateMgr->clearTemplateCache();
-			$templateMgr->clearCssCache();
-
-			$cacheMgr = CacheManager::getManager();
-			$cacheMgr->flush();
-		}
+        clearCache();
 	}
+
+    /**
+     * Clear template/css caches to refresh data when enabling/disabling the plugin and updating its settings
+     */
+    function clearCache() {
+        // CLEAR THE TEMPLATE CACHE TO RELOAD DEFAULT TEMPLATES
+        // THIS IS AN ISSUE WITH TEMPLATE OVERRIDE IN PLUGINS
+        $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+        $templateMgr->clearTemplateCache();
+        $templateMgr->clearCssCache();
+
+        $cacheMgr = CacheManager::getManager();
+        $cacheMgr->flush();
+    }
 
     /**
      * Load custom CSS file into all backend pages.

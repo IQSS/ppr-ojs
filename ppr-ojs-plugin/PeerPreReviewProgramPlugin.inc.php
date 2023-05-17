@@ -44,10 +44,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
     /**
      * @copydoc LazyLoadPlugin::setEnabled()
      */
-	function setEnabled($enabled) {
-		parent::setEnabled($enabled);
+    function setEnabled($enabled) {
+        parent::setEnabled($enabled);
         clearCache();
-	}
+    }
 
     /**
      * Clear template/css caches to refresh data when enabling/disabling the plugin and updating its settings
@@ -68,34 +68,33 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
      *
      * @return void
      */
-	function setupCustomCss() {
-		$request = Application::get()->getRequest();
-		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->addStyleSheet(
-			'iqssCustomCss',
-			$request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css',
-			['contexts' => 'backend']
-		);
-	}
+    function setupCustomCss() {
+        $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+        $templateMgr->addStyleSheet(
+            'iqssCustomCss',
+            $request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css',
+            ['contexts' => 'backend']
+        );
+    }
 
-	/**
-	 * @copydoc Plugin::getDisplayName
-	 */
-	function getDisplayName() {
-		return __("plugins.generic.pprPlugin.displayName");
-	}
+    /**
+     * @copydoc Plugin::getDisplayName
+     */
+    function getDisplayName() {
+        return __("plugins.generic.pprPlugin.displayName");
+    }
 
-	/**
-	 * @copydoc Plugin::getDescription
-	 */
-	function getDescription() {
+    /**
+     * @copydoc Plugin::getDescription
+     */
+    function getDescription() {
         return __("plugins.generic.pprPlugin.description");
-	}
+    }
 
     public function getPluginSettings() {
         return $this->pprPluginSettings;
     }
-
-
+    
 }
 

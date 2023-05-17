@@ -5,13 +5,10 @@
  * Workflow page controls the submission and review workflows
  */
 class PPRWorkflowService {
-
     private $pprPlugin;
-
     public function __construct($plugin) {
         $this->pprPlugin = $plugin;
     }
-
 
     function register() {
         if ($this->pprPlugin->getPluginSettings()->displayContributorsEnabled()) {
@@ -23,6 +20,7 @@ class PPRWorkflowService {
             HookRegistry::register('Template::Workflow', array($this, 'addSuggestedReviewersToWorkflow'));
         }
     }
+
 
     /**
      * Updates to the AuthorGridHandler to add the institution data to the contributors component.

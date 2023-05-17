@@ -5,7 +5,6 @@ class PPRTemplateOverrideService {
     private $pprPlugin;
 
     private $overriddenTemplates;
-
     public function __construct($plugin) {
         $this->pprPlugin = $plugin;
 

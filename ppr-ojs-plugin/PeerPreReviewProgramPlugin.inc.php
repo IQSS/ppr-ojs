@@ -95,6 +95,6 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
     public function getPluginSettings() {
         return $this->pprPluginSettings;
     }
-    
+
 }
 

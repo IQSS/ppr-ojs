@@ -47,6 +47,9 @@ class PPRWorkflowService {
         return false;
     }
 
+    /**
+     * Adds the suggested reviewers component into the Workflow page using an existing template hook
+     */
     public function addSuggestedReviewersToWorkflow($hookName, $hookArgs) {
         $smarty =& $hookArgs[1];
         $output =& $hookArgs[2];
@@ -57,6 +60,9 @@ class PPRWorkflowService {
         return false;
     }
 
+    /**
+     * Adds the contributors component into the Workflow page using an existing template hook
+     */
     public function addContributorsToWorkflow($hookName, $hookArgs) {
         $smarty =& $hookArgs[1];
         $output =& $hookArgs[2];

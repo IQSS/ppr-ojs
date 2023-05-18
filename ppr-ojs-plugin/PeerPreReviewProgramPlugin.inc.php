@@ -19,8 +19,11 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         $this->pprPluginSettingsHandler = new PPRPluginSettingsHandler($this);
 
         if ($success && $this->getEnabled()) {
-            HookRegistry::register('TemplateResource::getFilename', array($this, '_overridePluginTemplates'));
             $this->setupCustomCss();
+
+            $this->import('services.PPRTemplateOverrideService');
+            $workflowService = new PPRTemplateOverrideService($this);
+            $workflowService->register();
 
             $this->import('services.PPRWorkflowService');
             $workflowService = new PPRWorkflowService($this);
@@ -41,53 +44,57 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
     /**
      * @copydoc LazyLoadPlugin::setEnabled()
      */
-	function setEnabled($enabled) {
-		parent::setEnabled($enabled);
-		if (!$enabled) {
-			// CLEAR THE TEMPLATE CACHE TO RELOAD DEFAULT TEMPLATES
-			// THIS IS AN ISSUE WITH TEMPLATE OVERRIDE IN PLUGINS
-			$templateMgr = TemplateManager::getManager(Application::get()->getRequest());
-			$templateMgr->clearTemplateCache();
-			$templateMgr->clearCssCache();
+    function setEnabled($enabled) {
+        parent::setEnabled($enabled);
+        clearCache();
+    }
 
-			$cacheMgr = CacheManager::getManager();
-			$cacheMgr->flush();
-		}
-	}
+    /**
+     * Clear template/css caches to refresh data when enabling/disabling the plugin and updating its settings
+     */
+    function clearCache() {
+        // CLEAR THE TEMPLATE CACHE TO RELOAD DEFAULT TEMPLATES
+        // THIS IS AN ISSUE WITH TEMPLATE OVERRIDE IN PLUGINS
+        $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+        $templateMgr->clearTemplateCache();
+        $templateMgr->clearCssCache();
+
+        $cacheMgr = CacheManager::getManager();
+        $cacheMgr->flush();
+    }
 
     /**
      * Load custom CSS file into all backend pages.
      *
      * @return void
      */
-	function setupCustomCss() {
-		$request = Application::get()->getRequest();
-		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->addStyleSheet(
-			'iqssCustomCss',
-			$request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css',
-			['contexts' => 'backend']
-		);
-	}
+    function setupCustomCss() {
+        $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+        $templateMgr->addStyleSheet(
+            'iqssCustomCss',
+            $request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css',
+            ['contexts' => 'backend']
+        );
+    }
 
-	/**
-	 * @copydoc Plugin::getDisplayName
-	 */
-	function getDisplayName() {
-		return __("plugins.generic.pprPlugin.displayName");
-	}
+    /**
+     * @copydoc Plugin::getDisplayName
+     */
+    function getDisplayName() {
+        return __("plugins.generic.pprPlugin.displayName");
+    }
 
-	/**
-	 * @copydoc Plugin::getDescription
-	 */
-	function getDescription() {
+    /**
+     * @copydoc Plugin::getDescription
+     */
+    function getDescription() {
         return __("plugins.generic.pprPlugin.description");
-	}
+    }
 
     public function getPluginSettings() {
         return $this->pprPluginSettings;
     }
-
 
 }
 

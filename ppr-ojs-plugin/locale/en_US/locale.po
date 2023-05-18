@@ -20,11 +20,32 @@ msgstr "Customizations to the OJS registration and submission workflow for use i
 msgid "plugins.generic.pprPlugin.settings.description"
 msgstr "Settings and Feature Flags for the IQSS Peer Pre-Review Program Plugin."
 
-msgid "plugins.generic.pprPlugin.settings.featureFlags.title"
+msgid "plugins.generic.pprPlugin.settings.section.featureFlags"
 msgstr "Feature Flags"
+
+msgid "plugins.generic.pprPlugin.settings.section.workflow"
+msgstr "Submission / Review Workflow"
+
+msgid "plugins.generic.pprPlugin.settings.section.users"
+msgstr "Users / Contributors"
+
+msgid "plugins.generic.pprPlugin.settings.section.reviews"
+msgstr "Reviews"
+
+msgid "plugins.generic.pprPlugin.settings.workflowMessage.label"
+msgstr "Show the information message in the hidden \"Copyediting\" and \"Production\" tabs"
 
 msgid "plugins.generic.pprPlugin.settings.contributors.label"
 msgstr "Show the contributors panel in the workflow page"
 
 msgid "plugins.generic.pprPlugin.settings.reviewers.label"
 msgstr "Show the suggested reviewers panel in the workflow page"
+
+msgid "plugins.generic.pprPlugin.settings.reviewMethod.label"
+msgstr "Hide the review method field and default to \"Anonymous Reviewer/Anonymous Author\""
+
+msgid "plugins.generic.pprPlugin.settings.reviewRecommendation.label"
+msgstr "Hide the review recommendation field and default \"Revisions Required\""
+
+msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
+msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"

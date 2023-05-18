@@ -54,8 +54,5 @@ Execute the following target to delete all data files:
 ``make clean``
 
 ## Technical Notes
-
-### Create a link to the workflow tab
-```
-{capture assign=reviewPageUrl}{url router=$smarty.const.ROUTE_PAGE page="workflow" op="index" path=[$submission->getId(), 3] escape=false}{/capture}
-```
+### Plugin Features
+### Feature Flags

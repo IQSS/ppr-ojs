@@ -95,6 +95,15 @@
 		{fbvElement type="select" label="common.country" name="country" id="country" required=$countryRequired defaultLabel="" defaultValue="" from=$countries selected=$country translate="0" size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}
 
+	<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
+	{fbvFormSection title="grid.user.category"}
+		{fbvElement type="text" label="grid.user.category.description" name="category" id="category" value=$category maxlength="255" size=$fbvStyles.size.MEDIUM}
+	{/fbvFormSection}
+
+	{fbvFormSection title="grid.user.department"}
+		{fbvElement type="text" label="grid.user.department.description" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
+	{/fbvFormSection}
+
 	{if !$disableSendNotifySection}
 		{fbvFormSection title="grid.user.notifyUser" for="sendNotify" list=true}
 			{if $sendNotify}

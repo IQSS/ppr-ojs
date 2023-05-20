@@ -30,12 +30,18 @@ class PPRAuthorGridCellProvider extends DataObjectGridCellProvider {
      * @return array
      */
     function getTemplateVarsFromRowColumn($row, $column) {
-        $element = $row->getData();
+        $author = $row->getData();
         $columnId = $column->getId();
-        // ONLY USED TO ADD INSTITUTION DATA INTO THE CONTRIBUTORS GRID
-        assert(is_a($element, 'DataObject') && !empty($columnId));
-        assert($columnId == 'institution');
-        return array('label' => $element->getLocalizedAffiliation());
+
+        assert(is_a($author, 'DataObject') && !empty($columnId));
+        switch ($columnId) {
+            case 'institution':
+                return array('label' => $author->getLocalizedAffiliation());
+            case 'category':
+                return array('label' => $author->getData('category'));
+            case 'department':
+                return array('label' =>$author->getData('department'));
+        }
     }
 }
 

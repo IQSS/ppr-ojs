@@ -28,6 +28,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $this->import('services.PPRWorkflowService');
             $workflowService = new PPRWorkflowService($this);
             $workflowService->register();
+
+            $this->import('services.PPRUserCustomFieldsService');
+            $workflowService = new PPRUserCustomFieldsService($this);
+            $workflowService->register();
         }
 
         return $success;

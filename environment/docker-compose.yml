@@ -60,7 +60,7 @@ services:
       - "${HTTPS_PORT:-443}:443"
     volumes:
       - ./data/ojs/src:/tmp/ojs-src
-      - ../ppr-ojs-plugin:/tmp/ojs-src/plugins/generic/ppr-ojs-plugin
+      - ../ppr-ojs-plugin:/tmp/ojs-src/plugins/generic/pprOjsPlugin
       - ./data/ojs/files:/tmp/files
       - ./data/ojs/public:/var/www/html/public
       - ./data/ojs/logs:/var/log/apache2

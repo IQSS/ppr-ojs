@@ -54,5 +54,14 @@ Execute the following target to delete all data files:
 ``make clean``
 
 ## Technical Notes
-### Plugin Features
+### Plugin Development
+Template Override
+Component Handler Override
+CSS Updates
 ### Feature Flags
+Most of the PPR features has been added to the plugin behind feature flags.
+This has been implemented to reduce the risk of deployments as there is no test environment available.
+
+The list of feature flags are configured in: ``pprOjsPlugin/settings/PPRPluginSettingsForm.inc.php``
+
+To follow how they are used, look at the usage of the settings class: ``pprOjsPlugin/settings/PPRPluginSettings.inc.php``

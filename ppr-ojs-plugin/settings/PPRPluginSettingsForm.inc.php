@@ -12,6 +12,7 @@ class PPRPluginSettingsForm extends Form {
         'hideReviewMethodEnabled' => ['bool', null],
         'hideReviewRecommendationEnabled' => ['bool', null],
         'hidePreferredPublicNameEnabled' => ['bool', null],
+        'userCustomFieldsEnabled' => ['bool', null],
     );
 
     /** @var $contextId int */

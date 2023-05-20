@@ -37,4 +37,8 @@ class PPRPluginSettings {
         return $this->pprPlugin->getSetting($this->contextId, 'hidePreferredPublicNameEnabled');
     }
 
+    public function userCustomFieldsEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'userCustomFieldsEnabled');
+    }
+
 }

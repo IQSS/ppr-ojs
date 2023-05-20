@@ -49,3 +49,24 @@ msgstr "Hide the review recommendation field and default \"Revisions Required\""
 
 msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
+
+msgid "plugins.generic.pprPlugin.settings.userCustomFields.label"
+msgstr "Add category and department fields to the user and author objects"
+
+msgid "user.category"
+msgstr "Category"
+
+msgid "grid.user.category"
+msgstr "Category"
+
+msgid "grid.user.category.description"
+msgstr "Category: (e.g. Faculty, Student, etc.)"
+
+msgid "user.department"
+msgstr "Academic Department"
+
+msgid "grid.user.department"
+msgstr "Academic Department"
+
+msgid "grid.user.department.description"
+msgstr "Academic Department:  (e.g. Government, Economics, etc.)"

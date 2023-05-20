@@ -30,6 +30,10 @@ class PPRTemplateOverrideService {
         if ($this->pprPlugin->getPluginSettings()->hidePreferredPublicNameEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
         }
+
+        if ($this->pprPlugin->getPluginSettings()->userCustomFieldsEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/frontend/components/registrationForm.tpl';
+        }
     }
 
     function register() {

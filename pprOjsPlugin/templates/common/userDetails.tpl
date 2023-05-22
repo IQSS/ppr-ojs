@@ -30,6 +30,11 @@
 	{/fbvFormSection}
 
 	<!-- REMOVED PREFERRED PUBLIC NAME -->
+	{if !$pprPluginSettings->hidePreferredPublicNameEnabled()}
+		{fbvFormSection for="preferredPublicName" description="user.preferredPublicName.description"}
+			{fbvElement type="text" label="user.preferredPublicName" multilingual="true" name="preferredPublicName" id="preferredPublicName" value=$preferredPublicName size=$fbvStyles.size.LARGE}
+		{/fbvFormSection}
+	{/if}
 
 	{if !$disableUserNameSection}
 		{if !$userId}{capture assign="usernameInstruction"}{translate key="user.register.usernameRestriction"}{/capture}{/if}
@@ -95,14 +100,16 @@
 		{fbvElement type="select" label="common.country" name="country" id="country" required=$countryRequired defaultLabel="" defaultValue="" from=$countries selected=$country translate="0" size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}
 
-	<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
-	{fbvFormSection title="grid.user.category"}
-		{fbvElement type="text" label="grid.user.category.description" name="category" id="category" value=$category maxlength="255" size=$fbvStyles.size.MEDIUM}
-	{/fbvFormSection}
+	{if $pprPluginSettings->userCustomFieldsEnabled()}
+		<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
+		{fbvFormSection title="grid.user.category"}
+			{fbvElement type="text" label="grid.user.category.description" name="category" id="category" value=$category maxlength="255" size=$fbvStyles.size.MEDIUM}
+		{/fbvFormSection}
 
-	{fbvFormSection title="grid.user.department"}
-		{fbvElement type="text" label="grid.user.department.description" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
-	{/fbvFormSection}
+		{fbvFormSection title="grid.user.department"}
+			{fbvElement type="text" label="grid.user.department.description" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
+		{/fbvFormSection}
+	{/if}
 
 	{if !$disableSendNotifySection}
 		{fbvFormSection title="grid.user.notifyUser" for="sendNotify" list=true}

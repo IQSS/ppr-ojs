@@ -19,6 +19,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         $this->pprPluginSettingsHandler = new PPRPluginSettingsHandler($this);
 
         if ($success && $this->getEnabled()) {
+            $this->AddSettingsToTemplateManager();
             $this->setupCustomCss();
 
             $this->import('services.PPRTemplateOverrideService');
@@ -68,6 +69,14 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
     }
 
     /**
+     * Add the pprPluginSettings to the template manager to have conditional logic in templates
+     */
+    function AddSettingsToTemplateManager() {
+        $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+        $templateMgr->assign(['pprPluginSettings' => $this->getPluginSettings()]);
+    }
+
+    /**
      * Load custom CSS file into all backend pages.
      *
      * @return void
@@ -76,7 +85,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         $request = Application::get()->getRequest();
         $templateMgr = TemplateManager::getManager($request);
         $templateMgr->addStyleSheet(
-            'iqssCustomCss',
+            'pprOjsPluginCustomCss',
             $request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css',
             ['contexts' => 'backend']
         );

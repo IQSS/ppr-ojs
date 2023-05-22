@@ -67,7 +67,9 @@ class PPRUserCustomFieldsService {
 
     function initUserData($hookName, $arguments) {
         $form = $arguments[0];
-        $this->addFieldValuesToTemplate($form->user);
+        // THIS FORM IS SHARED FOR USERS AND AUTHORS
+        $dataObject = $form->user ?? $form->author;
+        $this->addFieldValuesToTemplate($dataObject);
     }
 
     function executeUser($hookName, $arguments) {

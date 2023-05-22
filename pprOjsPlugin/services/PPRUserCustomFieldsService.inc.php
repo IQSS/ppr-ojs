@@ -1,6 +1,12 @@
 <?php
 
+/**
+ * Service to manage the new user/author custom fields required for PPR
+ */
 class PPRUserCustomFieldsService {
+    const CATEGORY_FIELD = 'category';
+    const DEPARTMENT_FIELD = 'category';
+
     private $pprPlugin;
 
     public function __construct($plugin) {
@@ -61,8 +67,8 @@ class PPRUserCustomFieldsService {
 
     function addFieldsToUserDatabaseSchema($hookName, $args) {
         $fieldArray = &$args[1];
-        $fieldArray[] = 'category';
-        $fieldArray[] = 'department';
+        $fieldArray[] = self::CATEGORY_FIELD;
+        $fieldArray[] = self::DEPARTMENT_FIELD;
     }
 
     function initUserData($hookName, $arguments) {
@@ -81,19 +87,19 @@ class PPRUserCustomFieldsService {
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
         if ($dataObject) {
             $templateVars = array(
-                'category' => $dataObject->getData('category'),
-                'department' => $dataObject->getData('department'),
+                self::CATEGORY_FIELD => $dataObject->getData(self::CATEGORY_FIELD),
+                self::DEPARTMENT_FIELD => $dataObject->getData(self::DEPARTMENT_FIELD),
             );
             $templateMgr->assign($templateVars);
         }
     }
 
     /**
-     * Copy he new field values from the form to the user/author data object.
+     * Copy the new field values from the form to the user/author data object.
      */
     function addFieldValuesToModel($fromObject, $toModelObject) {
-        $toModelObject->setData('category', $fromObject->getData('category'));
-        $toModelObject->setData('department', $fromObject->getData('department'));
+        $toModelObject->setData(self::CATEGORY_FIELD, $fromObject->getData(self::CATEGORY_FIELD));
+        $toModelObject->setData(self::DEPARTMENT_FIELD, $fromObject->getData(self::DEPARTMENT_FIELD));
     }
 
     /**
@@ -101,8 +107,8 @@ class PPRUserCustomFieldsService {
      */
     function readUserVars($hookName, $arguments) {
         $fieldArray = &$arguments[1];
-        $fieldArray[] = 'category';
-        $fieldArray[] = 'department';
+        $fieldArray[] = self::CATEGORY_FIELD;
+        $fieldArray[] = self::DEPARTMENT_FIELD;
     }
 
 }

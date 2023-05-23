@@ -5,7 +5,7 @@
  */
 class PPRUserCustomFieldsService {
     const CATEGORY_FIELD = 'category';
-    const DEPARTMENT_FIELD = 'category';
+    const DEPARTMENT_FIELD = 'department';
 
     private $pprPlugin;
 
@@ -30,10 +30,13 @@ class PPRUserCustomFieldsService {
             HookRegistry::register('registrationform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('registrationform::execute', array($this, 'executeUser'));
 
-
             HookRegistry::register('userdetailsform::initdata', array($this, 'initUserData'));
             HookRegistry::register('userdetailsform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('userdetailsform::execute', array($this, 'executeUser'));
+
+            HookRegistry::register('contactform::display', array($this, 'initContactData'));
+            HookRegistry::register('contactform::readuservars', array($this, 'readUserVars'));
+            HookRegistry::register('contactform::execute', array($this, 'executeContact'));
 
             HookRegistry::register('createreviewerform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('createreviewerform::execute', array($this, 'executeReviewer'));
@@ -81,6 +84,27 @@ class PPRUserCustomFieldsService {
     function executeUser($hookName, $arguments) {
         $form = $arguments[0];
         $this->addFieldValuesToModel($form, $form->user);
+    }
+
+    function initContactData($hookName, $arguments) {
+        $form = $arguments[0];
+        $dataObject = $form->getUser();
+        $this->addFieldValuesToTemplate($dataObject);
+    }
+
+    function executeContact($hookName, $arguments) {
+        $form = $arguments[0];
+        $this->addFieldValuesToModel($form, $form->getUser());
+    }
+
+    function executeReviewer($hookName, $arguments) {
+        $userDao = DAORegistry::getDAO('UserDAO');
+
+        $form = $arguments[0];
+        $userId = $form->getData('reviewerId');
+        $user = $userDao->getById($userId);
+        $this->addFieldValuesToModel($form, $user);
+        $userDao->updateObject($user);
     }
 
     function addFieldValuesToTemplate($dataObject) {

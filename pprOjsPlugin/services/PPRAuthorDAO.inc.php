@@ -19,7 +19,7 @@ import ('classes.article.AuthorDAO');
 class PPRAuthorDAO extends AuthorDAO {
 
     /**
-     * Add category and department to the author object when creating a submission
+     * Add category and department to the author object when the user data is copied over while creating a submission
      */
     public function insertObject($object) {
         $request = Application::get()->getRequest();

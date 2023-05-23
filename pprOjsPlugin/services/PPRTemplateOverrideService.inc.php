@@ -32,8 +32,10 @@ class PPRTemplateOverrideService {
         }
 
         if ($this->pprPlugin->getPluginSettings()->userCustomFieldsEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/createReviewerForm.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/frontend/components/registrationForm.tpl';
+            $this->overriddenTemplates[] = 'lib/pkp/templates/user/contactForm.tpl';
         }
     }
 

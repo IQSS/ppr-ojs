@@ -102,12 +102,12 @@
 
 	{if $pprPluginSettings->userCustomFieldsEnabled()}
 		<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
-		{fbvFormSection title="grid.user.category"}
-			{fbvElement type="text" label="grid.user.category.description" name="category" id="category" value=$category maxlength="255" size=$fbvStyles.size.MEDIUM}
+		{fbvFormSection title="user.category"}
+			{fbvElement type="text" label="user.category.description" name="category" id="category" value=$category maxlength="255" size=$fbvStyles.size.MEDIUM}
 		{/fbvFormSection}
 
-		{fbvFormSection title="grid.user.department"}
-			{fbvElement type="text" label="grid.user.department.description" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
+		{fbvFormSection title="user.department"}
+			{fbvElement type="text" label="user.department.description" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
 		{/fbvFormSection}
 	{/if}
 

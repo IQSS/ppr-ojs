@@ -14,23 +14,23 @@
   PUBLICATION
   HIDE TABS
  */
-.pkpTabs__buttons #contributors-button {
+div.pkpPublication .pkpTabs__buttons #contributors-button {
 	display: none;
 }
 
-.pkpTabs__buttons #metadata-button {
+div.pkpPublication .pkpTabs__buttons #metadata-button {
 	display: none;
 }
 
-.pkpTabs__buttons #galleys-button {
+div.pkpPublication .pkpTabs__buttons #galleys-button {
 	display: none;
 }
 
-.pkpTabs__buttons #license-button {
+div.pkpPublication .pkpTabs__buttons #license-button {
 	display: none;
 }
 
-.pkpTabs__buttons #issue-button {
+div.pkpPublication .pkpTabs__buttons #issue-button {
 	display: none;
 }
 

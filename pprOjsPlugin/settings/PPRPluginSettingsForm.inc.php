@@ -4,17 +4,6 @@ import('lib.pkp.classes.form.Form');
 
 class PPRPluginSettingsForm extends Form {
 
-    const CONFIG_VARS = array(
-        // PROPERTY NAME => [TYPE, DEFAULT VALUE]
-        'displayWorkflowMessageEnabled' => ['bool', true],
-        'displayContributorsEnabled' => ['bool', null],
-        'displaySuggestedReviewersEnabled' => ['bool', null],
-        'hideReviewMethodEnabled' => ['bool', null],
-        'hideReviewRecommendationEnabled' => ['bool', null],
-        'hidePreferredPublicNameEnabled' => ['bool', null],
-        'userCustomFieldsEnabled' => ['bool', null],
-    );
-
     /** @var $contextId int */
     private $contextId;
 
@@ -29,6 +18,9 @@ class PPRPluginSettingsForm extends Form {
     function __construct($plugin, $contextId) {
         $this->contextId = $contextId;
         $this->plugin = $plugin;
+        //IMPORT SETTINGS TO USE CONFIG VARIABLES
+        $this->plugin->import('settings.PPRPluginSettings');
+
         parent::__construct($plugin->getTemplateResource('ppr/pluginSettingsForm.tpl'));
         $this->addCheck(new FormValidatorPost($this));
         $this->addCheck(new FormValidatorCSRF($this));
@@ -41,7 +33,7 @@ class PPRPluginSettingsForm extends Form {
         $contextId = $this->contextId;
         $plugin =& $this->plugin;
         $this->_data = array();
-        foreach (self::CONFIG_VARS as $configVar => $varSettings) {
+        foreach (PPRPluginSettings::CONFIG_VARS as $configVar => $varSettings) {
             $this->_data[$configVar] = $plugin->getSetting($contextId, $configVar) ?? $varSettings[1];
         }
     }
@@ -50,7 +42,7 @@ class PPRPluginSettingsForm extends Form {
      * Assign form data to user-submitted data.
      */
     function readInputData() {
-        $this->readUserVars(array_keys(self::CONFIG_VARS));
+        $this->readUserVars(array_keys(PPRPluginSettings::CONFIG_VARS));
     }
 
     /**
@@ -70,7 +62,7 @@ class PPRPluginSettingsForm extends Form {
     function execute(...$functionArgs) {
         $plugin =& $this->plugin;
         $contextId = $this->contextId;
-        foreach (self::CONFIG_VARS as $configVar => $varSettings) {
+        foreach (PPRPluginSettings::CONFIG_VARS as $configVar => $varSettings) {
             $plugin->updateSetting($contextId, $configVar, $this->getData($configVar), $varSettings[0]);
         }
 

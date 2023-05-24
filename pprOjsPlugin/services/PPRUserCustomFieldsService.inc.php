@@ -4,6 +4,7 @@
  * Service to manage the new user/author custom fields required for PPR
  */
 class PPRUserCustomFieldsService {
+    const CATEGORY_DROPDOWN = 'categories';
     const CATEGORY_FIELD = 'category';
     const DEPARTMENT_FIELD = 'department';
 
@@ -21,23 +22,25 @@ class PPRUserCustomFieldsService {
 
             HookRegistry::register('Schema::get::author', array($this, 'addFieldsToAuthorDatabaseSchema'));
 
-            HookRegistry::register('authorform::initdata', array($this, 'initAuthorData'));
+            HookRegistry::register('authorform::initdata', array($this, 'initAuthorFormData'));
             HookRegistry::register('authorform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('authorform::execute', array($this, 'executeAuthor'));
 
             HookRegistry::register('userdao::getAdditionalFieldNames', array($this, 'addFieldsToUserDatabaseSchema'));
 
+            HookRegistry::register('registrationform::display', array($this, 'initRegistrationFormData'));
             HookRegistry::register('registrationform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('registrationform::execute', array($this, 'executeUser'));
 
-            HookRegistry::register('userdetailsform::initdata', array($this, 'initUserData'));
+            HookRegistry::register('userdetailsform::initdata', array($this, 'initUserFormData'));
             HookRegistry::register('userdetailsform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('userdetailsform::execute', array($this, 'executeUser'));
 
-            HookRegistry::register('contactform::display', array($this, 'initContactData'));
+            HookRegistry::register('contactform::display', array($this, 'initContactFormData'));
             HookRegistry::register('contactform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('contactform::execute', array($this, 'executeContact'));
 
+            HookRegistry::register('createreviewerform::display', array($this, 'initReviewersFormData'));
             HookRegistry::register('createreviewerform::readuservars', array($this, 'readUserVars'));
             HookRegistry::register('createreviewerform::execute', array($this, 'executeReviewer'));
         }
@@ -58,7 +61,7 @@ class PPRUserCustomFieldsService {
         $schema->properties->department->validation = ['nullable'];
     }
 
-    function initAuthorData($hookName, $arguments) {
+    function initAuthorFormData($hookName, $arguments) {
         $form = $arguments[0];
         $this->addFieldValuesToTemplate($form->getAuthor());
     }
@@ -74,7 +77,12 @@ class PPRUserCustomFieldsService {
         $fieldArray[] = self::DEPARTMENT_FIELD;
     }
 
-    function initUserData($hookName, $arguments) {
+    function initRegistrationFormData($hookName, $arguments) {
+        //WE ONLY NEED TO ADD THE CATEGORIES DROPDOWN DATA
+        $this->addFieldValuesToTemplate(null);
+    }
+
+    function initUserFormData($hookName, $arguments) {
         $form = $arguments[0];
         // THIS FORM IS SHARED FOR USERS AND AUTHORS
         $dataObject = $form->user ?? $form->author;
@@ -86,7 +94,7 @@ class PPRUserCustomFieldsService {
         $this->addFieldValuesToModel($form, $form->user);
     }
 
-    function initContactData($hookName, $arguments) {
+    function initContactFormData($hookName, $arguments) {
         $form = $arguments[0];
         $dataObject = $form->getUser();
         $this->addFieldValuesToTemplate($dataObject);
@@ -95,6 +103,11 @@ class PPRUserCustomFieldsService {
     function executeContact($hookName, $arguments) {
         $form = $arguments[0];
         $this->addFieldValuesToModel($form, $form->getUser());
+    }
+
+    function initReviewersFormData($hookName, $arguments) {
+        //WE ONLY NEED TO ADD THE CATEGORIES DROPDOWN DATA
+        $this->addFieldValuesToTemplate(null);
     }
 
     function executeReviewer($hookName, $arguments) {
@@ -109,6 +122,8 @@ class PPRUserCustomFieldsService {
 
     function addFieldValuesToTemplate($dataObject) {
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+        //ADD CATEGORIES TO POPULATE DROPDOWN OPTIONS IN FORM
+        $templateMgr->assign([self::CATEGORY_DROPDOWN => $this->pprPlugin->getPluginSettings()->getCategoryOptions()]);
         if ($dataObject) {
             $templateVars = array(
                 self::CATEGORY_FIELD => $dataObject->getData(self::CATEGORY_FIELD),

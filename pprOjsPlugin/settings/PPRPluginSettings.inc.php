@@ -2,6 +2,18 @@
 
 class PPRPluginSettings {
 
+    const CONFIG_VARS = array(
+        // PROPERTY NAME => [TYPE, DEFAULT VALUE]
+        'displayWorkflowMessageEnabled' => ['bool', true],
+        'displayContributorsEnabled' => ['bool', null],
+        'displaySuggestedReviewersEnabled' => ['bool', null],
+        'hideReviewMethodEnabled' => ['bool', null],
+        'hideReviewRecommendationEnabled' => ['bool', null],
+        'hidePreferredPublicNameEnabled' => ['bool', null],
+        'userCustomFieldsEnabled' => ['bool', null],
+        'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
+    );
+
     /** @var $contextId int */
     private $contextId;
 
@@ -14,7 +26,7 @@ class PPRPluginSettings {
     }
 
     public function displayWorkflowMessageEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'displayWorkflowMessageEnabled') ?? true;
+        return $this->pprPlugin->getSetting($this->contextId, 'displayWorkflowMessageEnabled') ?? self::CONFIG_VARS['displayWorkflowMessageEnabled'][1];
     }
 
     public function displayContributorsEnabled() {
@@ -39,6 +51,12 @@ class PPRPluginSettings {
 
     public function userCustomFieldsEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'userCustomFieldsEnabled');
+    }
+
+    public function getCategoryOptions() {
+        $categoriesString =  $this->pprPlugin->getSetting($this->contextId, 'categoryOptions') ?? self::CONFIG_VARS['categoryOptions'][1];
+        $categoryOptions = array_map('trim', explode(',', $categoriesString));
+        return array_combine($categoryOptions, $categoryOptions);
     }
 
 }

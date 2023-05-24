@@ -87,7 +87,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         $templateMgr->addStyleSheet(
             'pprOjsPluginCustomCss',
             $request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css',
-            ['contexts' => 'backend']
+            ['contexts' => array('frontend', 'backend')]
         );
     }
 

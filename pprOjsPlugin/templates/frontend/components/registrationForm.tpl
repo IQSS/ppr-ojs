@@ -73,16 +73,19 @@
 		<div class="category">
 			<label>
 				<span class="label">
-					{translate key="user.category"}
+					{translate key="user.category.description"}
 				</span>
-				<input type="text" name="category" id="category" value="{$category|default:""|escape}">
+				<select name="category" id="category" required aria-required="true">
+					<option></option>
+					{html_options options=$categories selected=$category}
+				</select>
 			</label>
 		</div>
 
 		<div class="department">
 			<label>
 				<span class="label">
-					{translate key="user.department"}
+					{translate key="user.department.description"}
 				</span>
 				<input type="text" name="department" id="department" value="{$department|default:""|escape}">
 			</label>

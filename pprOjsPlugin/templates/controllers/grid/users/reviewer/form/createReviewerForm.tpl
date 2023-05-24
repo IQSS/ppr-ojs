@@ -69,7 +69,7 @@
 
 	<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
 	{fbvFormSection title="user.category"}
-		{fbvElement type="text" label="user.category.description" name="category" id="category" value=$category maxlength="255" size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="select" label="user.category.description" name="category" id="category" defaultLabel="" defaultValue="" from=$categories selected=$category translate="0" size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}
 
 	{fbvFormSection title="user.department"}

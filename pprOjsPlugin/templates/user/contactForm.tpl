@@ -28,10 +28,10 @@
 		{fbvElement type="tel" label="user.phone" name="phone" id="phone" value=$phone maxlength="24" size=$fbvStyles.size.SMALL}
 	{/fbvFormSection}
 
-	{fbvFormSection title="contact.section.other"}
+	{fbvFormSection}
 		{fbvElement type="text" label="user.affiliation" multilingual="true" name="affiliation" id="affiliation" value=$affiliation size=$fbvStyles.size.MEDIUM}
-		{fbvElement type="text" label="user.category" name="category" id="category" value=$category maxlength="255" size=$fbvStyles.size.MEDIUM}
-		{fbvElement type="text" label="user.department" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="select" label="user.category.description" name="category" id="category" defaultLabel="" defaultValue="" from=$categories selected=$category translate="0" size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="text" label="user.department.description" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}
 
 	{fbvFormSection}

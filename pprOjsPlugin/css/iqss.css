@@ -11,6 +11,30 @@
 }
 
 /**
+  PUBLICATION
+  HIDE TABS
+ */
+.pkpTabs__buttons #contributors-button {
+	display: none;
+}
+
+.pkpTabs__buttons #metadata-button {
+	display: none;
+}
+
+.pkpTabs__buttons #galleys-button {
+	display: none;
+}
+
+.pkpTabs__buttons #license-button {
+	display: none;
+}
+
+.pkpTabs__buttons #issue-button {
+	display: none;
+}
+
+/**
   WORKFLOW - SUBMISSION
   HIDE ACCEPT AND SKIP REVIEW BUTTON - NOT REQUIRED BY PPR
  */
@@ -61,4 +85,11 @@
 	border: 1px solid #ddd;
 	border-radius: 2px;
 	background: #fff;
+}
+
+/**
+  REGISTRATION FORM
+ */
+form#register.cmp_form input, form#register.cmp_form select {
+	max-width: 30em;
 }

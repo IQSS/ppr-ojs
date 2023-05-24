@@ -51,19 +51,19 @@ msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
 
 msgid "plugins.generic.pprPlugin.settings.userCustomFields.label"
-msgstr "Add category and department fields to the user, author, and reviewer forms"
+msgstr "Add institutional position and department fields to the registration, user, author, and reviewer forms"
+
+msgid "plugins.generic.pprPlugin.settings.categoryOptions.label"
+msgstr "Institutional position dropdown options. Comma separated list of values"
 
 msgid "user.category"
-msgstr "Category"
+msgstr "Institutional Position"
 
 msgid "user.category.description"
-msgstr "Category: (e.g. Faculty, Student, etc.)"
+msgstr "Institutional Position: (e.g. Faculty, Student, etc.)"
 
 msgid "user.department"
 msgstr "Academic Department"
 
 msgid "user.department.description"
 msgstr "Academic Department:  (e.g. Government, Economics, etc.)"
-
-msgid "contact.section.other"
-msgstr "Some Title"

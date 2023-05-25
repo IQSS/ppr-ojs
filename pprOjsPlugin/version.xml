@@ -10,7 +10,7 @@
  * Plugin version information.
  -->
 <version>
-    <application>ppr-ojs-plugin</application>
+    <application>pprOjsPlugin</application>
     <type>plugins.generic</type>
     <release>1.0.0.4</release>
     <date>2023-05-18</date>

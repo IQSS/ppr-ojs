@@ -10,7 +10,7 @@ jobs:
   create-release-plugin:
     runs-on: ubuntu-latest
     env:
-      PLUGIN_NAME: "ppr-ojs-plugin"
+      PLUGIN_NAME: "pprOjsPlugin"
     steps:
       - name: Checkout ${{ github.sha }}
         uses: actions/checkout@v3

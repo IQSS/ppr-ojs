@@ -12,8 +12,9 @@ class PPRWorkflowService {
 
     function register() {
         if ($this->pprPlugin->getPluginSettings()->displayContributorsEnabled()) {
-            HookRegistry::register('authorgridhandler::initfeatures', array($this, 'updateContributorsGrid'));
             HookRegistry::register('Template::Workflow', array($this, 'addContributorsToWorkflow'));
+            HookRegistry::register('LoadComponentHandler', array($this, 'addPPRAuthorGridHandler'));
+
         }
 
         if ($this->pprPlugin->getPluginSettings()->displaySuggestedReviewersEnabled()) {
@@ -21,36 +22,26 @@ class PPRWorkflowService {
         }
     }
 
-
     /**
-     * Updates to the AuthorGridHandler to add the institution data to the contributors component.
+     * Custom AuthorGridHandler to add the institution, category, and department data to the contributors component.
      * @param $hookName
      * @param $hookArgs
      * @return false
      */
-    public function updateContributorsGrid($hookName, $hookArgs) {
-        $authorGridHandler = $hookArgs[0];
-        $this->pprPlugin->import('services.PPRAuthorGridCellProvider');
-        $cellProvider = new PPRAuthorGridCellProvider($authorGridHandler->getPublication());
-        $authorGridHandler->addColumn(new GridColumn('name')); //NEEDED TO KEEP THE ORDER AND MAKE INSTITUTION THE SECOND COLUMN
-        $authorGridHandler->addColumn(
-            new GridColumn(
-                'institution',
-                'user.affiliation',
-                null,
-                null,
-                $cellProvider,
-                array('width' => 30, 'alignment' => COLUMN_ALIGNMENT_LEFT)
-            )
-        );
-
+    function addPPRAuthorGridHandler($hookName, $args) {
+        $component =& $args[0];
+        if ($component == 'pprPlugin.services.PPRAuthorGridHandler') {
+            // LOAD THE PPR AUTHOR HANDLER FROM THE PLUGIN REPO
+            $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.PPRAuthorGridHandler';
+            return true;
+        }
         return false;
     }
 
     /**
      * Adds the suggested reviewers component into the Workflow page using an existing template hook
      */
-    public function addSuggestedReviewersToWorkflow($hookName, $hookArgs) {
+    function addSuggestedReviewersToWorkflow($hookName, $hookArgs) {
         $smarty =& $hookArgs[1];
         $output =& $hookArgs[2];
 
@@ -63,7 +54,7 @@ class PPRWorkflowService {
     /**
      * Adds the contributors component into the Workflow page using an existing template hook
      */
-    public function addContributorsToWorkflow($hookName, $hookArgs) {
+    function addContributorsToWorkflow($hookName, $hookArgs) {
         $smarty =& $hookArgs[1];
         $output =& $hookArgs[2];
 

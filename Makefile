@@ -28,9 +28,9 @@ release: new_version
 	$(eval RELEASE_VERSION = $(shell cat VERSION))
 	$(eval RELEASE_DATE = $(shell date +%Y-%m-%d))
 	mkdir -p releases
-	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' ppr-ojs-plugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > ppr-ojs-plugin/version.xml.new
-	mv ppr-ojs-plugin/version.xml.new ppr-ojs-plugin/version.xml
-	tar -czvf releases/ppr-ojs-plugin-$(RELEASE_VERSION).tar.gz ppr-ojs-plugin
+	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' pprOjsPlugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > pprOjsPlugin/version.xml.new
+	mv pprOjsPlugin/version.xml.new pprOjsPlugin/version.xml
+	tar -czvf releases/pprOjsPlugin-$(RELEASE_VERSION).tar.gz pprOjsPlugin
 
 new_version:
 	./create_version.sh

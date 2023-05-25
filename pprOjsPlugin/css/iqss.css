@@ -93,3 +93,22 @@ div.pkpPublication .pkpTabs__buttons #issue-button {
 form#register.cmp_form input, form#register.cmp_form select {
 	max-width: 30em;
 }
+
+/**
+ CUSTOMIZATIONS IMPLEMENTED BY PKP
+ 
+ Removes user homepage/orcid id/include in browse list from contributor settings
+ Added by EH on 2023-03-07
+*/
+
+#userFormExtendedLeft input[id^="userUrl"],
+#userFormExtendedLeft label[for^="userUrl"],
+#userFormExtendedLeft input[id^="orcid"],
+#userFormExtendedLeft label[for^="orcid"]
+{
+	display: none;
+}
+
+fieldset#submissionSpecific ul.checkbox_and_radiobutton > li:last-child {
+	display: none;
+}

@@ -59,9 +59,7 @@
 		{fbvElement type="email" id="email" required="true" value=$email maxlength="90" size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}
 
-	{fbvFormSection title="manager.reviewerSearch.interests" for="interests"}
-		{fbvElement type="interests" id="interests" interests=$interests}
-	{/fbvFormSection}
+	<!-- REMOVED REVIEWER INTERESTS -->
 
 	{fbvFormSection title="user.affiliation"}
 		{fbvElement type="text" multilingual="true" name="affiliation" id="affiliation" value=$affiliation size=$fbvStyles.size.LARGE}

@@ -37,6 +37,10 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/frontend/components/registrationForm.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/user/contactForm.tpl';
         }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionCustomFieldsEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
+        }
     }
 
     function register() {
@@ -44,7 +48,14 @@ class PPRTemplateOverrideService {
     }
 
     function overrideTemplate($hookName, $args) {
-        $templateFilePath = $args[0];
+        $templateFilePath = &$args[0];
+        $origin_template_suffix = '.load_ojs';
+
+        if (str_ends_with($templateFilePath, $origin_template_suffix)) {
+            // SPECIAL TEMPLATE EXTENSION => REMOVE EXTENSION AND DO NOT OVERRIDE
+            $templateFilePath = substr($templateFilePath, 0, -strlen($origin_template_suffix));
+            return false;
+        }
 
         if (in_array($templateFilePath, $this->overriddenTemplates)) {
             return $this->pprPlugin->_overridePluginTemplates($hookName, $args);

@@ -13,4 +13,10 @@
     <input type="hidden" name="recommendation" value="{constant('SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS')}" />
 {/capture}
 
+<div class="pkp_notification">
+    {include file="controllers/notification/inPlaceNotificationContent.tpl" notificationId="pprCommentsForReviewer"
+    notificationStyleClass="notifyInfo" notificationContents=$commentsForReviewer
+    notificationTitle="{translate key="submission.comments.reviewer"}"}
+</div>
+
 {include file="core:reviewer/review/step3.tpl"}

@@ -12,6 +12,7 @@ class PPRPluginSettings {
         'hidePreferredPublicNameEnabled' => ['bool', null],
         'userCustomFieldsEnabled' => ['bool', null],
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
+        'submissionCustomFieldsEnabled' => ['bool', null],
     );
 
     /** @var $contextId int */
@@ -57,6 +58,10 @@ class PPRPluginSettings {
         $categoriesString =  $this->pprPlugin->getSetting($this->contextId, 'categoryOptions') ?? self::CONFIG_VARS['categoryOptions'][1];
         $categoryOptions = array_map('trim', explode(',', $categoriesString));
         return array_combine($categoryOptions, $categoryOptions);
+    }
+
+    public function submissionCustomFieldsEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'submissionCustomFieldsEnabled');
     }
 
 }

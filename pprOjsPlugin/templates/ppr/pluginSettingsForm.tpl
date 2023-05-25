@@ -38,7 +38,9 @@
 			{fbvElement type="checkbox" name="hideReviewRecommendationEnabled" label="plugins.generic.pprPlugin.settings.reviewRecommendation.label" id="hideReviewRecommendationEnabled" checked=$hideReviewRecommendationEnabled}
 		{/fbvFormSection}
 
-
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.submissions" list="true"}
+			{fbvElement type="checkbox" name="submissionCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.submissionCustomFields.label" id="submissionCustomFieldsEnabled" checked=$submissionCustomFieldsEnabled}
+		{/fbvFormSection}
 
 		{fbvFormButtons}
 		<p><span class="formRequired">{translate key="common.requiredField"}</span></p>

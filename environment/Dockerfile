@@ -6,7 +6,8 @@ ARG PHP_VERSION
 
 RUN set -xe \
 	&& apk add --no-cache ${PHP_VERSION}-xdebug \
-	&& apk add --no-cache rsync
+	&& apk add --no-cache rsync \
+	&& apk add --no-cache tar
 
 COPY xdebug.ini /etc/${PHP_VERSION}/conf.d/50_xdebug.ini
 

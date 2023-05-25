@@ -30,7 +30,7 @@ release: new_version
 	mkdir -p releases
 	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' pprOjsPlugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > pprOjsPlugin/version.xml.new
 	mv pprOjsPlugin/version.xml.new pprOjsPlugin/version.xml
-	tar -czvf releases/pprOjsPlugin-$(RELEASE_VERSION).tar.gz pprOjsPlugin
+	tar -czvf ./releases/pprOjsPlugin-$(RELEASE_VERSION).tar.gz ./pprOjsPlugin
 
 new_version:
 	./create_version.sh

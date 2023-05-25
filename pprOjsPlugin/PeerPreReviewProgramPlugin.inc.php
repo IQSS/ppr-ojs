@@ -51,7 +51,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
      */
     function setEnabled($enabled) {
         parent::setEnabled($enabled);
-        clearCache();
+        $this->clearCache();
     }
 
     /**

@@ -32,6 +32,9 @@ msgstr "Users / Contributors"
 msgid "plugins.generic.pprPlugin.settings.section.reviews"
 msgstr "Reviews"
 
+msgid "plugins.generic.pprPlugin.settings.section.submissions"
+msgstr "Submissions"
+
 msgid "plugins.generic.pprPlugin.settings.workflowMessage.label"
 msgstr "Show the information message in the hidden \"Copyediting\" and \"Production\" tabs"
 
@@ -56,6 +59,9 @@ msgstr "Add institutional position and department fields to the registration, us
 msgid "plugins.generic.pprPlugin.settings.categoryOptions.label"
 msgstr "Institutional position dropdown options. Comma separated list of values"
 
+msgid "plugins.generic.pprPlugin.settings.submissionCustomFields.label"
+msgstr "Add comments for the reviewer to author submission form and show the data in the review"
+
 msgid "user.category"
 msgstr "Institutional Position"
 
@@ -67,3 +73,10 @@ msgstr "Academic Department"
 
 msgid "user.department.description"
 msgstr "Academic Department:  (e.g. Government, Economics, etc.)"
+
+msgid "submission.comments.reviewer"
+msgstr "Comments for the Reviewer"
+
+msgid "submission.comments.reviewer.description"
+msgstr "If you'd like to direct the reviewer's attention to any particular area of the paper, please describe it here."
+

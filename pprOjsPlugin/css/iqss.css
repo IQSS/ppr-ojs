@@ -88,6 +88,16 @@ div.pkpPublication .pkpTabs__buttons #issue-button {
 }
 
 /**
+  COMMENTS FOR REVIEWER
+ */
+#pprCommentsForReviewer {
+	padding: 2rem 2rem 0 2rem;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	background: #fff;
+}
+
+/**
   REGISTRATION FORM
  */
 form#register.cmp_form input, form#register.cmp_form select {

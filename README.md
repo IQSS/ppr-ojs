@@ -53,11 +53,35 @@ To start the OJS application fresh, you will need to clean the DB and OJS files 
 Execute the following target to delete all data files:
 ``make clean``
 
-## Technical Notes
-### Plugin Development
-Template Override
-Component Handler Override
-CSS Updates
+# Technical Notes
+## Plugin Development
+When starting the local environment, the contents of the PPR plugin is mounted into the OJS ``plugins/generic`` directory and it will be ready to use.
+
+The OJS code in the Docker container is mounted into the ``environment/data/ojs/src`` local folder for review and debugging.
+
+The local Docker image has been created with PHP XDebug to allow local debugging.
+
+### Template Override
+OJS provides a mechanism for plugins to override templates. This is achieved by using an OJS Hook to intercept the template file lookup.
+The ``services/PPRTemplateOverrideService`` is managing the templates that the PPR plugin overrides.
+
+The overridden templates are located within the ``templates``, with the same path as original OJS template. This makes it easier to locate the original templates in case changes need to be added to our version.
+
+In OJS, templates are located within the ``<root>/templates`` or the ``<root>/lib/pkp/templates`` folders
+
+### Component Handler Override
+We have implemented an override for the OJS ``AuthorGridHandler`` in order to fulfill the PPR program requirements. Handler override is one of the features supported by the OJS plugin framework.
+
+The ``services/PPRWorkflowService`` has an example of how to override a component handler.
+
+### CSS Updates
+We have created a custom CSS file to style the forms and hide some of the fields in the OJS frontend and backend.
+
+In OJS terminology, frontend is the reader's website, where the homepage, registration, and articles are displayed.  
+The backend is the admin interface where submissions, reviews, and the site administration are displayed.
+
+The configuration for the custom CSS is in the ``PeerPreReviewProgramPlugin`` class and the file is under ``css/iqss.css``
+
 ### Feature Flags
 Most of the PPR features has been added to the plugin behind feature flags.
 This has been implemented to reduce the risk of deployments as there is no test environment available.

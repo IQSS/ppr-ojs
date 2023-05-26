@@ -69,6 +69,11 @@ The overridden templates are located within the ``templates``, with the same pat
 
 In OJS, templates are located within the ``<root>/templates`` or the ``<root>/lib/pkp/templates`` folders
 
+We have developed a mechanism to wrap existing templates and load the original template with the new wrapper.
+This is achieved by using the OJS ``TemplateManager`` feature ``include`` and the template suffix ``.load_ojs``.
+
+There is an example in ``templates/submission/submissionMetadataFormTitleFields.tpl``
+
 ### Component Handler Override
 We have implemented an override for the OJS ``AuthorGridHandler`` in order to fulfill the PPR program requirements. Handler override is one of the features supported by the OJS plugin framework.
 

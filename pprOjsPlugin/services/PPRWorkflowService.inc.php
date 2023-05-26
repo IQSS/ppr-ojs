@@ -30,7 +30,7 @@ class PPRWorkflowService {
      */
     function addPPRAuthorGridHandler($hookName, $args) {
         $component =& $args[0];
-        if ($component == 'pprPlugin.services.PPRAuthorGridHandler') {
+        if ($component === 'grid.users.author.AuthorGridHandler') {
             // LOAD THE PPR AUTHOR HANDLER FROM THE PLUGIN REPO
             $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.PPRAuthorGridHandler';
             return true;

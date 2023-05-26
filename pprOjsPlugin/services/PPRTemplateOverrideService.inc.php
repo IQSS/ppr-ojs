@@ -40,6 +40,7 @@ class PPRTemplateOverrideService {
 
         if ($this->pprPlugin->getPluginSettings()->submissionCustomFieldsEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
+            $this->overriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
         }
     }
 

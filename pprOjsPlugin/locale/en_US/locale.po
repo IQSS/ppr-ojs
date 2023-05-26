@@ -60,7 +60,7 @@ msgid "plugins.generic.pprPlugin.settings.categoryOptions.label"
 msgstr "Institutional position dropdown options. Comma separated list of values"
 
 msgid "plugins.generic.pprPlugin.settings.submissionCustomFields.label"
-msgstr "Add comments for the reviewer to author submission form"
+msgstr "Add comments for the reviewer to author submission form and show the data in the review"
 
 msgid "user.category"
 msgstr "Institutional Position"

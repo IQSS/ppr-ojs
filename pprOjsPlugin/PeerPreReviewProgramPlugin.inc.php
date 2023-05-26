@@ -90,7 +90,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         $templateMgr = TemplateManager::getManager($request);
         $templateMgr->addStyleSheet(
             'pprOjsPluginCustomCss',
-            $request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css',
+            $request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css?pprv='.$this->getPluginVersion(),
             ['contexts' => array('frontend', 'backend')]
         );
     }
@@ -109,9 +109,18 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         return __("plugins.generic.pprPlugin.description");
     }
 
+    /**
+     * Get the plugin version to add to the CSS file. To break client caching
+     */
+    function getPluginVersion() {
+        return $this->getCurrentVersion()->getVersionString();
+    }
+
     public function getPluginSettings() {
         return $this->pprPluginSettings;
     }
+
+
 
 }
 

@@ -78,5 +78,5 @@ msgid "submission.comments.reviewer"
 msgstr "Comments for the Reviewer"
 
 msgid "submission.comments.reviewer.description"
-msgstr "If you'd like to direct the reviewer's attention to any particular area of the paper, please describe it here"
+msgstr "If you'd like to direct the reviewer's attention to any particular area of the paper, please describe it here."
 

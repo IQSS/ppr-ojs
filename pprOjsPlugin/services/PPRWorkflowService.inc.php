@@ -11,6 +11,10 @@ class PPRWorkflowService {
     }
 
     function register() {
+        if ($this->pprPlugin->getPluginSettings()->submissionCustomFieldsEnabled()) {
+            HookRegistry::register('Template::Workflow', array($this, 'addCommentsForReviewerToWorkflow'));
+        }
+
         if ($this->pprPlugin->getPluginSettings()->displayContributorsEnabled()) {
             HookRegistry::register('Template::Workflow', array($this, 'addContributorsToWorkflow'));
             HookRegistry::register('LoadComponentHandler', array($this, 'addPPRAuthorGridHandler'));
@@ -28,8 +32,8 @@ class PPRWorkflowService {
      * @param $hookArgs
      * @return false
      */
-    function addPPRAuthorGridHandler($hookName, $args) {
-        $component =& $args[0];
+    function addPPRAuthorGridHandler($hookName, $hookArgs) {
+        $component =& $hookArgs[0];
         if ($component === 'grid.users.author.AuthorGridHandler') {
             // LOAD THE PPR AUTHOR HANDLER FROM THE PLUGIN REPO
             $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.PPRAuthorGridHandler';
@@ -38,8 +42,18 @@ class PPRWorkflowService {
         return false;
     }
 
+    function addCommentsForReviewerToWorkflow($hookName, $hookArgs) {
+        $smarty =& $hookArgs[1];
+        $output =& $hookArgs[2];
+
+        // ADD THE SUGGESTED REVIEWERS COMPONENT TO THE WORKFLOW TEMPLATE
+        $output .= $smarty->fetch($this->pprPlugin->getTemplateResource('ppr/workflowCommentsForReviewer.tpl'));
+
+        return false;
+    }
+
     /**
-     * Adds the suggested reviewers component into the Workflow page using an existing template hook
+     * Adds the comments for reviewer component into the Workflow page using an existing template hook
      */
     function addSuggestedReviewersToWorkflow($hookName, $hookArgs) {
         $smarty =& $hookArgs[1];

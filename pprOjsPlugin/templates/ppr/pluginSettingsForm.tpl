@@ -28,10 +28,14 @@
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.users" list="true"}
 			{fbvElement type="checkbox" name="hidePreferredPublicNameEnabled" label="plugins.generic.pprPlugin.settings.preferredPublicName.label" id="hidePreferredPublicNameEnabled" checked=$hidePreferredPublicNameEnabled}
 			{fbvElement type="checkbox" name="userCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.userCustomFields.label" id="userCustomFieldsEnabled" checked=$userCustomFieldsEnabled}
+			<div class="subsection">
+				{fbvElement type="text" name="categoryOptions" label="plugins.generic.pprPlugin.settings.categoryOptions.label" id="categoryOptions" value=$categoryOptions}
+			</div>
+			<div class="subsection">
+				{fbvElement type="text" name="institutionOptions" label="plugins.generic.pprPlugin.settings.institutionOptions.label" id="institutionOptions" value=$institutionOptions}
+			</div>
 		{/fbvFormSection}
-		{fbvFormSection}
-			{fbvElement type="text" name="categoryOptions" label="plugins.generic.pprPlugin.settings.categoryOptions.label" id="categoryOptions" value=$categoryOptions}
-		{/fbvFormSection}
+
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.reviews" list="true"}
 			{fbvElement type="checkbox" name="hideReviewMethodEnabled" label="plugins.generic.pprPlugin.settings.reviewMethod.label" id="hideReviewMethodEnabled" checked=$hideReviewMethodEnabled}

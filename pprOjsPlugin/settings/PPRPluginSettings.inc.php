@@ -12,6 +12,7 @@ class PPRPluginSettings {
         'hidePreferredPublicNameEnabled' => ['bool', null],
         'userCustomFieldsEnabled' => ['bool', null],
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
+        'institutionOptions' => ['string', 'Harvard University, Washington University in St. Louis'],
         'submissionCustomFieldsEnabled' => ['bool', null],
     );
 
@@ -58,6 +59,12 @@ class PPRPluginSettings {
         $categoriesString =  $this->pprPlugin->getSetting($this->contextId, 'categoryOptions') ?? self::CONFIG_VARS['categoryOptions'][1];
         $categoryOptions = array_map('trim', explode(',', $categoriesString));
         return array_combine($categoryOptions, $categoryOptions);
+    }
+
+    public function getInstitutionOptions() {
+        $institutionString =  $this->pprPlugin->getSetting($this->contextId, 'institutionOptions') ?? self::CONFIG_VARS['institutionOptions'][1];
+        $institutionOptions = array_map('trim', explode(',', $institutionString));
+        return array_combine($institutionOptions, $institutionOptions);
     }
 
     public function submissionCustomFieldsEnabled() {

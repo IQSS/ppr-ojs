@@ -5,6 +5,7 @@
  */
 class PPRUserCustomFieldsService {
     const CATEGORY_DROPDOWN = 'categories';
+    const INSTITUTION_DROPDOWN = 'institutions';
     const CATEGORY_FIELD = 'category';
     const DEPARTMENT_FIELD = 'department';
 
@@ -124,6 +125,7 @@ class PPRUserCustomFieldsService {
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
         //ADD CATEGORIES TO POPULATE DROPDOWN OPTIONS IN FORM
         $templateMgr->assign([self::CATEGORY_DROPDOWN => $this->pprPlugin->getPluginSettings()->getCategoryOptions()]);
+        $templateMgr->assign([self::INSTITUTION_DROPDOWN => $this->pprPlugin->getPluginSettings()->getInstitutionOptions()]);
         if ($dataObject) {
             $templateVars = array(
                 self::CATEGORY_FIELD => $dataObject->getData(self::CATEGORY_FIELD),

@@ -29,7 +29,7 @@
 	{/fbvFormSection}
 
 	{fbvFormSection}
-		{fbvElement type="text" label="user.affiliation" multilingual="true" name="affiliation" id="affiliation" value=$affiliation size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="text" label="user.affiliation" multilingual="true" name="affiliation" id="affiliation" value=$affiliation size=$fbvStyles.size.MEDIUM required=true}
 		{fbvElement type="select" label="user.category.description" name="category" id="category" defaultLabel="" defaultValue="" from=$categories selected=$category translate="0" size=$fbvStyles.size.MEDIUM}
 		{fbvElement type="text" label="user.department.description" name="department" id="department" value=$department maxlength="255" size=$fbvStyles.size.MEDIUM}
 	{/fbvFormSection}

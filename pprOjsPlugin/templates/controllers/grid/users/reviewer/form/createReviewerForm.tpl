@@ -47,7 +47,7 @@
 
 	{fbvFormSection title="common.name"}
 		{fbvElement type="text" label="user.givenName" multilingual="true" name="givenName" id="givenName" value=$givenName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM required="true"}
-		{fbvElement type="text" label="user.familyName" multilingual="true" name="familyName" id="familyName" value=$familyName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="text" label="user.familyName" multilingual="true" name="familyName" id="familyName" value=$familyName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM required="true"}
 	{/fbvFormSection}
 
 	{fbvFormSection title="user.username" required="true"}
@@ -61,8 +61,8 @@
 
 	<!-- REMOVED REVIEWER INTERESTS -->
 
-	{fbvFormSection title="user.affiliation"}
-		{fbvElement type="text" multilingual="true" name="affiliation" id="affiliation" value=$affiliation size=$fbvStyles.size.LARGE}
+	{fbvFormSection title="user.affiliation" required="true"}
+		{fbvElement type="text" multilingual="true" name="affiliation" id="affiliation" value=$affiliation size=$fbvStyles.size.LARGE required="true"}
 	{/fbvFormSection}
 
 	<!-- CUSTOM FIELDS FOR PPR PROGRAM -->

@@ -26,7 +26,7 @@
 {fbvFormArea id="userDetails"}
 	{fbvFormSection title="user.name"}
 		{fbvElement type="text" label="user.givenName" multilingual="true" name="givenName" id="givenName" value=$givenName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM required="true"}
-		{fbvElement type="text" label="user.familyName" multilingual="true" name="familyName" id="familyName" value=$familyName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM}
+		{fbvElement type="text" label="user.familyName" multilingual="true" name="familyName" id="familyName" value=$familyName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM required="true"}
 	{/fbvFormSection}
 
 	<!-- REMOVED PREFERRED PUBLIC NAME -->
@@ -153,7 +153,7 @@
 		{/if}
 
 		{fbvFormSection for="affiliation"}
-			{fbvElement type="text" label="user.affiliation" multilingual="true" name="affiliation" id="affiliation" value=$affiliation inline=true size=$fbvStyles.size.LARGE}
+			{fbvElement type="text" label="user.affiliation" multilingual="true" name="affiliation" id="affiliation" required="true" value=$affiliation inline=true size=$fbvStyles.size.LARGE}
 		{/fbvFormSection}
 
 		{fbvFormSection}

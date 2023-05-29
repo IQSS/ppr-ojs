@@ -104,6 +104,26 @@ form#register.cmp_form input, form#register.cmp_form select {
 	max-width: 30em;
 }
 
+div.page_register form.register {
+	padding-top: 1em;
+	display: none;
+}
+
+div.page_register .ppr_toggle {
+	margin-right: 0.25em;
+}
+
+div.page_register .ppr_toggle:checked ~ form.register {
+	display: block;
+}
+
+/**
+  SETTINGS FORM
+ */
+form#pprPluginSettingsForm div.subsection {
+	padding-top: 1em;
+}
+
 /**
  CUSTOMIZATIONS IMPLEMENTED BY PKP
  

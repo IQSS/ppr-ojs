@@ -36,8 +36,12 @@
 			<label>
 				<span class="label">
 					{translate key="user.familyName"}
+					<span class="required" aria-hidden="true">*</span>
+					<span class="pkp_screen_reader">
+						{translate key="common.required"}
+					</span>
 				</span>
-				<input type="text" name="familyName" autocomplete="family-name" id="familyName" value="{$familyName|default:""|escape}" maxlength="255">
+				<input type="text" name="familyName" autocomplete="family-name" id="familyName" value="{$familyName|default:""|escape}" maxlength="255" required aria-required="true">
 			</label>
 		</div>
 		<div class="affiliation">
@@ -49,10 +53,44 @@
 						{translate key="common.required"}
 					</span>
 				</span>
-				<input type="text" name="affiliation" id="affiliation" value="{$affiliation|default:""|escape}" required aria-required="true">
+				<!-- CUSTOM INSTITUTION SELECT FOR PPR PROGRAM -->
+				<select name="affiliation" id="affiliation" required aria-required="true">
+					<option></option>
+					{html_options options=$institutions selected=$affiliation}
+				</select>
 			</label>
 		</div>
 
+		<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
+		<div class="category">
+			<label>
+				<span class="label">
+					{translate key="user.category.description"}
+					<span class="required" aria-hidden="true">*</span>
+					<span class="pkp_screen_reader">
+						{translate key="common.required"}
+					</span>
+				</span>
+				<select name="category" id="category" required aria-required="true">
+					<option></option>
+					{html_options options=$categories selected=$category}
+				</select>
+			</label>
+		</div>
+
+		<div class="department">
+			<label>
+				<span class="label">
+					{translate key="user.department.description"}
+					<span class="required" aria-hidden="true">*</span>
+					<span class="pkp_screen_reader">
+						{translate key="common.required"}
+					</span>
+				</span>
+				<input type="text" name="department" id="department" value="{$department|default:""|escape}" required aria-required="true">
+			</label>
+		</div>
+		<!-- END -->
 		<div class="country">
 			<label>
 				<span class="label">
@@ -66,28 +104,6 @@
 					<option></option>
 					{html_options options=$countries selected=$country}
 				</select>
-			</label>
-		</div>
-
-		<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
-		<div class="category">
-			<label>
-				<span class="label">
-					{translate key="user.category.description"}
-				</span>
-				<select name="category" id="category" required aria-required="true">
-					<option></option>
-					{html_options options=$categories selected=$category}
-				</select>
-			</label>
-		</div>
-
-		<div class="department">
-			<label>
-				<span class="label">
-					{translate key="user.department.description"}
-				</span>
-				<input type="text" name="department" id="department" value="{$department|default:""|escape}">
 			</label>
 		</div>
 

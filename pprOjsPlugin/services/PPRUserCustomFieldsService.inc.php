@@ -8,6 +8,7 @@ class PPRUserCustomFieldsService {
     const INSTITUTION_DROPDOWN = 'institutions';
     const CATEGORY_FIELD = 'category';
     const DEPARTMENT_FIELD = 'department';
+    const ELIGIBILITY_FIELD = 'eligibility';
 
     private $pprPlugin;
 
@@ -150,6 +151,8 @@ class PPRUserCustomFieldsService {
         $fieldArray = &$arguments[1];
         $fieldArray[] = self::CATEGORY_FIELD;
         $fieldArray[] = self::DEPARTMENT_FIELD;
+        //THIS IS ONLY NEEDED FOR THE REGISTRATION FORM
+        $fieldArray[] = self::ELIGIBILITY_FIELD;
     }
 
 }

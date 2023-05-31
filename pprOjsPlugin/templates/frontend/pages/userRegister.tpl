@@ -18,13 +18,15 @@
 	</h1>
 
 	<!-- PPR ELIGIBILITY CHECKBOX -->
-	<input class="ppr_toggle" type="checkbox" name="eligibility" value="1" required>
+	<input class="ppr_toggle" type="checkbox" name="eligibility" value="1" required {if $eligibility} checked="checked"{/if}>
 	<label class="ppr_eligibility_label">
 		I have confirmed that I am eligible to participate in this program based on the <a href="/index.php/iqss/Eligibility">requirements</a>.
 	</label>
 
 	<form class="cmp_form register" id="register" method="post" action="{url op="register"}">
 		{csrf}
+		<!-- TO SET AS CHECKED WHEN FORM SUBMITTED WITH ERRORS -->
+		<input type="hidden" name="eligibility" value="1" />
 
 		{if $source}
 			<input type="hidden" name="source" value="{$source|escape}" />

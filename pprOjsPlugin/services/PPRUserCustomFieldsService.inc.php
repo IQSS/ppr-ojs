@@ -80,8 +80,8 @@ class PPRUserCustomFieldsService {
     }
 
     function initRegistrationFormData($hookName, $arguments) {
-        //WE ONLY NEED TO ADD THE CATEGORIES DROPDOWN DATA
-        $this->addFieldValuesToTemplate(null);
+        //WE ONLY NEED TO ADD THE CATEGORIES DROPDOWN AND DEFAULT COUNTRY TO US
+        $this->addFieldValuesToTemplate(null, true);
     }
 
     function initUserFormData($hookName, $arguments) {
@@ -122,11 +122,14 @@ class PPRUserCustomFieldsService {
         $userDao->updateObject($user);
     }
 
-    function addFieldValuesToTemplate($dataObject) {
+    function addFieldValuesToTemplate($dataObject, $setDefaultCountry = false) {
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
         //ADD CATEGORIES TO POPULATE DROPDOWN OPTIONS IN FORM
         $templateMgr->assign([self::CATEGORY_DROPDOWN => $this->pprPlugin->getPluginSettings()->getCategoryOptions()]);
         $templateMgr->assign([self::INSTITUTION_DROPDOWN => $this->pprPlugin->getPluginSettings()->getInstitutionOptions()]);
+        if ($setDefaultCountry) {
+            $templateMgr->assign(['country' => 'US']);
+        }
         if ($dataObject) {
             $templateVars = array(
                 self::CATEGORY_FIELD => $dataObject->getData(self::CATEGORY_FIELD),

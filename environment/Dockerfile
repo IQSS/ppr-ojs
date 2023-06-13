@@ -12,6 +12,7 @@ RUN set -xe \
 COPY xdebug.ini /etc/${PHP_VERSION}/conf.d/50_xdebug.ini
 
 COPY ojs-entry-point /usr/local/bin/ojs-entry-point
+COPY ojs-run-scheduled /usr/local/bin/ojs-run-scheduled
 RUN chmod +x /usr/local/bin/ojs-entry-point
 
 CMD ["ojs-entry-point"]

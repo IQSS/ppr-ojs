@@ -35,6 +35,9 @@ msgstr "Reviews"
 msgid "plugins.generic.pprPlugin.settings.section.submissions"
 msgstr "Submissions"
 
+msgid "plugins.generic.pprPlugin.settings.section.tasks"
+msgstr "Scheduled Tasks"
+
 msgid "plugins.generic.pprPlugin.settings.workflowMessage.label"
 msgstr "Show the information message in the hidden \"Copyediting\" and \"Production\" tabs"
 
@@ -64,6 +67,15 @@ msgstr "Institution dropdown options for registration form. Comma separated list
 
 msgid "plugins.generic.pprPlugin.settings.submissionCustomFields.label"
 msgstr "Add comments for the reviewer to author submission form and show the data in the review"
+
+msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label"
+msgstr "Add review response/submit due date notification for associate editors"
+
+msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label"
+msgstr "Comma separated list. Number of days before (negative) or after (positive) the due date to send notifications to the editor"
+
+msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.invalid"
+msgstr "The number of days allowed are values from -20 to 20"
 
 msgid "user.category"
 msgstr "Institutional Position"

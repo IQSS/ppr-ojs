@@ -79,6 +79,17 @@ We have implemented an override for the OJS ``AuthorGridHandler`` in order to fu
 
 The ``services/PPRWorkflowService`` has an example of how to override a component handler.
 
+### Scheduled Tasks
+The recommendation from OJS to implement scheduled tasks was to use the OJS ``acron`` plugin.
+This plugin allows other plugin to configure scheduled tasks.
+The ``acron`` plugin does not use the OS crontab functionality to operate. Instead, it is executed in each OJS request and determines if any of the scheduled tasks need to be executed.
+
+To configure the PPR plugin scheduled tasks, we need to reload the ``acron`` plugin. This needs to be requested to the PKP team.
+
+The PPR plugin scheduled tasks are configured in the The ``./scheduledTasks.xml`` file.
+
+The code for all scheduled tasks are under the ``tasks`` folder.
+
 ### CSS Updates
 We have created a custom CSS file to style the forms and hide some of the fields in the OJS frontend and backend.
 

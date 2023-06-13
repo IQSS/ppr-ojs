@@ -46,6 +46,13 @@
 			{fbvElement type="checkbox" name="submissionCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.submissionCustomFields.label" id="submissionCustomFieldsEnabled" checked=$submissionCustomFieldsEnabled}
 		{/fbvFormSection}
 
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}
+			{fbvElement type="checkbox" name="reviewReminderEditorEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label" id="reviewReminderEditorEnabled" checked=$reviewReminderEditorEnabled}
+			<div class="subsection">
+				{fbvElement type="text" name="reviewReminderEditorDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label" id="reviewReminderEditorDaysFromDueDate" value=$reviewReminderEditorDaysFromDueDate}
+			</div>
+		{/fbvFormSection}
+
 		{fbvFormButtons}
 		<p><span class="formRequired">{translate key="common.requiredField"}</span></p>
 	</div>

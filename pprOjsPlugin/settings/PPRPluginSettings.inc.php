@@ -14,6 +14,8 @@ class PPRPluginSettings {
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
         'institutionOptions' => ['string', 'Harvard University, Washington University in St. Louis'],
         'submissionCustomFieldsEnabled' => ['bool', null],
+        'reviewReminderEditorEnabled' => ['bool', null],
+        'reviewReminderEditorDaysFromDueDate' => ['string', null],
     );
 
     /** @var $contextId int */
@@ -25,6 +27,10 @@ class PPRPluginSettings {
     public function __construct($contextId, $pprPlugin) {
         $this->contextId = $contextId;
         $this->pprPlugin = $pprPlugin;
+    }
+
+    public function getContextId() {
+        return $this->contextId;
     }
 
     public function displayWorkflowMessageEnabled() {
@@ -69,6 +75,18 @@ class PPRPluginSettings {
 
     public function submissionCustomFieldsEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'submissionCustomFieldsEnabled');
+    }
+
+    public function reviewReminderEditorEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEditorEnabled');
+    }
+
+    public function reviewReminderEditorDaysFromDueDate() {
+        $reminderDaysString =  $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEditorDaysFromDueDate');
+        $reminderDays = $reminderDaysString ? array_map('intval', explode(',', $reminderDaysString)) : [];
+        // RETURN DAYS IN DESCENDING ORDER;
+        rsort($reminderDays);
+        return $reminderDays;
     }
 
 }

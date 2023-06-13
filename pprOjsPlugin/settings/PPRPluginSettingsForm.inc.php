@@ -20,10 +20,12 @@ class PPRPluginSettingsForm extends Form {
         $this->plugin = $plugin;
         //IMPORT SETTINGS TO USE CONFIG VARIABLES
         $this->plugin->import('settings.PPRPluginSettings');
+        $this->plugin->import('settings.PPRReviewReminderDaysValidator');
 
         parent::__construct($plugin->getTemplateResource('ppr/pluginSettingsForm.tpl'));
         $this->addCheck(new FormValidatorPost($this));
         $this->addCheck(new FormValidatorCSRF($this));
+        $this->addCheck(new PPRReviewReminderDaysValidator($this));
     }
 
     /**

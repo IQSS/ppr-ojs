@@ -23,20 +23,23 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $this->setupCustomCss();
 
             $this->import('services.PPRTemplateOverrideService');
-            $workflowService = new PPRTemplateOverrideService($this);
-            $workflowService->register();
+            $templateOverrideService = new PPRTemplateOverrideService($this);
+            $templateOverrideService->register();
 
             $this->import('services.PPRWorkflowService');
             $workflowService = new PPRWorkflowService($this);
             $workflowService->register();
 
             $this->import('services.PPRUserCustomFieldsService');
-            $workflowService = new PPRUserCustomFieldsService($this);
-            $workflowService->register();
+            $userCustomFieldsService = new PPRUserCustomFieldsService($this);
+            $userCustomFieldsService->register();
 
             $this->import('services.PPRSubmissionCustomFieldsService');
-            $workflowService = new PPRSubmissionCustomFieldsService($this);
-            $workflowService->register();
+            $submissionCustomFieldsService = new PPRSubmissionCustomFieldsService($this);
+            $submissionCustomFieldsService->register();
+
+            // THIS HOOK WILL ONLY BE CALLED WHEN THE acron PLUGIN IS RELOADED
+            HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'addScheduledTasks'));
         }
 
         return $success;
@@ -93,6 +96,17 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $request->getBaseUrl() . '/' . $this->getPluginPath() . '/css/iqss.css?pprv='.$this->getPluginVersion(),
             ['contexts' => array('frontend', 'backend')]
         );
+    }
+
+    /**
+     * Added scheduled tasks to the acron plugin
+     *
+     * @return void
+     */
+    function addScheduledTasks($hookName, $args) {
+        $taskFilesPath =& $args[0];
+        $taskFilesPath[] = $this->getPluginPath() . DIRECTORY_SEPARATOR . 'scheduledTasks.xml';
+        return false;
     }
 
     /**

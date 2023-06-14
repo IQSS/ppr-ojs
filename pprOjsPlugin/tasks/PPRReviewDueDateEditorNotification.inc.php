@@ -22,30 +22,30 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         parent::__construct($args);
     }
 
-	function getName() {
-		return 'Peer Pre-Review Program custom review due date notification for editors';
-	}
+    function getName() {
+        return 'Peer Pre-Review Program custom review due date notification for editors';
+    }
 
-	function sendReminder ($reviewDueData, $submission, $context, $editors) {
-		import('lib.pkp.classes.mail.SubmissionMailTemplate');
-		$email = new SubmissionMailTemplate($submission, self::EMAIL_TEMPLATE, $context->getPrimaryLocale(), $context, false);
-		$email->setContext($context);
-		$email->setReplyTo(null);
+    function sendReminder ($reviewDueData, $submission, $context, $editors) {
+        import('lib.pkp.classes.mail.SubmissionMailTemplate');
+        $email = new SubmissionMailTemplate($submission, self::EMAIL_TEMPLATE, $context->getPrimaryLocale(), $context, false);
+        $email->setContext($context);
+        $email->setReplyTo(null);
         foreach ($editors as $editor) {
             // ADD ALL EDITORS
             $email->addRecipient($editor->getEmail(), $editor->getFullName());
         }
-		$email->setSubject($email->getSubject($context->getPrimaryLocale()));
-		$email->setBody($email->getBody($context->getPrimaryLocale()));
-		$email->setFrom($context->getData('contactEmail'), $context->getData('contactName'));
+        $email->setSubject($email->getSubject($context->getPrimaryLocale()));
+        $email->setBody($email->getBody($context->getPrimaryLocale()));
+        $email->setFrom($context->getData('contactEmail'), $context->getData('contactName'));
 
-		$application = Application::get();
-		$request = $application->getRequest();
-		$dispatcher = $application->getDispatcher();
-		$submissionReviewUrl = $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'workflow', 'access', [$submission->getId()]);
+        $application = Application::get();
+        $request = $application->getRequest();
+        $dispatcher = $application->getDispatcher();
+        $submissionReviewUrl = $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'workflow', 'access', [$submission->getId()]);
 
-		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_REVIEWER);
-		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON);
+        AppLocale::requireComponents(LOCALE_COMPONENT_PKP_REVIEWER);
+        AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON);
 
         $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
         $userDao = DAORegistry::getDAO('UserDAO');
@@ -70,28 +70,28 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
             $reviewDueDate = strftime($dateFormatShort, $reviewDueDate);
         }
 
-		$email->assignParams([
-			'reviewDueDate' => $reviewDueDate,
-			'authorName' => $authorsString,
-			'reviewerName' => htmlspecialchars($reviewer->getFullName()),
-			'editorialContactSignature' => htmlspecialchars($context->getData('contactName') . "\n" . $context->getLocalizedName()),
-			'submissionReviewUrl' => $submissionReviewUrl,
-		]);
+        $email->assignParams([
+            'reviewDueDate' => $reviewDueDate,
+            'authorName' => $authorsString,
+            'reviewerName' => htmlspecialchars($reviewer->getFullName()),
+            'editorialContactSignature' => htmlspecialchars($context->getData('contactName') . "\n" . $context->getLocalizedName()),
+            'submissionReviewUrl' => $submissionReviewUrl,
+        ]);
 
-		$email->send();
-	}
+        $email->send();
+    }
 
-	function executeActions() {
+    function executeActions() {
         if (!$this->pprPlugin->getPluginSettings()->reviewReminderEditorEnabled()) {
             // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
             $this->log('disabled=true');
             return true;
         }
 
-		$reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO'); /* @var $reviewAssignmentDao ReviewAssignmentDAO */
-		$submissionDao = DAORegistry::getDAO('SubmissionDAO'); /* @var $submissionDao SubmissionDAO */
+        $reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO'); /* @var $reviewAssignmentDao ReviewAssignmentDAO */
+        $submissionDao = DAORegistry::getDAO('SubmissionDAO'); /* @var $submissionDao SubmissionDAO */
 
-		$incompleteAssignments = $reviewAssignmentDao->getIncompleteReviewAssignments();
+        $incompleteAssignments = $reviewAssignmentDao->getIncompleteReviewAssignments();
         $this->log('Start - $incompleteAssignments=' . count($incompleteAssignments));
         if (empty($incompleteAssignments)) {
             // NO INCOMPLETE ASSIGNMENTS
@@ -138,11 +138,11 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         $context = $contextDao->getById($this->pprPlugin->getPluginSettings()->getContextId());
 
         $sentNotifications = 0;
-		foreach ($assignmentsWithDueReviews as $dueReviewData) {
+        foreach ($assignmentsWithDueReviews as $dueReviewData) {
             // Fetch the submission
             $submission = $submissionDao->getById($dueReviewData->getSubmissionId());
             if (!$submission) continue;
-			if ($submission->getStatus() != STATUS_QUEUED) continue;
+            if ($submission->getStatus() != STATUS_QUEUED) continue;
             if ($submission->getContextId() !== $this->pprPlugin->getPluginSettings()->getContextId()) continue;
 
             // SKIP REVIEW ASSIGNMENTS THAT HAVE ALREADY SENT A NOTIFICATION
@@ -152,11 +152,11 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
                 $pprNotificationRegistry->registerReviewDueDateEditorNotification($dueReviewData);
                 $sentNotifications++;
             }
-		}
+        }
 
         $this->log('Completed - $sentNotifications=' . $sentNotifications);
-		return true;
-	}
+        return true;
+    }
 
     private function checkDate($type, $reviewAssignment, $reviewReminderEditorDaysFromDueDate, $reviewAssigmentDate) {
         if ($reviewAssigmentDate === null) {

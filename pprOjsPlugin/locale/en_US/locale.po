@@ -71,6 +71,9 @@ msgstr "Add comments for the reviewer to author submission form and show the dat
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label"
 msgstr "Add review response/submit due date notification for associate editors"
 
+msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorReset.label"
+msgstr "Trigger the execution of the review notifications for associate editors scheduled task"
+
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label"
 msgstr "Comma separated list. Number of days before (negative) or after (positive) the due date to send notifications to the editor"
 

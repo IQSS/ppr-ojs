@@ -70,6 +70,14 @@ class PPRPluginSettingsForm extends Form {
 
         // ENSURE NEW/DEFAULT TEMPLATES ARE LOADED CORRECTLY AFTER CHANGES IN SETTINGS
         $plugin->clearCache();
+
+        // RESET SCHEDULED TASKS => THIS IS USEFULL FOR TESTING AND TRIGGERING WHEN NECESSARY
+        $reviewReminderEditorReset = Application::get()->getRequest()->getUserVar('reviewReminderEditorReset');
+        if($reviewReminderEditorReset) {
+            $taskDao = DAORegistry::getDAO('ScheduledTaskDAO');
+            $taskDao->updateLastRunTime('plugins.generic.pprOjsPlugin.tasks.PPRReviewDueDateEditorNotification', strtotime('2000-01-01'));
+        }
+
         parent::execute(...$functionArgs);
     }
 }

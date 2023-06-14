@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "[OJS runScheduledTasks] running..."
+env PHP_IDE_CONFIG="serverName=localhost" php /tmp/ojs-src/tools/runScheduledTasks.php

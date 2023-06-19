@@ -44,6 +44,14 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
             $this->overriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
         }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionCompleteEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/workflow/editorialLinkActions.tpl';
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionConfirmationChecklistEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/submission/form/step4.tpl';
+        }
     }
 
     function register() {

@@ -38,6 +38,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $submissionCustomFieldsService = new PPRSubmissionCustomFieldsService($this);
             $submissionCustomFieldsService->register();
 
+            $this->import('services.submission.PPRCompleteSubmissionService');
+            $completeSubmissionService = new PPRCompleteSubmissionService($this);
+            $completeSubmissionService->register();
+
             // THIS HOOK WILL ONLY BE CALLED WHEN THE acron PLUGIN IS RELOADED
             HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'addScheduledTasks'));
         }

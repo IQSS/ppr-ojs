@@ -44,6 +44,8 @@
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.submissions" list="true"}
 			{fbvElement type="checkbox" name="submissionCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.submissionCustomFields.label" id="submissionCustomFieldsEnabled" checked=$submissionCustomFieldsEnabled}
+			{fbvElement type="checkbox" name="submissionCompleteEnabled" label="plugins.generic.pprPlugin.settings.submissionCompleteEnabled.label" id="submissionCompleteEnabled" checked=$submissionCompleteEnabled}
+			{fbvElement type="checkbox" name="submissionConfirmationChecklistEnabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled.label" id="submissionConfirmationChecklistEnabled" checked=$submissionConfirmationChecklistEnabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}
@@ -51,9 +53,9 @@
 			<div class="subsection">
 				{fbvElement type="text" name="reviewReminderEditorDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label" id="reviewReminderEditorDaysFromDueDate" value=$reviewReminderEditorDaysFromDueDate}
 			</div>
-		<div class="subsection">
-			{fbvElement type="checkbox" name="reviewReminderEditorReset" label="plugins.generic.pprPlugin.settings.reviewReminderEditorReset.label" id="reviewReminderEditorReset"}
-		</div>
+			<div class="subsection">
+				{fbvElement type="checkbox" name="reviewReminderEditorReset" label="plugins.generic.pprPlugin.settings.reviewReminderEditorReset.label" id="reviewReminderEditorReset"}
+			</div>
 		{/fbvFormSection}
 
 		{fbvFormButtons}

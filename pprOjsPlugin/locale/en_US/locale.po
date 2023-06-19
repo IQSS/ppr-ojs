@@ -68,6 +68,12 @@ msgstr "Institution dropdown options for registration form. Comma separated list
 msgid "plugins.generic.pprPlugin.settings.submissionCustomFields.label"
 msgstr "Add comments for the reviewer to author submission form and show the data in the review"
 
+msgid "plugins.generic.pprPlugin.settings.submissionCompleteEnabled.label"
+msgstr "Add complete submission functionality to editorial actions component"
+
+msgid "plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled.label"
+msgstr "Add the submission checklist to the confirmation page"
+
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label"
 msgstr "Add review response/submit due date notification for associate editors"
 
@@ -98,3 +104,26 @@ msgstr "Comments for the Reviewer"
 msgid "submission.comments.reviewer.description"
 msgstr "If you'd like to direct the reviewer's attention to any particular area of the paper, please describe it here."
 
+msgid "submission.complete.button.title"
+msgstr "Complete Submission"
+
+msgid "submission.complete.form.title"
+msgstr "Complete Submission"
+
+msgid "submission.activate.button.title"
+msgstr "Activate Submission"
+
+msgid "submission.activate.form.title"
+msgstr "Activate Submission"
+
+msgid "submission.complete.form.description"
+msgstr "This will update the status of the submission to completed and move it into the \"Archives\" section"
+
+msgid "submission.activate.form.description"
+msgstr "This will update the status of the submission to active and move it into the \"My Queue\" section"
+
+msgid "submission.ppr.confirmation.intro"
+msgstr "Your document has been uploaded and is ready to be submitted. Please confirm that you have included the following items in your submission."
+
+msgid "submission.ppr.confirmation.message"
+msgstr "You may go back to review and adjust any of the information you have entered before continuing.<br/> When you are ready, click \"Finish Submission\"."

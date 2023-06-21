@@ -44,7 +44,7 @@
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.submissions" list="true"}
 			{fbvElement type="checkbox" name="submissionCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.submissionCustomFields.label" id="submissionCustomFieldsEnabled" checked=$submissionCustomFieldsEnabled}
-			{fbvElement type="checkbox" name="submissionCompleteEnabled" label="plugins.generic.pprPlugin.settings.submissionCompleteEnabled.label" id="submissionCompleteEnabled" checked=$submissionCompleteEnabled}
+			{fbvElement type="checkbox" name="submissionCloseEnabled" label="plugins.generic.pprPlugin.settings.submissionCloseEnabled.label" id="submissionCloseEnabled" checked=$submissionCloseEnabled}
 			{fbvElement type="checkbox" name="submissionConfirmationChecklistEnabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled.label" id="submissionConfirmationChecklistEnabled" checked=$submissionConfirmationChecklistEnabled}
 		{/fbvFormSection}
 

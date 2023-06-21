@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE version SYSTEM "../../../lib/pkp/dtd/pluginVersion.dtd">
 
-<!--
- * version.xml
- *
- * Copyright (c) 2016-2020 Language Science Press
- * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
- *
- * Plugin version information.
- -->
 <version>
     <application>pprOjsPlugin</application>
     <type>plugins.generic</type>

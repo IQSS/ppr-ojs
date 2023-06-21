@@ -7,7 +7,7 @@
 </script>
 
 
-<form class="pkp_form" id="pprSubmissionActionForm" method="post" action="{url component="pprPlugin.services.CompleteSubmissionHandler" op=$pprActionType submissionId=$submissionId}">
+<form class="pkp_form" id="pprSubmissionActionForm" method="post" action="{url component="pprPlugin.services.SubmissionActionsHandler" op=$pprActionType submissionId=$submissionId}">
 	<div id="pprCompleteSubmission">
 		<p>
 			{translate key="submission.{$pprActionType}.form.description" }

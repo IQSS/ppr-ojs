@@ -14,7 +14,7 @@ class PPRPluginSettings {
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
         'institutionOptions' => ['string', 'Harvard University, Washington University in St. Louis'],
         'submissionCustomFieldsEnabled' => ['bool', null],
-        'submissionCompleteEnabled' => ['bool', null],
+        'submissionCloseEnabled' => ['bool', null],
         'submissionConfirmationChecklistEnabled' => ['bool', null],
         'reviewReminderEditorEnabled' => ['bool', null],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
@@ -79,8 +79,8 @@ class PPRPluginSettings {
         return $this->pprPlugin->getSetting($this->contextId, 'submissionCustomFieldsEnabled');
     }
 
-    public function submissionCompleteEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'submissionCompleteEnabled');
+    public function submissionCloseEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'submissionCloseEnabled');
     }
 
     public function submissionConfirmationChecklistEnabled() {

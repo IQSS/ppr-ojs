@@ -2,7 +2,7 @@
 
 import('lib.pkp.classes.linkAction.LinkAction');
 import('lib.pkp.classes.linkAction.request.AjaxModal');
-class PPRCompleteSubmissionService {
+class PPRSubmissionActionsService {
 
     private $pprPlugin;
 
@@ -11,10 +11,10 @@ class PPRCompleteSubmissionService {
     }
 
     function register() {
-        if ($this->pprPlugin->getPluginSettings()->submissionCompleteEnabled()) {
+        if ($this->pprPlugin->getPluginSettings()->submissionCloseEnabled()) {
             HookRegistry::register('Schema::get::submission', array($this, 'addFieldsToSubmissionDatabaseSchema'));
-            HookRegistry::register('TemplateManager::fetch', array($this, 'addCompleteSubmissionButton'));
-            HookRegistry::register('LoadComponentHandler', array($this, 'addPPRCompleteSubmissionHandler'));
+            HookRegistry::register('TemplateManager::fetch', array($this, 'addActionSubmissionButton'));
+            HookRegistry::register('LoadComponentHandler', array($this, 'addPPRSubmissionActionsHandler'));
         }
     }
 
@@ -24,37 +24,38 @@ class PPRCompleteSubmissionService {
      */
     function addFieldsToSubmissionDatabaseSchema($hookName, $args) {
         $schema = $args[0];
-        $schema->properties->completedDate = new stdClass();
-        $schema->properties->completedDate->type = 'string';
-        $schema->properties->completedDate->validation = ["nullable", "date:Y-m-d H:i:s"];
+        $schema->properties->closedDate = new stdClass();
+        $schema->properties->closedDate->type = 'string';
+        $schema->properties->closedDate->validation = ["nullable", "date:Y-m-d H:i:s"];
     }
 
     /**
-     * Update editorial actions component to add the complete submission button
+     * Update editorial actions component to add the close/open submission button
      */
-    function addCompleteSubmissionButton($hookName, $args) {
+    function addActionSubmissionButton($hookName, $args) {
         $templateName = $args[1];
 
         if ($templateName === 'workflow/editorialLinkActions.tpl') {
-            // THIS TEMPLATE IS RENDERED FROM THE WorkflowHandler
+            // THIS TEMPLATE IS RENDERED FROM THE WorkflowHandler AND OVERRIDDEN IN THE PLUGIN
+            // WE NEED TO ADD DATA TO THE TEMPLATE MANAGER
             $request = Application::get()->getRequest();
             $templateMgr = $args[0];
             $submissionStatus = $templateMgr->getTemplateVars('submissionStatus');
 
-            $pprActionType = 'activate';
+            $pprActionType = 'open';
             if ($submissionStatus === STATUS_QUEUED) {
-                $pprActionType = 'complete';
+                $pprActionType = 'close';
             }
 
             $submissionId = $request->getUserVar('submissionId');
 
             $submissionActionModalUrl = $request->getDispatcher()->url(
                 $request, ROUTE_COMPONENT, null,
-                "pprPlugin.services.CompleteSubmissionHandler",
+                "pprPlugin.services.SubmissionActionsHandler",
                 "show{$pprActionType}", null, ['submissionId' => $submissionId]
             );
 
-            // ADD COMPLETE SUBMISSION ACTION TO EDITORIAL ACTIONS COMPONENT
+            // ADD SUBMISSION ACTION BUTTON TO EDITORIAL ACTIONS COMPONENT
             $pprButtonAction = new LinkAction(
                 'ppr_submission_action',
                 new AjaxModal(
@@ -78,11 +79,11 @@ class PPRCompleteSubmissionService {
     /**
      * Add the handler to render the confirmation form and update the submission status to published (aka completed)
      */
-    function addPPRCompleteSubmissionHandler($hookName, $args) {
+    function addPPRSubmissionActionsHandler($hookName, $args) {
         $component =& $args[0];
-        if ($component == 'pprPlugin.services.CompleteSubmissionHandler') {
+        if ($component == 'pprPlugin.services.SubmissionActionsHandler') {
             // LOAD THE PPR SERVICE FROM THE PLUGIN REPO
-            $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.submission.CompleteSubmissionHandler';
+            $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.submission.SubmissionActionsHandler';
             return true;
         }
         return false;

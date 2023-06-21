@@ -45,7 +45,7 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
         }
 
-        if ($this->pprPlugin->getPluginSettings()->submissionCompleteEnabled()) {
+        if ($this->pprPlugin->getPluginSettings()->submissionCloseEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/workflow/editorialLinkActions.tpl';
         }
 

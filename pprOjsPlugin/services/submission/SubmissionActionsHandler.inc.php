@@ -4,9 +4,9 @@ import('classes.handler.Handler');
 import('lib.pkp.classes.core.JSONMessage');
 
 /**
- * Handler to change the status of a submission to published (aka completed)
+ * Handler to change the status of a submission to published (aka closed)
  */
-class CompleteSubmissionHandler extends Handler {
+class SubmissionActionsHandler extends Handler {
 
     function authorize($request, &$args, $roleAssignments) {
         import('lib.pkp.classes.security.authorization.internal.SubmissionRequiredPolicy');
@@ -16,17 +16,17 @@ class CompleteSubmissionHandler extends Handler {
     }
 
     /**
-     * Shows the complete submission confirmation form.
+     * Shows the close submission confirmation form.
      */
-    function showcomplete($args, $request) {
-        return $this->_showConfirmationPage($request, 'complete');
+    function showclose($args, $request) {
+        return $this->_showConfirmationPage($request, 'close');
     }
 
     /**
-     * Shows the activate submission confirmation form.
+     * Shows the open submission confirmation form.
      */
-    function showactivate($args, $request) {
-        return $this->_showConfirmationPage($request, 'activate');
+    function showopen($args, $request) {
+        return $this->_showConfirmationPage($request, 'open');
     }
 
     private function _showConfirmationPage($request, $pprActionType) {
@@ -35,22 +35,22 @@ class CompleteSubmissionHandler extends Handler {
         $templateMgr->assign('submissionId', $request->getUserVar('submissionId'));
         $templateMgr->assign('pprActionType', $pprActionType);
 
-        $template = $pprPlugin->getTemplateResource('ppr/submission/completeSubmissionForm.tpl');
+        $template = $pprPlugin->getTemplateResource('ppr/submission/submissionActionsConfirmationForm.tpl');
         return new JSONMessage(true, $templateMgr->fetch($template));
     }
 
     /**
-     * On complete submission, it updates the submission status to published
+     * On close submission, it updates the submission status to published
      */
-    function complete($args, $request) {
+    function close($args, $request) {
         return $this->_executeAction($request, STATUS_PUBLISHED, Core::getCurrentDate());
     }
 
     /**
-     * On activate submission, it updates the submission status to queued
+     * On open submission, it updates the submission status to queued
      */
-    function activate($args, $request) {
-        // ON ACTIVATE WE RESET THE completedDate TO NULL
+    function open($args, $request) {
+        // ON OPEN, WE RESET THE completedDate TO NULL
         return $this->_executeAction($request, STATUS_QUEUED, null);
     }
 
@@ -60,7 +60,7 @@ class CompleteSubmissionHandler extends Handler {
             $submissionDao = DAORegistry::getDAO('SubmissionDAO');
             $submission->setStatus($submissionStatus);
             $submission->setData('lastModified', Core::getCurrentDate());
-            $submission->setData('completedDate', $updatedStatusDate);
+            $submission->setData('closedDate', $updatedStatusDate);
             $submissionDao->updateObject($submission);
 
             $dispatcher = $this->getDispatcher();

@@ -77,7 +77,7 @@ class PPRSubmissionActionsService {
 
 
     /**
-     * Add the handler to render the confirmation form and update the submission status to published (aka completed)
+     * Add the handler to render the confirmation form and update the submission status to published (aka closed)
      */
     function addPPRSubmissionActionsHandler($hookName, $args) {
         $component =& $args[0];

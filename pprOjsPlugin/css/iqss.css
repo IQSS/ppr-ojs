@@ -35,6 +35,14 @@ div.pkpPublication .pkpTabs__buttons #issue-button {
 }
 
 /**
+  SUBMISSION
+ */
+#ppr_confirmation_submissionChecklist {
+	font-size: .875rem;
+	line-height: 1.5rem;
+}
+
+/**
   WORKFLOW - SUBMISSION
   HIDE ACCEPT AND SKIP REVIEW BUTTON - NOT REQUIRED BY PPR
  */

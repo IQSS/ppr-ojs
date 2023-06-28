@@ -133,6 +133,58 @@ form#pprPluginSettingsForm div.subsection {
 }
 
 /**
+  MODAL OVERLAY
+ */
+.fullPageModalOverlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 10000;
+}
+
+.fullPageModalOverlay .modalContainer {
+	display: block;
+	border-radius: 5px;
+	background-color: #fff;
+	padding: 1rem;
+	max-width: 600px;
+	min-height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 25vh;
+}
+
+.fullPageModalOverlay .modalContent {
+	position: relative;
+	box-shadow: 0 1px 2px rgba(0,0,0,.3);
+	border-radius: 2px;
+}
+
+.fullPageModalOverlay .modalButtons {
+	text-align: right;
+}
+
+.fullPageModalOverlay .modalHeader {
+	min-height: 3rem;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	font-weight: 700;
+	line-height: 3rem;
+	padding: 0 3rem 0 1rem;
+}
+
+.fullPageModalOverlay .modalDescription {
+	padding: 1rem;
+	margin-bottom: 1rem;
+	font-size: .875rem;
+	line-height: 1.5rem;
+	border-top: 1px solid #eee;
+}
+
+/**
  CUSTOMIZATIONS IMPLEMENTED BY PKP
  
  Removes user homepage/orcid id/include in browse list from contributor settings

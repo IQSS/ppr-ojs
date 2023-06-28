@@ -16,6 +16,7 @@ class PPRPluginSettings {
         'submissionCustomFieldsEnabled' => ['bool', null],
         'submissionCloseEnabled' => ['bool', null],
         'submissionConfirmationChecklistEnabled' => ['bool', null],
+        'submissionUploadFileValidationEnabled' => ['bool', null],
         'reviewReminderEditorEnabled' => ['bool', null],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
     );
@@ -85,6 +86,10 @@ class PPRPluginSettings {
 
     public function submissionConfirmationChecklistEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'submissionConfirmationChecklistEnabled');
+    }
+
+    public function submissionUploadFileValidationEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'submissionUploadFileValidationEnabled');
     }
 
     public function reviewReminderEditorEnabled() {

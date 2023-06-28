@@ -52,6 +52,11 @@ class PPRTemplateOverrideService {
         if ($this->pprPlugin->getPluginSettings()->submissionConfirmationChecklistEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/submission/form/step4.tpl';
         }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionUploadFileValidationEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/submission/form/step2.tpl';
+            $this->overriddenTemplates[] = 'lib/pkp/templates/ppr/modalMessage.tpl';
+        }
     }
 
     function register() {

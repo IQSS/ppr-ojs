@@ -74,6 +74,9 @@ msgstr "Add close submission functionality to editorial actions component"
 msgid "plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled.label"
 msgstr "Add the submission checklist to the confirmation page"
 
+msgid "plugins.generic.pprPlugin.settings.submissionUploadFileValidationEnabled.label"
+msgstr "Add required upload submission file validation"
+
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label"
 msgstr "Add review response/submit due date notification for associate editors"
 
@@ -127,3 +130,12 @@ msgstr "Your document has been uploaded and is ready to be submitted. Please con
 
 msgid "submission.ppr.confirmation.message"
 msgstr "You may go back to review and adjust any of the information you have entered before continuing.<br/> When you are ready, click \"Finish Submission\"."
+
+msgid "submission.ppr.files.validation.header"
+msgstr "Missing Files"
+
+msgid "submission.ppr.files.validation.description"
+msgstr "Please add your submission files before selecting save and continue."
+
+msgid "submission.ppr.files.validation.button"
+msgstr "Close"

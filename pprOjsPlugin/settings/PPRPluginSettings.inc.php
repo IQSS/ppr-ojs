@@ -17,6 +17,7 @@ class PPRPluginSettings {
         'submissionCloseEnabled' => ['bool', null],
         'submissionConfirmationChecklistEnabled' => ['bool', null],
         'submissionUploadFileValidationEnabled' => ['bool', null],
+        'submissionRequestRevisionsFileValidationEnabled' => ['bool', null],
         'reviewReminderEditorEnabled' => ['bool', null],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
     );
@@ -90,6 +91,10 @@ class PPRPluginSettings {
 
     public function submissionUploadFileValidationEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'submissionUploadFileValidationEnabled');
+    }
+
+    public function submissionRequestRevisionsFileValidationEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'submissionRequestRevisionsFileValidationEnabled');
     }
 
     public function reviewReminderEditorEnabled() {

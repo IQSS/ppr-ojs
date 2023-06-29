@@ -32,7 +32,13 @@
 	{fbvFormArea id="userFormCompactLeft"}
 		{fbvFormSection title="user.name"}
 			{fbvElement type="text" label="user.givenName" multilingual="true" required="true" id="givenName" value=$givenName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM}
-			{fbvElement type="text" label="user.familyName" multilingual="true" required="true" id="familyName" value=$familyName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM}
+            {* PPR PROGRAM => REQUIRED *}
+			{if $pprPluginSettings->userCustomFieldsEnabled()}
+				{assign var="familyNameRequired" value=true}
+			{else}
+				{assign var="familyNameRequired" value=false}
+			{/if}
+			{fbvElement type="text" label="user.familyName" multilingual="true" required=$familyNameRequired id="familyName" value=$familyName maxlength="255" inline=true size=$fbvStyles.size.MEDIUM}
 		{/fbvFormSection}
 	{/fbvFormArea}
 

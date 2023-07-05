@@ -16,7 +16,8 @@
 			});
 
 			if (attachmentsAvailable && !attachmentSelected) {
-				const continueWithSubmission = confirm("{translate key="revisions.ppr.review.files.validation.message" }");
+				{capture assign="pprReviewFileMessage"}{translate key="revisions.ppr.review.files.validation.message"}{/capture}
+				const continueWithSubmission = confirm('{$pprReviewFileMessage}');
 				if (!continueWithSubmission) {
 					event.preventDefault();
 				}

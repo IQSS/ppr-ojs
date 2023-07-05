@@ -16,6 +16,25 @@
 	<h1>
 		{translate key="user.register"}
 	</h1>
+	<!-- PPR STYLING => ADDED IN TEMPLATE TO SUPPORT ENABLING AND DISABLING THROUGH SETTINGS -->
+	<style>
+		form#register.cmp_form input, form#register.cmp_form select {
+			max-width: 30em;
+		}
+
+		div.page_register form.register {
+			padding-top: 1em;
+			display: none;
+		}
+
+		div.page_register .ppr_toggle {
+			margin-right: 0.25em;
+		}
+
+		div.page_register .ppr_toggle:checked ~ form.register {
+			display: block;
+		}
+	</style>
 
 	<!-- PPR ELIGIBILITY CHECKBOX -->
 	<input class="ppr_toggle" type="checkbox" name="eligibility" value="1" required {if $eligibility} checked="checked"{/if}>

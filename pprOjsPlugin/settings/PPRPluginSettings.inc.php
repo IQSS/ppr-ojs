@@ -8,6 +8,7 @@ class PPRPluginSettings {
         'displayContributorsEnabled' => ['bool', null],
         'displaySuggestedReviewersEnabled' => ['bool', null],
         'hideReviewMethodEnabled' => ['bool', null],
+        'hideReviewFormDefaultEnabled' => ['bool', null],
         'hideReviewRecommendationEnabled' => ['bool', null],
         'hidePreferredPublicNameEnabled' => ['bool', null],
         'userOnLeaveEnabled' => ['bool', null],
@@ -53,6 +54,10 @@ class PPRPluginSettings {
 
     public function hideReviewMethodEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'hideReviewMethodEnabled');
+    }
+
+    public function hideReviewFormDefaultEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'hideReviewFormDefaultEnabled');
     }
 
     public function hideReviewRecommendationEnabled() {

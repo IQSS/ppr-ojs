@@ -22,6 +22,11 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl';
         }
 
+        if ($this->pprPlugin->getPluginSettings()->hideReviewFormDefaultEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl';
+            $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/editReviewForm.tpl';
+        }
+
         if ($this->pprPlugin->getPluginSettings()->hideReviewRecommendationEnabled()) {
             $this->overriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
             $this->overriddenTemplates[] = 'templates/controllers/grid/users/reviewer/readReview.tpl';

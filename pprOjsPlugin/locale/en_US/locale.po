@@ -50,6 +50,9 @@ msgstr "Show the suggested reviewers panel in the workflow page"
 msgid "plugins.generic.pprPlugin.settings.reviewMethod.label"
 msgstr "Hide the review method field and default to \"Anonymous Reviewer/Anonymous Author\""
 
+msgid "plugins.generic.pprPlugin.settings.hideReviewFormDefault.label"
+msgstr "Hide the review form dropdown default option \"None/Free Form Review\""
+
 msgid "plugins.generic.pprPlugin.settings.reviewRecommendation.label"
 msgstr "Hide the review recommendation field and default \"Revisions Required\""
 

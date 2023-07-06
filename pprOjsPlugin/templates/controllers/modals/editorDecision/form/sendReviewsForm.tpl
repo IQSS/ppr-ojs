@@ -17,7 +17,7 @@
 
 			if (attachmentsAvailable && !attachmentSelected) {
 				{capture assign="pprReviewFileMessage"}{translate key="revisions.ppr.review.files.validation.message"}{/capture}
-				const continueWithSubmission = confirm('{$pprReviewFileMessage}');
+				const continueWithSubmission = confirm({json_encode($pprReviewFileMessage)});
 				if (!continueWithSubmission) {
 					event.preventDefault();
 				}

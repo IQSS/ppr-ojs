@@ -40,6 +40,11 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
         }
 
+        if ($this->pprPlugin->getPluginSettings()->userOnLeaveEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
+            $this->overriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
+        }
+
         if ($this->pprPlugin->getPluginSettings()->submissionCustomFieldsEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
             $this->overriddenTemplates[] = 'templates/reviewer/review/step3.tpl';

@@ -117,6 +117,14 @@
 		{/fbvFormSection}
 	{/if}
 
+	{if $pprPluginSettings->userOnLeaveEnabled() && $pprUserEdit}
+		<!-- CUSTOM FIELDS FOR PPR PROGRAM -->
+		{fbvFormSection title="user.onLeave.label"}
+			{fbvElement type="text" id="onLeaveFrom" name="onLeaveFrom" label="user.onLeave.from" value=$onLeaveFrom inline=true size=$fbvStyles.size.MEDIUM class="datepicker"}
+			{fbvElement type="text" id="onLeaveTo" name="onLeaveTo" label="user.onLeave.to" value=$onLeaveTo inline=true size=$fbvStyles.size.MEDIUM class="datepicker"}
+		{/fbvFormSection}
+	{/if}
+
 	{if !$disableSendNotifySection}
 		{fbvFormSection title="grid.user.notifyUser" for="sendNotify" list=true}
 			{if $sendNotify}

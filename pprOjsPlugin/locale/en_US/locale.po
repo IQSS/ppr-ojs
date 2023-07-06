@@ -59,6 +59,9 @@ msgstr "Disable the create reviewer registration email"
 msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
 
+msgid "plugins.generic.pprPlugin.settings.userOnLeaveEnabled.label"
+msgstr "Add \"On Leave\" tag to users"
+
 msgid "plugins.generic.pprPlugin.settings.userCustomFields.label"
 msgstr "Add institutional position, department, and required fields to the registration, user, author, and reviewer forms"
 
@@ -106,6 +109,18 @@ msgstr "Academic Department"
 
 msgid "user.department.description"
 msgstr "Academic Department:  (e.g. Government, Economics, etc.)"
+
+msgid "user.onLeave.label"
+msgstr "On Leave"
+
+msgid "user.onLeave.badge.label"
+msgstr "Back: {$onLeaveTo}"
+
+msgid "user.onLeave.from"
+msgstr "Leave start date"
+
+msgid "user.onLeave.to"
+msgstr "Leave end date"
 
 msgid "submission.comments.reviewer"
 msgstr "Comments for the Reviewer"

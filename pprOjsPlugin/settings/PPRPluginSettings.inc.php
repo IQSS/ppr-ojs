@@ -10,6 +10,7 @@ class PPRPluginSettings {
         'hideReviewMethodEnabled' => ['bool', null],
         'hideReviewRecommendationEnabled' => ['bool', null],
         'hidePreferredPublicNameEnabled' => ['bool', null],
+        'userOnLeaveEnabled' => ['bool', null],
         'userCustomFieldsEnabled' => ['bool', null],
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
         'institutionOptions' => ['string', 'Harvard University, Washington University in St. Louis'],
@@ -60,6 +61,10 @@ class PPRPluginSettings {
 
     public function hidePreferredPublicNameEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'hidePreferredPublicNameEnabled');
+    }
+
+    public function userOnLeaveEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'userOnLeaveEnabled');
     }
 
     public function userCustomFieldsEnabled() {

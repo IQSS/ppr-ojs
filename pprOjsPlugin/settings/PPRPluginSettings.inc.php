@@ -20,6 +20,7 @@ class PPRPluginSettings {
         'submissionRequestRevisionsFileValidationEnabled' => ['bool', null],
         'reviewReminderEditorEnabled' => ['bool', null],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
+        'reviewerRegistrationEmailDisabled' => ['bool', null],
     );
 
     /** @var $contextId int */
@@ -107,6 +108,10 @@ class PPRPluginSettings {
         // RETURN DAYS IN DESCENDING ORDER;
         rsort($reminderDays);
         return $reminderDays;
+    }
+
+    public function reviewerRegistrationEmailDisabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewerRegistrationEmailDisabled');
     }
 
 }

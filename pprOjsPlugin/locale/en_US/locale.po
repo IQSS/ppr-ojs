@@ -138,7 +138,7 @@ msgid "submission.ppr.confirmation.message"
 msgstr "You may go back to review and adjust any of the information you have entered before continuing.<br/> When you are ready, click \"Finish Submission\"."
 
 msgid "revisions.ppr.review.files.validation.message"
-msgstr "No reviewer document has been selected to send to the author. Would you like to proceed? \n\nSelect \"OK\" to send the review without a reviewer document attached or \"Cancel\" to add a document on the \"Select review files to share with the author(s)\" form."
+msgstr "No reviewer document has been selected to send to the author. Would you like to proceed? \n\nSelect \"OK\" to send the review without a reviewer document attached or \"Cancel\" to add a document on the previous screen."
 
 msgid "submission.ppr.files.validation.header"
 msgstr "Missing Files"

@@ -20,7 +20,7 @@ class PPRUserSelectGridHandler extends UserSelectGridHandler {
                 null,
                 null,
                 $cellProvider,
-                array('anyhtml' => true, 'alignment' => COLUMN_ALIGNMENT_RIGHT, 'width' => 5)
+                array('anyhtml' => true, 'alignment' => COLUMN_ALIGNMENT_RIGHT, 'width' => 10)
             )
         );
 

@@ -117,7 +117,7 @@ msgid "user.onLeave.label"
 msgstr "On Leave"
 
 msgid "user.onLeave.badge.label"
-msgstr "Back: {$onLeaveTo}"
+msgstr "Returning on: {$onLeaveTo}"
 
 msgid "user.onLeave.from"
 msgstr "Leave start date"

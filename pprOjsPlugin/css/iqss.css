@@ -123,6 +123,7 @@ form#pprPluginSettingsForm div.subsection {
 	right: 0;
 	background: rgba(0, 0, 0, 0.6);
 	z-index: 10000;
+	cursor: pointer;
 }
 
 .fullPageModalOverlay .modalContainer {
@@ -135,6 +136,7 @@ form#pprPluginSettingsForm div.subsection {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 25vh;
+	cursor: auto;
 }
 
 .fullPageModalOverlay .modalContent {
@@ -145,6 +147,15 @@ form#pprPluginSettingsForm div.subsection {
 
 .fullPageModalOverlay .modalButtons {
 	text-align: right;
+}
+
+.fullPageModalOverlay .modalButtons .modalButtonCancel{
+	color: #d00a6c;
+}
+
+.fullPageModalOverlay .modalButtons .modalButtonCancel:hover{
+	color: #d00a6c;
+	border-color: #d00a6c;;
 }
 
 .fullPageModalOverlay .modalHeader {

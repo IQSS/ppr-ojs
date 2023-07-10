@@ -3,10 +3,10 @@
 {include file="submission/form/step2.tpl.load_ojs"}
 
 {assign var="modalId" value="uploadSubmissionFileMessage"|uniqid|escape}
-{capture assign="modalHeader"}{translate key="submission.ppr.files.validation.header"}{/capture}
-{capture assign="modalDescription"}{translate key="submission.ppr.files.validation.description"}{/capture}
-{capture assign="modalButton"}{translate key="submission.ppr.files.validation.button"}{/capture}
-{include file="ppr/modalMessage.tpl" modalId=$modalId modalHeader=$modalHeader modalDescription=$modalDescription modalButton=$modalButton}
+{include file="ppr/modalMessage.tpl" modalId=$modalId
+    modalHeader="submission.ppr.files.validation.header"|translate
+    modalDescription="submission.ppr.files.validation.description"|translate
+    modalButtonOk="submission.ppr.files.validation.button.ok"|translate}
 <script type="text/javascript">
     $(function (){ldelim}
         {** JS FUNCTION TO CHECK FOR UPLOADED FILES WHEN MAKING A SUBMISSION *}

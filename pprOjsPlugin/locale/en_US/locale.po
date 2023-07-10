@@ -137,8 +137,17 @@ msgstr "Your document has been uploaded and is ready to be submitted. Please con
 msgid "submission.ppr.confirmation.message"
 msgstr "You may go back to review and adjust any of the information you have entered before continuing.<br/> When you are ready, click \"Finish Submission\"."
 
-msgid "revisions.ppr.review.files.validation.message"
-msgstr "No reviewer document has been selected to send to the author. Would you like to proceed? \n\nSelect \"OK\" to send the review without a reviewer document attached or \"Cancel\" to add a document on the previous screen."
+msgid "revisions.ppr.review.files.validation.header"
+msgstr "Missing Review Files"
+
+msgid "revisions.ppr.review.files.validation.description"
+msgstr "No reviewer document has been selected to send to the author. Would you like to proceed?<br/><br/> Select \"OK\" to send the review without a reviewer document attached or \"Cancel\" to add a document on the previous screen."
+
+msgid "revisions.ppr.review.files.validation.button.ok"
+msgstr "OK"
+
+msgid "revisions.ppr.review.files.validation.button.cancel"
+msgstr "Cancel"
 
 msgid "submission.ppr.files.validation.header"
 msgstr "Missing Files"
@@ -146,5 +155,5 @@ msgstr "Missing Files"
 msgid "submission.ppr.files.validation.description"
 msgstr "Please upload your blinded research document before selecting \"Save and continue\"."
 
-msgid "submission.ppr.files.validation.button"
+msgid "submission.ppr.files.validation.button.ok"
 msgstr "Close"

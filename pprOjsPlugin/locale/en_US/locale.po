@@ -175,3 +175,6 @@ msgstr "Please upload your blinded research document before selecting \"Save and
 
 msgid "submission.ppr.files.validation.button.ok"
 msgstr "Close"
+
+msgid "tasks.ppr.editor.groupName"
+msgstr "Associate Editor"

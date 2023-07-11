@@ -9,7 +9,8 @@ import('lib.pkp.classes.scheduledTask.ScheduledTask');
  */
 class PPRReviewDueDateEditorNotification extends ScheduledTask {
 
-    const EDITORS_GROUP_NAME = 'Associate Editor';
+    private $userCache;
+
     const EMAIL_TEMPLATE = 'PPR_REVIEW_DUE_DATE_EDITOR';
 
     private $pprPlugin;
@@ -19,6 +20,8 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         $this->pprPlugin->import('tasks.PPRNotificationRegistry');
         $this->pprPlugin->import('tasks.PPRDueReviewData');
 
+        $this->userCache = [];
+
         parent::__construct($args);
     }
 
@@ -26,15 +29,12 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         return 'Peer Pre-Review Program custom review due date notification for editors';
     }
 
-    function sendReminder ($reviewDueData, $submission, $context, $editors) {
+    function sendReminder ($reviewDueData, $submission, $context, $editor) {
         import('lib.pkp.classes.mail.SubmissionMailTemplate');
         $email = new SubmissionMailTemplate($submission, self::EMAIL_TEMPLATE, $context->getPrimaryLocale(), $context, false);
         $email->setContext($context);
         $email->setReplyTo(null);
-        foreach ($editors as $editor) {
-            // ADD ALL EDITORS
-            $email->addRecipient($editor->getEmail(), $editor->getFullName());
-        }
+        $email->addRecipient($editor->getEmail(), $editor->getFullName());
         $email->setSubject($email->getSubject($context->getPrimaryLocale()));
         $email->setBody($email->getBody($context->getPrimaryLocale()));
         $email->setFrom($context->getData('contactEmail'), $context->getData('contactName'));
@@ -74,6 +74,7 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
             'reviewDueDate' => $reviewDueDate,
             'authorName' => $authorsString,
             'reviewerName' => htmlspecialchars($reviewer->getFullName()),
+            'editorName' => htmlspecialchars($editor->getFullName()),
             'editorialContactSignature' => htmlspecialchars($context->getData('contactName') . "\n" . $context->getLocalizedName()),
             'submissionReviewUrl' => $submissionReviewUrl,
         ]);
@@ -127,17 +128,13 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
             return true;
         }
 
-        $editors = $this->findEditors($this->pprPlugin->getPluginSettings()->getContextId());
-        if (empty($editors)) {
-            // NO CONFIGURED EDITORS
-            $this->log('Processing reviews - no editors configured');
-            return true;
-        }
+        $editorGroupId = $this->findEditorGroupId($this->pprPlugin->getPluginSettings()->getContextId());
 
         $contextDao = Application::getContextDAO();
         $context = $contextDao->getById($this->pprPlugin->getPluginSettings()->getContextId());
 
         $sentNotifications = 0;
+        $assignmentsWithNotifications = 0;
         foreach ($assignmentsWithDueReviews as $dueReviewData) {
             // Fetch the submission
             $submission = $submissionDao->getById($dueReviewData->getSubmissionId());
@@ -145,16 +142,26 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
             if ($submission->getStatus() != STATUS_QUEUED) continue;
             if ($submission->getContextId() !== $this->pprPlugin->getPluginSettings()->getContextId()) continue;
 
+            $editors = $this->findAssociateEditors($editorGroupId, $submission->getId());
+            if (empty($editors)) {
+                // NO EDITOR ASSIGNED TO SUBMISSION
+                $this->log('Processing reviews - no editors assigned to submission: ' . $submission->getId());
+                continue;
+            }
+
             // SKIP REVIEW ASSIGNMENTS THAT HAVE ALREADY SENT A NOTIFICATION
             $reviewNotifications = $pprNotificationRegistry->getReviewDueDateEditorNotifications($dueReviewData);
             if (empty($reviewNotifications)) {
-                $this->sendReminder($dueReviewData, $submission, $context, $editors);
+                foreach ($editors as $editor) {
+                    $this->sendReminder($dueReviewData, $submission, $context, $editor);
+                    $sentNotifications++;
+                }
                 $pprNotificationRegistry->registerReviewDueDateEditorNotification($dueReviewData);
-                $sentNotifications++;
+                $assignmentsWithNotifications++;
             }
         }
 
-        $this->log('Completed - $sentNotifications=' . $sentNotifications);
+        $this->log("Completed - assignmentsWithNotifications=$assignmentsWithNotifications sentNotifications=$sentNotifications");
         return true;
     }
 
@@ -175,18 +182,39 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         return null;
     }
 
-    private function findEditors($contextId) {
+    private function findEditorGroupId($contextId) {
+        $ASSOCIATE_EDITOR_GROUP_NAME = __('tasks.ppr.editor.groupName');
         $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
         $userGroups = $userGroupDao->getByContextId($contextId)->toArray();
-        $editorGroupId = null;
         foreach ($userGroups as $userGroup) {
-            if ($userGroup->getLocalizedName() === self::EDITORS_GROUP_NAME) {
-                $editorGroupId = $userGroup->getId();
-                break;
+            if (0 === strcasecmp($userGroup->getLocalizedName(), $ASSOCIATE_EDITOR_GROUP_NAME)) {
+                return $userGroup->getId();
             }
         }
 
-        return $editorGroupId ? $userGroupDao->getUsersById($editorGroupId, $contextId)->toArray() : [];
+        return null;
+    }
+
+    private function findAssociateEditors($editorGroupId, $submissionId) {
+        $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
+        $stageAssignments = $stageAssignmentDao->getBySubmissionAndStageId($submissionId)->toArray();
+        $editors = [];
+        foreach ($stageAssignments as $stageAssignment) {
+            if ($stageAssignment->getUserGroupId() === $editorGroupId){
+                $editors[$stageAssignment->getUserId()] = $this->getUser($stageAssignment->getUserId());
+            }
+        }
+
+        return array_values($editors);
+    }
+
+    private function getUser($userId) {
+        if(!isset($this->userCache[$userId])) {
+            $userDao = DAORegistry::getDAO('UserDAO');
+            $this->userCache[$userId] = $userDao->getById($userId);
+        }
+
+        return $this->userCache[$userId];
     }
 
     private function log($message) {

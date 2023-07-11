@@ -26,15 +26,4 @@ class PPRUserSelectGridHandler extends UserSelectGridHandler {
 
         parent::initialize($request, $args);
     }
-
-    function addColumn_bak($column) {
-        //OVERRIDE THE NAME COLUMN
-        if (in_array($column->getId(), ['name'])) {
-            $cellProvider = new PPRUserSelectGridCellProvider();
-            $column->setCellProvider($cellProvider);
-            $column->addFlag('anyhtml', true);
-        }
-
-        parent::addColumn($column);
-    }
 }

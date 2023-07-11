@@ -176,6 +176,14 @@ form#pprPluginSettingsForm div.subsection {
 }
 
 /**
+  ON LEAVE BADGE
+ */
+.pprBadge--onLeave {
+	border-color: #f6cee2;
+	background-color: #f6cee2;
+}
+
+/**
  CUSTOMIZATIONS IMPLEMENTED BY PKP
  
  Removes user homepage/orcid id/include in browse list from contributor settings

@@ -46,6 +46,14 @@
 		{fbvElement type="text" label="user.preferredPublicName" multilingual="true" name="preferredPublicName" id="preferredPublicName" value=$preferredPublicName size=$fbvStyles.size.LARGE}
 	{/fbvFormSection}
 
+	{if $pprPluginSettings->userOnLeaveEnabled()}
+		{* PPR PROGRAM => CUSTOM FIELDS *}
+		{fbvFormSection title="user.onLeave.label"}
+			{fbvElement type="text" id="onLeaveFrom" name="onLeaveFrom" label="user.onLeave.from" value=$onLeaveFrom inline=true size=$fbvStyles.size.MEDIUM class="datepicker"}
+			{fbvElement type="text" id="onLeaveTo" name="onLeaveTo" label="user.onLeave.to" value=$onLeaveTo inline=true size=$fbvStyles.size.MEDIUM class="datepicker"}
+		{/fbvFormSection}
+	{/if}
+
 	<p>
 		{capture assign="privacyUrl"}{url router=$smarty.const.ROUTE_PAGE page="about" op="privacy"}{/capture}
 		{translate key="user.privacyLink" privacyUrl=$privacyUrl}

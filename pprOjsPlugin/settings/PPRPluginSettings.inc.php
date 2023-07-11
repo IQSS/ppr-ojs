@@ -8,8 +8,10 @@ class PPRPluginSettings {
         'displayContributorsEnabled' => ['bool', null],
         'displaySuggestedReviewersEnabled' => ['bool', null],
         'hideReviewMethodEnabled' => ['bool', null],
+        'hideReviewFormDefaultEnabled' => ['bool', null],
         'hideReviewRecommendationEnabled' => ['bool', null],
         'hidePreferredPublicNameEnabled' => ['bool', null],
+        'userOnLeaveEnabled' => ['bool', null],
         'userCustomFieldsEnabled' => ['bool', null],
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
         'institutionOptions' => ['string', 'Harvard University, Washington University in St. Louis'],
@@ -54,12 +56,20 @@ class PPRPluginSettings {
         return $this->pprPlugin->getSetting($this->contextId, 'hideReviewMethodEnabled');
     }
 
+    public function hideReviewFormDefaultEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'hideReviewFormDefaultEnabled');
+    }
+
     public function hideReviewRecommendationEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'hideReviewRecommendationEnabled');
     }
 
     public function hidePreferredPublicNameEnabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'hidePreferredPublicNameEnabled');
+    }
+
+    public function userOnLeaveEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'userOnLeaveEnabled');
     }
 
     public function userCustomFieldsEnabled() {

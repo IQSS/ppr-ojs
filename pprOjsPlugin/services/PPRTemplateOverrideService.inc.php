@@ -22,6 +22,10 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl';
         }
 
+        if ($this->pprPlugin->getPluginSettings()->hideReviewFormDefaultEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl';
+        }
+
         if ($this->pprPlugin->getPluginSettings()->hideReviewRecommendationEnabled()) {
             $this->overriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
             $this->overriddenTemplates[] = 'templates/controllers/grid/users/reviewer/readReview.tpl';
@@ -37,6 +41,11 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/frontend/components/registrationForm.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/frontend/pages/userRegister.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/user/contactForm.tpl';
+            $this->overriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->userOnLeaveEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
         }
 

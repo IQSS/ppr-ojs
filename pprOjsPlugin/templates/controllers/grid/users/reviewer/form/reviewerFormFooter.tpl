@@ -51,12 +51,32 @@
 			extraContent=$extraContent
 		}
 	</div>
-	<!-- DEFAULT TO DOUBLE ANONYMOUS -->
-	<input type="hidden" name="reviewMethod" value="{constant('SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS')}" />
+
+	{if $pprPluginSettings->hideReviewMethodEnabled()}
+		{** PPR - DEFAULT TO DOUBLE ANONYMOUS **}
+		<input type="hidden" name="reviewMethod" value="{constant('SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS')}" />
+	{else}
+		{fbvFormSection list=true title="editor.submissionReview.reviewType"}
+		{foreach from=$reviewMethods key=methodId item=methodTranslationKey}
+			{assign var=elementId value="reviewMethod"|concat:"-"|concat:$methodId}
+			{if $reviewMethod == $methodId}
+				{assign var=elementChecked value=true}
+			{else}
+				{assign var=elementChecked value=false}
+			{/if}
+			{fbvElement type="radio" name="reviewMethod" id=$elementId value=$methodId checked=$elementChecked label=$methodTranslationKey}
+		{/foreach}
+		{/fbvFormSection}
+	{/if}
 
 	{if count($reviewForms)>0}
+		{** PPR - REMOVED DEFAULT OPTION **}
+		{if !$pprPluginSettings->hideReviewFormDefaultEnabled()}
+			{assign var=defaultLabel value="manager.reviewForms.noneChosen"|translate}
+			{assign var=defaultValue value=0}
+		{/if}
 		{fbvFormSection title="submission.reviewForm"}
-			{fbvElement type="select" name="reviewFormId" id="reviewFormId" defaultLabel="manager.reviewForms.noneChosen"|translate defaultValue="0" translate=false from=$reviewForms selected=$reviewFormId}
+			{fbvElement type="select" name="reviewFormId" id="reviewFormId" defaultLabel=$defaultLabel defaultValue=$defaultValue translate=false from=$reviewForms selected=$reviewFormId}
 		{/fbvFormSection}
 	{/if}
 

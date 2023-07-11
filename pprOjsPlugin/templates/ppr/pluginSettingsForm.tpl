@@ -28,6 +28,7 @@
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.users" list="true"}
 			{fbvElement type="checkbox" name="hidePreferredPublicNameEnabled" label="plugins.generic.pprPlugin.settings.preferredPublicName.label" id="hidePreferredPublicNameEnabled" checked=$hidePreferredPublicNameEnabled}
+			{fbvElement type="checkbox" name="userOnLeaveEnabled" label="plugins.generic.pprPlugin.settings.userOnLeaveEnabled.label" id="userOnLeaveEnabled" checked=$userOnLeaveEnabled}
 			{fbvElement type="checkbox" name="userCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.userCustomFields.label" id="userCustomFieldsEnabled" checked=$userCustomFieldsEnabled}
 			<div class="subsection">
 				{fbvElement type="text" name="categoryOptions" label="plugins.generic.pprPlugin.settings.categoryOptions.label" id="categoryOptions" value=$categoryOptions}
@@ -40,6 +41,7 @@
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.reviews" list="true"}
 			{fbvElement type="checkbox" name="hideReviewMethodEnabled" label="plugins.generic.pprPlugin.settings.reviewMethod.label" id="hideReviewMethodEnabled" checked=$hideReviewMethodEnabled}
+			{fbvElement type="checkbox" name="hideReviewFormDefaultEnabled" label="plugins.generic.pprPlugin.settings.hideReviewFormDefault.label" id="hideReviewFormDefaultEnabled" checked=$hideReviewFormDefaultEnabled}
 			{fbvElement type="checkbox" name="hideReviewRecommendationEnabled" label="plugins.generic.pprPlugin.settings.reviewRecommendation.label" id="hideReviewRecommendationEnabled" checked=$hideReviewRecommendationEnabled}
 			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
 		{/fbvFormSection}

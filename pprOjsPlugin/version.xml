@@ -4,8 +4,8 @@
 <version>
     <application>pprOjsPlugin</application>
     <type>plugins.generic</type>
-    <release>1.0.0.25</release>
-    <date>2023-07-11</date>
+    <release>1.0.0.26</release>
+    <date>2023-07-12</date>
     <lazy-load>1</lazy-load>
     <class>PeerPreReviewProgramPlugin</class>
 </version>

@@ -17,6 +17,12 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
 
     function __construct($args) {
         $this->pprPlugin = PluginRegistry::getPlugin('generic', 'peerprereviewprogramplugin');
+        if (!$this->pprPlugin) {
+            // IF PLUGIN IS NOT CURRENTLY LOADED, LOAD MANUALLY
+            $this->pprPlugin = PluginRegistry::loadPlugin('generic', 'pprOjsPlugin');
+        }
+
+        assert(isset($this->pprPlugin));
         $this->pprPlugin->import('tasks.PPRNotificationRegistry');
         $this->pprPlugin->import('tasks.PPRDueReviewData');
 

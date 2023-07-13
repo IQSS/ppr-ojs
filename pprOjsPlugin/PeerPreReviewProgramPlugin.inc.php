@@ -18,7 +18,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
         $this->import('settings.PPRPluginSettingsHandler');
         $this->pprPluginSettingsHandler = new PPRPluginSettingsHandler($this);
 
-        if ($success && $this->getEnabled()) {
+        if ($success && $this->getEnabled($currentContextId)) {
             $this->AddSettingsToTemplateManager();
             $this->setupCustomCss();
 

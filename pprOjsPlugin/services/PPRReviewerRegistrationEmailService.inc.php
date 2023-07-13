@@ -22,7 +22,7 @@ class PPRReviewerRegistrationEmailService {
 
     function stopReviewerRegistrationEmail($hookName, $hookArgs) {
         $emailTemplate =& $hookArgs[0];
-        if ($emailTemplate->emailKey === 'REVIEWER_REGISTER') {
+        if (isset($emailTemplate->emailKey) && $emailTemplate->emailKey === 'REVIEWER_REGISTER') {
             $request = Application::get()->getRequest();
             $router = $request->getRouter();
             $componentId = $router->getRequestedComponent($request);

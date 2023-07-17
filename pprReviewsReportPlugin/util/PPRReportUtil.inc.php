@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * Helper class with utility methods for the submission review report.
+ */
 class PPRReportUtil {
 
+    /**
+     * Converts a string into a DateTime objct to do time calculations.
+     */
     public function stringToDate($dateAsString) {
         return new DateTime($dateAsString);
     }
 
+    /**
+     * Removes the time portion of a DateTime string
+     */
     public function formatDate($dateAsString) {
         if (!$dateAsString) {
             return '';
@@ -14,6 +23,9 @@ class PPRReportUtil {
         return substr($dateAsString, 0, 11);
     }
 
+    /**
+     * Returns the status text based on the submission and review assignment status.
+     */
     public function getStatusText($submissionSentToReview, $reviewAssigmentStatus) {
         if ($reviewAssigmentStatus === null && !$submissionSentToReview) {
             return __('plugins.report.pprReviewsPlugin.status.submissionSubmitted');

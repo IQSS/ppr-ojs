@@ -2,6 +2,9 @@
 
 import('lib.pkp.classes.plugins.ReportPlugin');
 
+/**
+ * PPR Submission and Review report
+ */
 class PPRReviewsReportPlugin extends ReportPlugin {
 
     const PPR_MISSING_DATA = '';

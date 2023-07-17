@@ -60,7 +60,7 @@
 				{fbvElement type="text" name="reviewReminderEditorDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label" id="reviewReminderEditorDaysFromDueDate" value=$reviewReminderEditorDaysFromDueDate}
 			</div>
 			<div class="subsection">
-				{fbvElement type="checkbox" name="reviewReminderEditorReset" label="plugins.generic.pprPlugin.settings.reviewReminderEditorReset.label" id="reviewReminderEditorReset"}
+				{fbvElement type="checkbox" name="scheduledTasksReset" label="plugins.generic.pprPlugin.settings.scheduledTasksReset.label" id="scheduledTasksReset"}
 			</div>
 		{/fbvFormSection}
 

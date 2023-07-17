@@ -23,6 +23,7 @@ class PPRPluginSettings {
         'reviewReminderEditorEnabled' => ['bool', null],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
         'reviewerRegistrationEmailDisabled' => ['bool', null],
+        'reviewRequestReminderEmailDisabled' => ['bool', null],
     );
 
     /** @var $contextId int */
@@ -122,6 +123,10 @@ class PPRPluginSettings {
 
     public function reviewerRegistrationEmailDisabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'reviewerRegistrationEmailDisabled');
+    }
+
+    public function reviewRequestReminderEmailDisabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewRequestReminderEmailDisabled');
     }
 
 }

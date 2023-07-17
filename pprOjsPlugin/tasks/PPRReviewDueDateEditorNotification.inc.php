@@ -100,6 +100,9 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
 
             $this->reviewRemindersForContext($context, $pprPlugin);
         }
+
+        //RETURN SUCCESS
+        return true;
     }
 
 
@@ -179,7 +182,6 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         }
 
         $this->log($context, "Completed - assignmentsWithNotifications=$assignmentsWithNotifications sentNotifications=$sentNotifications");
-        return true;
     }
 
     private function checkDate($type, $reviewAssignment, $reviewReminderEditorDaysFromDueDate, $reviewAssigmentDate) {

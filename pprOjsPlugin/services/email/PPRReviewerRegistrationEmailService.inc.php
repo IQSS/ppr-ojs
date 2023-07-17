@@ -29,6 +29,7 @@ class PPRReviewerRegistrationEmailService {
             $operation = $router->getRequestedOp($request);
             if ($componentId === self::REVIEWER_HANDLER_COMPONENT && $operation === self::CREATE_REVIEWER_OPERATION) {
                 // STOP THE REGISTRATION EMAIL FOR CREATE REVIEWER OPERATION
+                error_log('PPR[PPRReviewerRegistrationEmailService] action=stopReviewerRegistrationEmail result=success');
                 return true;
             }
         }

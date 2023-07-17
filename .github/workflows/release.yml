@@ -36,6 +36,6 @@ jobs:
       - name: Upload release artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.get_plugin_version.outputs.PLUGIN_ARTIFACT_NAME }}.tar.gz
+          name: plugin-artifacts
           retention-days: 7
-          path: ./releases/${{ steps.get_plugin_version.outputs.PLUGIN_ARTIFACT_NAME }}.tar.gz
+          path: ./releases/*.tar.gz

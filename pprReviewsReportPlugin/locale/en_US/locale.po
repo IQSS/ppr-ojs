@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-05-12T11:05:16+00:00\n"
+"PO-Revision-Date: 2023-05-12T11:05:16+00:00\n"
+"Language: \n"
+
+msgid "plugins.report.pprReviewsPlugin.displayName"
+msgstr "IQSS Peer Pre-Review Reviews Report"
+
+msgid "plugins.report.pprReviewsPlugin.description"
+msgstr "Reviews report for use in the Peer Pre-Review Program at Harvard’s IQSS"
+
+msgid "plugins.report.pprReviewsPlugin.author.groupName"
+msgstr "author"
+
+msgid "plugins.report.pprReviewsPlugin.editor.groupName"
+msgstr "associate editor"
+
+msgid "plugins.report.pprReviewsPlugin.status.submissionSubmitted"
+msgstr "Sent to AE"
+
+msgid "plugins.report.pprReviewsPlugin.status.reviewerSelect"
+msgstr "Selecting Reviewer"
+
+msgid "plugins.report.pprReviewsPlugin.status.requestSent"
+msgstr "Request Sent"
+
+msgid "plugins.report.pprReviewsPlugin.status.received"
+msgstr "Review Submitted"
+
+msgid "plugins.report.pprReviewsPlugin.status.requestAccepted"
+msgstr "Request Accepted"
+
+msgid "plugins.report.pprReviewsPlugin.status.responseOverdue"
+msgstr "Response Overdue"
+
+msgid "plugins.report.pprReviewsPlugin.status.reviewOverdue"
+msgstr "Review Overdue"
+
+msgid "plugins.report.pprReviewsPlugin.status.reviewSubmitted"
+msgstr "Review Submitted"
+
+msgid "plugins.report.pprReviewsPlugin.status.complete"
+msgstr "Review Read"
+
+msgid "plugins.report.pprReviewsPlugin.status.reviewerThanked"
+msgstr "Reviewer Thanked"
+
+msgid "plugins.report.pprReviewsPlugin.status.declined"
+msgstr "Declined"
+
+msgid "plugins.report.pprReviewsPlugin.status.canceled"
+msgstr "Cancelled"
+

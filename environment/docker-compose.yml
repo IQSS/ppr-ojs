@@ -61,6 +61,7 @@ services:
     volumes:
       - ./data/ojs/src:/tmp/ojs-src
       - ../pprOjsPlugin:/tmp/ojs-src/plugins/generic/pprOjsPlugin
+      - ../pprReviewsReportPlugin:/tmp/ojs-src/plugins/reports/pprReviewsReportPlugin
       - ./data/ojs/files:/tmp/files
       - ./data/ojs/public:/var/www/html/public
       - ./data/ojs/logs:/var/log/apache2

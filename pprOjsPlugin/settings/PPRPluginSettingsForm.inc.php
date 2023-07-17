@@ -76,6 +76,7 @@ class PPRPluginSettingsForm extends Form {
         if($reviewReminderEditorReset) {
             $taskDao = DAORegistry::getDAO('ScheduledTaskDAO');
             $taskDao->updateLastRunTime('plugins.generic.pprOjsPlugin.tasks.PPRReviewDueDateEditorNotification', strtotime('2000-01-01'));
+            $taskDao->updateLastRunTime('lib.pkp.classes.task.ReviewReminder', strtotime('2000-01-01'));
         }
 
         parent::execute(...$functionArgs);

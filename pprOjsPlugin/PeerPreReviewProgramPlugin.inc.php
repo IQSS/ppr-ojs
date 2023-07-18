@@ -50,10 +50,6 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $reviewerEmailService = new PPRReviewerRegistrationEmailService($this);
             $reviewerEmailService->register();
 
-            $this->import('services.email.PPRReviewReminderEmailService');
-            $reviewReminderEmailService = new PPRReviewReminderEmailService($this);
-            $reviewReminderEmailService->register();
-
             // THIS HOOK WILL ONLY BE CALLED WHEN THE acron PLUGIN IS RELOADED
             HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'addScheduledTasks'));
         }

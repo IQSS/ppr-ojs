@@ -14,4 +14,9 @@
 		<descr>Custom notification for review due date for editors</descr>
 		<frequency hour="0"/>
 	</task>
+
+	<task class="plugins.generic.pprOjsPlugin.tasks.PPRReviewReminder">
+		<descr>Custom notification for review due date for reviewers</descr>
+		<frequency hour="0"/>
+	</task>
 </scheduled_tasks>

@@ -6,6 +6,8 @@ class PPRTaskNotificationRegistry {
     private const REVIEW_RESPONSE_DUE_DATE_EDITOR_NOTIFICATION = 80880100;
     private const REVIEW_DUE_DATE_EDITOR_NOTIFICATION = 80880200;
 
+    private const REVIEW_DUE_DATE_REVIEWER_NOTIFICATION = 80880400;
+
     private $notificationDao;
     private $contextId;
 
@@ -20,6 +22,15 @@ class PPRTaskNotificationRegistry {
 
     public function getReviewDueDateEditorNotifications($dueReviewData) {
         $items = $this->getNotifications($this->calculateReviewDueDateEditorType($dueReviewData) , null, $dueReviewData->getReviewId());
+        return $items->toArray();
+    }
+
+    public function registerReviewDueDateReviewerNotification($reviewerId, $reviewId) {
+        return $this->saveNotification(self::REVIEW_DUE_DATE_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
+    }
+
+    public function getReviewDueDateReviewerNotifications($reviewerId, $reviewId) {
+        $items = $this->getNotifications(self::REVIEW_DUE_DATE_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
         return $items->toArray();
     }
 

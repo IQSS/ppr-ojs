@@ -59,9 +59,6 @@ msgstr "Hide the review recommendation field and default \"Revisions Required\""
 msgid "plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label"
 msgstr "Disable the create reviewer registration email"
 
-msgid "plugins.generic.pprPlugin.settings.reviewRequestReminderEmailDisabled.label"
-msgstr "Disable the review response reminder email"
-
 msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
 
@@ -95,11 +92,17 @@ msgstr "Add the revisions file validation to the Request Revisions form"
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label"
 msgstr "Add review response/submit due date notification for associate editors"
 
-msgid "plugins.generic.pprPlugin.settings.scheduledTasksReset.label"
-msgstr "Trigger the execution of notifications from scheduled task"
-
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label"
 msgstr "Comma separated list. Number of days before (negative) or after (positive) the due date to send notifications to the editor"
+
+msgid "plugins.generic.pprPlugin.settings.reviewReminderReviewerEnabled.label"
+msgstr "Add review due date notification for reviewers"
+
+msgid "plugins.generic.pprPlugin.settings.reviewReminderReviewerDaysFromDueDate.label"
+msgstr "Number of days before (negative) or after (positive) the due date to send notifications to the reviewer"
+
+msgid "plugins.generic.pprPlugin.settings.scheduledTasksReset.label"
+msgstr "Trigger the execution of notifications from scheduled task"
 
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.invalid"
 msgstr "The number of days allowed are values from -20 to 20"

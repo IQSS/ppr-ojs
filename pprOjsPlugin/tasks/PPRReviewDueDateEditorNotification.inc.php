@@ -2,29 +2,21 @@
 
 use function PHP81_BC\strftime;
 
-import('lib.pkp.classes.scheduledTask.ScheduledTask');
-require_once(dirname(__FILE__) . '/PPRNotificationRegistry.inc.php');
-require_once(dirname(__FILE__) . '/PPRDueReviewData.inc.php');
+require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
 
 /**
  * Custom review due date notification for editors logic
  */
-class PPRReviewDueDateEditorNotification extends ScheduledTask {
-
-    private $userCache;
-    private $submissionCache;
+class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
 
     const EMAIL_TEMPLATE = 'PPR_REVIEW_DUE_DATE_EDITOR';
 
     function __construct($args) {
-        $this->userCache = [];
-        $this->submissionCache = [];
-
         parent::__construct($args);
     }
 
     function getName() {
-        return 'Peer Pre-Review Program custom review due date notification for editors';
+        return 'PPRReviewDueDateEditorNotification';
     }
 
     function sendReminder ($reviewDueData, $submission, $context, $editor) {
@@ -80,33 +72,13 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         $email->send();
     }
 
-    function executeActions() {
-        $contextDao = Application::getContextDAO();
-        // PROCESS REVIEW REMINDERS FOR ALL OJS CONTEXTS
-        $ojsEnabledContexts = $contextDao->getAll(true)->toArray();
-        foreach ($ojsEnabledContexts as $context) {
-            $pprPlugin = PluginRegistry::loadPlugin('generic', 'pprOjsPlugin', $context->getId());
-            if (!$pprPlugin->getEnabled($context->getId())) {
-                // PLUGIN NOT ENABLED FOR CURRENT CONTEXT
-                $this->log($context, 'PPRPluginEnabled=false');
-                continue;
-            }
-
-            if (!$pprPlugin->getPluginSettings()->reviewReminderEditorEnabled()) {
-                // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
-                $this->log($context, 'reviewReminderEditorEnabled=false');
-                continue;
-            }
-
-            $this->reviewRemindersForContext($context, $pprPlugin);
+    function executeForContext($context, $pprPlugin) {
+        if (!$pprPlugin->getPluginSettings()->reviewReminderEditorEnabled()) {
+            // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
+            $this->log($context, 'reviewReminderEditorEnabled=false');
+            return;
         }
 
-        //RETURN SUCCESS
-        return true;
-    }
-
-
-    private function reviewRemindersForContext($context, $pprPlugin) {
         $reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO');
         $incompleteAssignments = [];
         foreach($reviewAssignmentDao->getIncompleteReviewAssignments() as $assignment) {
@@ -120,7 +92,7 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         $this->log($context, 'Start - $incompleteAssignments=' . count($incompleteAssignments));
         if (empty($incompleteAssignments)) {
             // NO INCOMPLETE ASSIGNMENTS
-            return true;
+            return;
         }
 
         $pprNotificationRegistry = new PPRTaskNotificationRegistry($context->getId());
@@ -128,7 +100,7 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         $this->log($context, 'Processing reviews - $reviewReminderEditorDaysFromDueDate=' . implode(", ", $reviewReminderEditorDaysFromDueDate));
         if (empty($reviewReminderEditorDaysFromDueDate)) {
             // NO CONFIGURED FROM DUE DATES
-            return true;
+            return;
         }
 
         $assignmentsWithDueReviews = [];
@@ -149,7 +121,7 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         $this->log($context, 'Reviews with due dates - $assignmentsWithDueReviews=' . count($assignmentsWithDueReviews));
         if (empty($assignmentsWithDueReviews)) {
             // NO SUBMISSIONS WITH DUE REVISIONS
-            return true;
+            return;
         }
 
         $editorGroupId = $this->findEditorGroupId($context->getId());
@@ -225,28 +197,6 @@ class PPRReviewDueDateEditorNotification extends ScheduledTask {
         }
 
         return array_values($editors);
-    }
-
-    private function getUser($userId) {
-        if(!isset($this->userCache[$userId])) {
-            $userDao = DAORegistry::getDAO('UserDAO');
-            $this->userCache[$userId] = $userDao->getById($userId);
-        }
-
-        return $this->userCache[$userId];
-    }
-
-    private function getSubmission($submissionId) {
-        if(!isset($this->submissionCache[$submissionId])) {
-            $submissionDao = DAORegistry::getDAO('SubmissionDAO');
-            $this->submissionCache[$submissionId] = $submissionDao->getById($submissionId);
-        }
-
-        return $this->submissionCache[$submissionId];
-    }
-
-    private function log($context, $message) {
-        error_log('PPR[PPRReviewDueDateEditorNotification] context=' . $context->getPath() . ' ' .$message);
     }
 }
 

@@ -44,7 +44,6 @@
 			{fbvElement type="checkbox" name="hideReviewFormDefaultEnabled" label="plugins.generic.pprPlugin.settings.hideReviewFormDefault.label" id="hideReviewFormDefaultEnabled" checked=$hideReviewFormDefaultEnabled}
 			{fbvElement type="checkbox" name="hideReviewRecommendationEnabled" label="plugins.generic.pprPlugin.settings.reviewRecommendation.label" id="hideReviewRecommendationEnabled" checked=$hideReviewRecommendationEnabled}
 			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
-			{fbvElement type="checkbox" name="reviewRequestReminderEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewRequestReminderEmailDisabled.label" id="reviewRequestReminderEmailDisabled" checked=$reviewRequestReminderEmailDisabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.submissions" list="true"}
@@ -59,6 +58,12 @@
 			<div class="subsection">
 				{fbvElement type="text" name="reviewReminderEditorDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label" id="reviewReminderEditorDaysFromDueDate" value=$reviewReminderEditorDaysFromDueDate}
 			</div>
+
+			{fbvElement type="checkbox" name="reviewReminderReviewerEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerEnabled.label" id="reviewReminderReviewerEnabled" checked=$reviewReminderReviewerEnabled}
+			<div class="subsection">
+				{fbvElement type="text" name="reviewReminderReviewerDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerDaysFromDueDate.label" id="reviewReminderReviewerDaysFromDueDate" value=$reviewReminderReviewerDaysFromDueDate}
+			</div>
+
 			<div class="subsection">
 				{fbvElement type="checkbox" name="scheduledTasksReset" label="plugins.generic.pprPlugin.settings.scheduledTasksReset.label" id="scheduledTasksReset"}
 			</div>

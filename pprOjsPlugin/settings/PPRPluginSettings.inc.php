@@ -22,14 +22,12 @@ class PPRPluginSettings {
         'submissionRequestRevisionsFileValidationEnabled' => ['bool', null],
         'reviewReminderEditorEnabled' => ['bool', null],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
+        'reviewReminderReviewerEnabled' => ['bool', null],
+        'reviewReminderReviewerDaysFromDueDate' => ['int', null],
         'reviewerRegistrationEmailDisabled' => ['bool', null],
-        'reviewRequestReminderEmailDisabled' => ['bool', null],
     );
 
-    /** @var $contextId int */
     private $contextId;
-
-    /** @var $pprPlugin object */
     private $pprPlugin;
 
     public function __construct($contextId, $pprPlugin) {
@@ -121,12 +119,16 @@ class PPRPluginSettings {
         return $reminderDays;
     }
 
+    public function reviewReminderReviewerEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerEnabled');
+    }
+
+    public function reviewReminderReviewerDaysFromDueDate() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerDaysFromDueDate');
+    }
+
+
     public function reviewerRegistrationEmailDisabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'reviewerRegistrationEmailDisabled');
     }
-
-    public function reviewRequestReminderEmailDisabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewRequestReminderEmailDisabled');
-    }
-
 }

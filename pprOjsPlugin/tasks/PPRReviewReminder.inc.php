@@ -120,6 +120,7 @@ class PPRReviewReminder extends PPRScheduledTask {
         $this->log($context, 'Processing Reviews - $incompleteAssignments=' . count($incompleteAssignments));
 
         $sentNotifications = 0;
+        $reviewAssignmentsDue = 0;
         foreach ($incompleteAssignments as $reviewAssignment) {
             // Fetch the submission
             $submission = $this->getSubmission($reviewAssignment->getSubmissionId());
@@ -131,6 +132,7 @@ class PPRReviewReminder extends PPRScheduledTask {
                 $checkDate = strtotime($reviewAssignment->getDateDue());
                 if (time() - $checkDate > 60 * 60 * 24 * $reviewReminderReviewerDaysFromDueDate) {
                     $reviewAssignmentIsDue = true;
+                    $reviewAssignmentsDue++;
                 }
             }
 
@@ -144,7 +146,7 @@ class PPRReviewReminder extends PPRScheduledTask {
             }
         }
 
-        $this->log($context, "Completed - sentNotifications=$sentNotifications");
+        $this->log($context, "Completed - reviewAssignmentsDue=$reviewAssignmentsDue sentNotifications=$sentNotifications");
     }
 }
 

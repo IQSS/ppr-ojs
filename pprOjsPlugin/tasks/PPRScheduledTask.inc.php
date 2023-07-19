@@ -43,6 +43,9 @@ abstract class PPRScheduledTask extends ScheduledTask {
 
             $this->executeForContext($context, $pprPlugin);
         }
+
+        //RETURN SUCCESS TO THE SCHEDULE TASKS MANAGER
+        return true;
     }
 
     public function getUser($userId) {

@@ -22,6 +22,7 @@ down:
 	cd environment && $(ENV) docker-compose down -v || :
 
 up:
+	rm -rf environment/data/ojs/logs
 	cd environment && $(ENV) docker-compose up --build $(DETACHED_MODE)
 
 release: new_version
@@ -31,6 +32,10 @@ release: new_version
 	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' pprOjsPlugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > pprOjsPlugin/version.xml.new
 	mv pprOjsPlugin/version.xml.new pprOjsPlugin/version.xml
 	tar -czvf ./releases/pprOjsPlugin-$(RELEASE_VERSION).tar.gz ./pprOjsPlugin
+
+	sed 's/\(<release>\).*\(<\/release>\)/\1$(RELEASE_VERSION)\2/' pprReviewsReportPlugin/version.xml | sed 's/\(<date>\).*\(<\/date>\)/\1$(RELEASE_DATE)\2/' > pprReviewsReportPlugin/version.xml.new
+	mv pprReviewsReportPlugin/version.xml.new pprReviewsReportPlugin/version.xml
+	tar -czvf ./releases/pprReviewsReportPlugin-$(RELEASE_VERSION).tar.gz ./pprReviewsReportPlugin
 
 new_version:
 	./create_version.sh

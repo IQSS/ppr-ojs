@@ -2,24 +2,39 @@
 OJS plugin to implement the customizations for the Harvard Peer Pre-Review Program.
 
 ## Production Release
-In order to deploy into the PKP servers, we need to create ``tar.gz`` file with the ``pprOjsPlugin`` folder and
-send it to PKP support: ``support@publicknowledgeproject.org``. They will review the code and deploy the plugin.
+In order to deploy into the PKP servers, we need to create ``tar.gz`` file with the plugins and
+send it to PKP support: ``support@publicknowledgeproject.org``. They will review the code and deploy into the production servers.
 
 We use the ``./VERSION`` file to generate the release version number.
-This version number is used in the plugin ``pprOjsPlugin/version.xml`` file and in the generated ``tar.gz`` artifact.
+This version number is used in the plugin ``<plugin>/version.xml`` file and in the generated ``tar.gz`` artifact name.
 
-To create a release, execute the target:
+To create a release, execute the Makefile target:
 ```
 make release
 ```
+This will increase the version number, update the PPR plugins version data, and create the ``tar.gz`` under the project ``releases`` folder. 
 
 ## Installation
-Deploy the plugin root folder ``pprOjsPlugin`` into the ``generic`` plugins folder of the OJS installation.
+Use the OJS ``Upload A New Plugin`` feature in the ``Website > Plugins`` section for the first time deployment.
+
+To deploy upgrades, select the ``upgrade`` function within the deployed plugin submenu.
+
+In both cases, you need to upload the ``tar.gz`` file with the plugin contents created using the ``make release`` target mentioned before.
+
+### Manual Installation
+Copy or mount the plugin's root folder into the OJS plugins directory.
+
+To deploy the ``pprOjsPlugin`` plugin, copy/mount root folder ``pprOjsPlugin`` into the ``generic`` plugins folder of the OJS installation.
 
 This is typically ``ojs/plugins/generic``
 
+To deploy the ``pprReportPlugin`` plugin, copy/mount root folder ``pprReportPlugin`` into the ``reports`` plugins folder of the OJS installation.
+
+This is typically ``ojs/plugins/reports``
+
 ## Local Environment
-The ``environments`` folder contains the Docker configuration to run the OJS application locally mounting the ``pprOjsPlugin`` directory as a generic plugin.
+The ``environments`` folder contains the Docker configuration to run the OJS application locally
+mounting all the plugin directories in the appropriate OJS folders.
 
 The ``environments/data/db`` stores the DB data and log files.
 
@@ -105,3 +120,11 @@ This has been implemented to reduce the risk of deployments as there is no test 
 The list of feature flags are configured in: ``pprOjsPlugin/settings/PPRPluginSettingsForm.inc.php``
 
 To follow how they are used, look at the usage of the settings class: ``pprOjsPlugin/settings/PPRPluginSettings.inc.php``
+
+### OJS reports
+We can create custom reports and deploy them as plugins within the OJS plugins infrastructure.
+
+Report plugins are very simple, we just need to create the report in a method called ``display`` within the plugin class.
+This method will be executed when the report is launched within the user interface.
+
+See the ``pprReportPlugin`` folder for more details on how to create a report plugin.

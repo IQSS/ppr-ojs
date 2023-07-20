@@ -59,6 +59,9 @@ msgstr "Hide the review recommendation field and default \"Revisions Required\""
 msgid "plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label"
 msgstr "Disable the create reviewer registration email"
 
+msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
+msgstr "Add required upload review file validation"
+
 msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
 
@@ -180,6 +183,15 @@ msgid "submission.ppr.files.validation.description"
 msgstr "Please upload your blinded research document before selecting \"Save and continue\"."
 
 msgid "submission.ppr.files.validation.button.ok"
+msgstr "Close"
+
+msgid "review.ppr.files.validation.header"
+msgstr "Missing Files"
+
+msgid "review.ppr.files.validation.description"
+msgstr "Please upload your review files before selecting \"Submit Review\"."
+
+msgid "review.ppr.files.validation.button.ok"
 msgstr "Close"
 
 msgid "tasks.ppr.editor.groupName"

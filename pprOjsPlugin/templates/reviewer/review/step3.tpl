@@ -25,4 +25,33 @@
     </div>
 {/if}
 
+{if $pprPluginSettings->reviewUploadFileValidationEnabled()}
+    {** REVIEW FILE VALIDATION MESSAGE *}
+    {assign var="modalId" value="uploadReviewFileMessage"|uniqid|escape}
+    {include file="ppr/modalMessage.tpl" modalId=$modalId
+        modalHeader="review.ppr.files.validation.header"|translate
+        modalDescription="review.ppr.files.validation.description"|translate
+        modalButtonOk="review.ppr.files.validation.button.ok"|translate}
+
+    <script type="text/javascript">
+        $(function (){ldelim}
+            {** JS FUNCTION TO CHECK FOR UPLOADED FILES WHEN MAKING A REVIEW *}
+            $('#reviewStep3Form fieldset#reviewStep3 > div.formButtons button.submitFormButton').on('click', function(event) {ldelim}
+                let filesUploaded = true;
+                if ($('div#reviewAttachmentsGridContainer table tbody.empty:visible').length) {ldelim}
+                    // EXPECTED MESSAGE WHEN NO FILES UPLOADED
+                    filesUploaded = false;
+                {rdelim}
+
+                if (!filesUploaded) {ldelim}
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    $('#{$modalId}').show();
+                {rdelim}
+
+            {rdelim});
+        {rdelim});
+    </script>
+{/if}
+
 {include file="core:reviewer/review/step3.tpl"}

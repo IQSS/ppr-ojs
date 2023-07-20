@@ -44,6 +44,7 @@
                 {rdelim}
 
                 if (!filesUploaded) {ldelim}
+                    {** WE NEED TO STOP THE OJS EVENT ON THE SUBMIT BUTTON TO FIRE WHEN NO FILES UPLOADED*}
                     event.stopImmediatePropagation();
                     event.preventDefault();
                     $('#{$modalId}').show();

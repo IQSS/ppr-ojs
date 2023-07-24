@@ -60,7 +60,7 @@ msgid "plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.labe
 msgstr "Disable the create reviewer registration email"
 
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label"
-msgstr "Add review reminder action email template override based on response due date"
+msgstr "Add review reminder action email template override based on review being accepted"
 
 msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
 msgstr "Add the review file validation to the Complete Review flow"

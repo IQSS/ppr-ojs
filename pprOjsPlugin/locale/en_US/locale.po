@@ -186,10 +186,10 @@ msgid "submission.ppr.files.validation.button.ok"
 msgstr "Close"
 
 msgid "review.ppr.files.validation.header"
-msgstr "Missing Files"
+msgstr "Missing File"
 
 msgid "review.ppr.files.validation.description"
-msgstr "Please upload your review files before selecting \"Submit Review\"."
+msgstr "Please upload your blinded review document in PDF format before selecting \"Submit Review\"."
 
 msgid "review.ppr.files.validation.button.ok"
 msgstr "Close"

@@ -59,8 +59,11 @@ msgstr "Hide the review recommendation field and default \"Revisions Required\""
 msgid "plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label"
 msgstr "Disable the create reviewer registration email"
 
+msgid "plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label"
+msgstr "Add review reminder action email template override based on review being accepted"
+
 msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
-msgstr "Add required upload review file validation"
+msgstr "Add the review file validation to the Complete Review flow"
 
 msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
@@ -87,19 +90,19 @@ msgid "plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled
 msgstr "Add the submission checklist to the confirmation page"
 
 msgid "plugins.generic.pprPlugin.settings.submissionUploadFileValidationEnabled.label"
-msgstr "Add required upload submission file validation"
+msgstr "Add the submission file validation to the Create Submission flow"
 
 msgid "plugins.generic.pprPlugin.settings.submissionRequestRevisionsFileValidationEnabled.label"
 msgstr "Add the revisions file validation to the Request Revisions form"
 
-msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label"
-msgstr "Add review response/submit due date notification for associate editors"
+msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorTaskEnabled.label"
+msgstr "Add automated review response/submit due date notification for associate editors"
 
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label"
 msgstr "Comma separated list. Number of days before (negative) or after (positive) the due date to send notifications to the editor"
 
-msgid "plugins.generic.pprPlugin.settings.reviewReminderReviewerEnabled.label"
-msgstr "Add review due date notification for reviewers"
+msgid "plugins.generic.pprPlugin.settings.reviewReminderReviewerTaskEnabled.label"
+msgstr "Add automated review due date notification for reviewers"
 
 msgid "plugins.generic.pprPlugin.settings.reviewReminderReviewerDaysFromDueDate.label"
 msgstr "Number of days before (negative) or after (positive) the due date to send notifications to the reviewer"

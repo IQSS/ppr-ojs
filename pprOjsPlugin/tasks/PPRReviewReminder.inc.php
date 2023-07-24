@@ -93,7 +93,7 @@ class PPRReviewReminder extends PPRScheduledTask {
     }
 
     function executeForContext($context, $pprPlugin) {
-        if (!$pprPlugin->getPluginSettings()->reviewReminderReviewerEnabled()) {
+        if (!$pprPlugin->getPluginSettings()->reviewReminderReviewerTaskEnabled()) {
             // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
             $this->log($context, 'reviewReminderReviewerEnabled=false');
             return;

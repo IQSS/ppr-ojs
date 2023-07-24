@@ -44,6 +44,7 @@
 			{fbvElement type="checkbox" name="hideReviewFormDefaultEnabled" label="plugins.generic.pprPlugin.settings.hideReviewFormDefault.label" id="hideReviewFormDefaultEnabled" checked=$hideReviewFormDefaultEnabled}
 			{fbvElement type="checkbox" name="hideReviewRecommendationEnabled" label="plugins.generic.pprPlugin.settings.reviewRecommendation.label" id="hideReviewRecommendationEnabled" checked=$hideReviewRecommendationEnabled}
 			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
+			{fbvElement type="checkbox" name="reviewReminderEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label" id="reviewReminderEmailOverrideEnabled" checked=$reviewReminderEmailOverrideEnabled}
 			{fbvElement type="checkbox" name="reviewUploadFileValidationEnabled" label="plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label" id="reviewUploadFileValidationEnabled" checked=$reviewUploadFileValidationEnabled}
 		{/fbvFormSection}
 
@@ -55,12 +56,12 @@
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}
-			{fbvElement type="checkbox" name="reviewReminderEditorEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEditorEnabled.label" id="reviewReminderEditorEnabled" checked=$reviewReminderEditorEnabled}
+			{fbvElement type="checkbox" name="reviewReminderEditorTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEditorTaskEnabled.label" id="reviewReminderEditorTaskEnabled" checked=$reviewReminderEditorTaskEnabled}
 			<div class="subsection">
 				{fbvElement type="text" name="reviewReminderEditorDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label" id="reviewReminderEditorDaysFromDueDate" value=$reviewReminderEditorDaysFromDueDate}
 			</div>
 
-			{fbvElement type="checkbox" name="reviewReminderReviewerEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerEnabled.label" id="reviewReminderReviewerEnabled" checked=$reviewReminderReviewerEnabled}
+			{fbvElement type="checkbox" name="reviewReminderReviewerTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerTaskEnabled.label" id="reviewReminderReviewerTaskEnabled" checked=$reviewReminderReviewerTaskEnabled}
 			<div class="subsection">
 				{fbvElement type="text" name="reviewReminderReviewerDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerDaysFromDueDate.label" id="reviewReminderReviewerDaysFromDueDate" value=$reviewReminderReviewerDaysFromDueDate}
 			</div>

@@ -24,6 +24,7 @@ class PPRPluginSettings {
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
         'reviewReminderReviewerEnabled' => ['bool', null],
         'reviewReminderReviewerDaysFromDueDate' => ['int', null],
+        'reviewUploadFileValidationEnabled' => ['bool', null],
         'reviewerRegistrationEmailDisabled' => ['bool', null],
     );
 
@@ -127,6 +128,9 @@ class PPRPluginSettings {
         return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerDaysFromDueDate');
     }
 
+    public function reviewUploadFileValidationEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewUploadFileValidationEnabled');
+    }
 
     public function reviewerRegistrationEmailDisabled() {
         return $this->pprPlugin->getSetting($this->contextId, 'reviewerRegistrationEmailDisabled');

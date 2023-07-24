@@ -4,6 +4,7 @@ class PPRPluginSettings {
 
     const CONFIG_VARS = array(
         // PROPERTY NAME => [TYPE, DEFAULT VALUE]
+        //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
         'displayWorkflowMessageEnabled' => ['bool', true],
         'displayContributorsEnabled' => ['bool', null],
         'displaySuggestedReviewersEnabled' => ['bool', null],
@@ -20,10 +21,13 @@ class PPRPluginSettings {
         'submissionConfirmationChecklistEnabled' => ['bool', null],
         'submissionUploadFileValidationEnabled' => ['bool', null],
         'submissionRequestRevisionsFileValidationEnabled' => ['bool', null],
-        'reviewReminderEditorEnabled' => ['bool', null],
+        //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
+        'reviewReminderEditorTaskEnabled' => ['bool', true],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
-        'reviewReminderReviewerEnabled' => ['bool', null],
+        //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
+        'reviewReminderEditorTaskEnabled' => ['bool', true],
         'reviewReminderReviewerDaysFromDueDate' => ['int', null],
+        'reviewReminderEmailOverrideEnabled' => ['bool', null],
         'reviewUploadFileValidationEnabled' => ['bool', null],
         'reviewerRegistrationEmailDisabled' => ['bool', null],
     );
@@ -108,8 +112,8 @@ class PPRPluginSettings {
         return $this->pprPlugin->getSetting($this->contextId, 'submissionRequestRevisionsFileValidationEnabled');
     }
 
-    public function reviewReminderEditorEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEditorEnabled');
+    public function reviewReminderEditorTaskEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEditorTaskEnabled');
     }
 
     public function reviewReminderEditorDaysFromDueDate() {
@@ -120,12 +124,16 @@ class PPRPluginSettings {
         return $reminderDays;
     }
 
-    public function reviewReminderReviewerEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerEnabled');
+    public function reviewReminderReviewerTaskEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerTaskEnabled');
     }
 
     public function reviewReminderReviewerDaysFromDueDate() {
         return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerDaysFromDueDate');
+    }
+
+    public function reviewReminderEmailOverrideEnabled() {
+        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEmailOverrideEnabled');
     }
 
     public function reviewUploadFileValidationEnabled() {

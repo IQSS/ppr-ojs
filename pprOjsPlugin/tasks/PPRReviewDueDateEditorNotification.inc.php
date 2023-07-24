@@ -73,7 +73,7 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
     }
 
     function executeForContext($context, $pprPlugin) {
-        if (!$pprPlugin->getPluginSettings()->reviewReminderEditorEnabled()) {
+        if (!$pprPlugin->getPluginSettings()->reviewReminderEditorTaskEnabled()) {
             // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
             $this->log($context, 'reviewReminderEditorEnabled=false');
             return;

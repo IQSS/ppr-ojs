@@ -25,7 +25,7 @@ class PPRPluginSettings {
         'reviewReminderEditorTaskEnabled' => ['bool', true],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
         //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
-        'reviewReminderEditorTaskEnabled' => ['bool', true],
+        'reviewReminderReviewerTaskEnabled' => ['bool', true],
         'reviewReminderReviewerDaysFromDueDate' => ['int', null],
         'reviewReminderEmailOverrideEnabled' => ['bool', null],
         'reviewUploadFileValidationEnabled' => ['bool', null],

@@ -1,0 +1,17 @@
+{
+	"require": {
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~9"
+	},
+	"config": {
+		"component-dir": "lib/components",
+		"vendor-dir": "lib/vendor",
+		"platform": {
+			"php": "7.3.0"
+		},
+		"allow-plugins": {
+			"cweagans/composer-patches": true
+		}
+	}
+}

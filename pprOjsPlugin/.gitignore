@@ -1,0 +1,3 @@
+tests/lib
+
+.phpunit.result.cache

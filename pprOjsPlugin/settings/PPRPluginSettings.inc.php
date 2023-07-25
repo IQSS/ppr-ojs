@@ -45,102 +45,106 @@ class PPRPluginSettings {
     }
 
     public function displayWorkflowMessageEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'displayWorkflowMessageEnabled') ?? self::CONFIG_VARS['displayWorkflowMessageEnabled'][1];
+        return $this->getValue('displayWorkflowMessageEnabled');
     }
 
     public function displayContributorsEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'displayContributorsEnabled');
+        return $this->getValue('displayContributorsEnabled');
     }
 
     public function displaySuggestedReviewersEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'displaySuggestedReviewersEnabled');
+        return $this->getValue('displaySuggestedReviewersEnabled');
     }
 
     public function hideReviewMethodEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'hideReviewMethodEnabled');
+        return $this->getValue('hideReviewMethodEnabled');
     }
 
     public function hideReviewFormDefaultEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'hideReviewFormDefaultEnabled');
+        return $this->getValue('hideReviewFormDefaultEnabled');
     }
 
     public function hideReviewRecommendationEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'hideReviewRecommendationEnabled');
+        return $this->getValue('hideReviewRecommendationEnabled');
     }
 
     public function hidePreferredPublicNameEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'hidePreferredPublicNameEnabled');
+        return $this->getValue('hidePreferredPublicNameEnabled');
     }
 
     public function userOnLeaveEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'userOnLeaveEnabled');
+        return $this->getValue('userOnLeaveEnabled');
     }
 
     public function userCustomFieldsEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'userCustomFieldsEnabled');
+        return $this->getValue('userCustomFieldsEnabled');
     }
 
     public function getCategoryOptions() {
-        $categoriesString =  $this->pprPlugin->getSetting($this->contextId, 'categoryOptions') ?? self::CONFIG_VARS['categoryOptions'][1];
-        $categoryOptions = array_map('trim', explode(',', $categoriesString));
+        $categoriesString =  $this->getValue('categoryOptions');
+        $categoryOptions = array_filter(array_map('trim', explode(',', $categoriesString)));
         return array_combine($categoryOptions, $categoryOptions);
     }
 
     public function getInstitutionOptions() {
-        $institutionString =  $this->pprPlugin->getSetting($this->contextId, 'institutionOptions') ?? self::CONFIG_VARS['institutionOptions'][1];
-        $institutionOptions = array_map('trim', explode(',', $institutionString));
+        $institutionString =  $this->getValue('institutionOptions');
+        $institutionOptions = array_filter(array_map('trim', explode(',', $institutionString)));
         return array_combine($institutionOptions, $institutionOptions);
     }
 
     public function submissionCustomFieldsEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'submissionCustomFieldsEnabled');
+        return $this->getValue('submissionCustomFieldsEnabled');
     }
 
     public function submissionCloseEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'submissionCloseEnabled');
+        return $this->getValue('submissionCloseEnabled');
     }
 
     public function submissionConfirmationChecklistEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'submissionConfirmationChecklistEnabled');
+        return $this->getValue('submissionConfirmationChecklistEnabled');
     }
 
     public function submissionUploadFileValidationEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'submissionUploadFileValidationEnabled');
+        return $this->getValue('submissionUploadFileValidationEnabled');
     }
 
     public function submissionRequestRevisionsFileValidationEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'submissionRequestRevisionsFileValidationEnabled');
+        return $this->getValue('submissionRequestRevisionsFileValidationEnabled');
     }
 
     public function reviewReminderEditorTaskEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEditorTaskEnabled');
+        return $this->getValue('reviewReminderEditorTaskEnabled');
     }
 
-    public function reviewReminderEditorDaysFromDueDate() {
-        $reminderDaysString =  $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEditorDaysFromDueDate');
-        $reminderDays = $reminderDaysString ? array_map('intval', explode(',', $reminderDaysString)) : [];
+    public function getReviewReminderEditorDaysFromDueDate() {
+        $reminderDaysString =  $this->getValue('reviewReminderEditorDaysFromDueDate');
+        $reminderDays = $reminderDaysString ? array_map('intval', array_filter(array_map('trim', explode(',', $reminderDaysString)))) : [];
         // RETURN DAYS IN DESCENDING ORDER;
         rsort($reminderDays);
         return $reminderDays;
     }
 
     public function reviewReminderReviewerTaskEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerTaskEnabled');
+        return $this->getValue('reviewReminderReviewerTaskEnabled');
     }
 
     public function reviewReminderReviewerDaysFromDueDate() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderReviewerDaysFromDueDate');
+        return $this->getValue('reviewReminderReviewerDaysFromDueDate');
     }
 
     public function reviewReminderEmailOverrideEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewReminderEmailOverrideEnabled');
+        return $this->getValue('reviewReminderEmailOverrideEnabled');
     }
 
     public function reviewUploadFileValidationEnabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewUploadFileValidationEnabled');
+        return $this->getValue('reviewUploadFileValidationEnabled');
     }
 
     public function reviewerRegistrationEmailDisabled() {
-        return $this->pprPlugin->getSetting($this->contextId, 'reviewerRegistrationEmailDisabled');
+        return $this->getValue('reviewerRegistrationEmailDisabled');
+    }
+
+    private function getValue($propertyName) {
+        return $this->pprPlugin->getSetting($this->contextId, $propertyName) ?? self::CONFIG_VARS[$propertyName][1];
     }
 }

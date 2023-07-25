@@ -1,0 +1,17 @@
+name: test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-test-ppr-ojs-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v2
+      - name: test pprOjsPlugin
+        working-directory: .
+        run: make test

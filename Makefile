@@ -49,5 +49,5 @@ docker docker34:
 	docker build --build-arg OJS_VERSION=$(OJS_VERSION) --build-arg PHP_VERSION=$(PHP_VERSION) -t $(PPR_OJS_IMAGE) -f environment/Dockerfile ./environment
 
 test:
-	docker run -it --rm -v $(PWD)/pprOjsPlugin:/app jitesoft/phpunit:7.4 ./tests/run_tests.sh
+	docker run --rm -v $(PWD)/pprOjsPlugin:/app jitesoft/phpunit:7.4 ./tests/run_tests.sh
 

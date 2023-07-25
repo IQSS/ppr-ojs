@@ -5,6 +5,5 @@
 	convertWarningsToExceptions="true"
 	bootstrap="phpunit-bootstrap.php">
 	<php>
-		<server name="PKP_MOCK_ENV" value="env1"/>
 	</php>
 </phpunit>

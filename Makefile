@@ -16,8 +16,6 @@ dev34 docker34:   PHP_VERSION = php81
 PPR_OJS_IMAGE = ppr_ojs:$(OJS_VERSION)
 ENV = env PPR_OJS_IMAGE=$(PPR_OJS_IMAGE)
 
-PHPUNIT="php lib/vendor/phpunit/phpunit/phpunit"
-
 dev dev34: down up
 
 down:

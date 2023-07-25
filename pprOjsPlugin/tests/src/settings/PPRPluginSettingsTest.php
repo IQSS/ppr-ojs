@@ -8,11 +8,8 @@ class PPRPluginSettingsTest extends PPRTestCase {
 
     const CONTEXT_ID = 100;
 
-    private $pprPluginMock;
-
     public function setUp(): void {
         parent::setUp();
-        $this->pprPluginMock = new PPRPluginMock([]);
     }
 
     public function test_default_values() {

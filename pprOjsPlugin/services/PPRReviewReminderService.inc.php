@@ -53,6 +53,9 @@ class PPRReviewReminderService {
                     $email = new MailTemplate(self::TEMPLATE);
                     $emailTemplate->setSubject($email->getSubject());
                 }
+
+                $newSubject = str_replace('{$submissionTitle}', $emailTemplate->params['submissionTitle'], $emailTemplate->getSubject());
+                $emailTemplate->setSubject($newSubject);
             }
 
         }

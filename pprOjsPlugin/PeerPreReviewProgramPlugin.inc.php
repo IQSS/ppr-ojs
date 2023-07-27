@@ -46,12 +46,12 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $submissionActionsService = new PPRSubmissionActionsService($this);
             $submissionActionsService->register();
 
-            $this->import('services.email.PPRReviewerRegistrationEmailService');
-            $reviewerEmailService = new PPRReviewerRegistrationEmailService($this);
-            $reviewerEmailService->register();
+            $this->import('services.email.PPRDisableEmailService');
+            $disableEmailService = new PPRDisableEmailService($this);
+            $disableEmailService->register();
 
-            $this->import('services.PPRReviewReminderService');
-            $reviewReminderService = new PPRReviewReminderService($this);
+            $this->import('services.email.PPRReviewReminderEmailService');
+            $reviewReminderService = new PPRReviewReminderEmailService($this);
             $reviewReminderService->register();
 
             // THIS HOOK WILL ONLY BE CALLED WHEN THE acron PLUGIN IS RELOADED

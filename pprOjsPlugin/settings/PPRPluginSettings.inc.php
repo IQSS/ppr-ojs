@@ -29,7 +29,9 @@ class PPRPluginSettings {
         'reviewReminderReviewerDaysFromDueDate' => ['int', null],
         'reviewReminderEmailOverrideEnabled' => ['bool', null],
         'reviewUploadFileValidationEnabled' => ['bool', null],
+
         'reviewerRegistrationEmailDisabled' => ['bool', null],
+        'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
     );
 
     private $contextId;
@@ -142,6 +144,10 @@ class PPRPluginSettings {
 
     public function reviewerRegistrationEmailDisabled() {
         return $this->getValue('reviewerRegistrationEmailDisabled');
+    }
+
+    public function submissionConfirmationContributorsEmailDisabled() {
+        return $this->getValue('submissionConfirmationContributorsEmailDisabled');
     }
 
     private function getValue($propertyName) {

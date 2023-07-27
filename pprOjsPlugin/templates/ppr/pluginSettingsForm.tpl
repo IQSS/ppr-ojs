@@ -43,8 +43,6 @@
 			{fbvElement type="checkbox" name="hideReviewMethodEnabled" label="plugins.generic.pprPlugin.settings.reviewMethod.label" id="hideReviewMethodEnabled" checked=$hideReviewMethodEnabled}
 			{fbvElement type="checkbox" name="hideReviewFormDefaultEnabled" label="plugins.generic.pprPlugin.settings.hideReviewFormDefault.label" id="hideReviewFormDefaultEnabled" checked=$hideReviewFormDefaultEnabled}
 			{fbvElement type="checkbox" name="hideReviewRecommendationEnabled" label="plugins.generic.pprPlugin.settings.reviewRecommendation.label" id="hideReviewRecommendationEnabled" checked=$hideReviewRecommendationEnabled}
-			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
-			{fbvElement type="checkbox" name="reviewReminderEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label" id="reviewReminderEmailOverrideEnabled" checked=$reviewReminderEmailOverrideEnabled}
 			{fbvElement type="checkbox" name="reviewUploadFileValidationEnabled" label="plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label" id="reviewUploadFileValidationEnabled" checked=$reviewUploadFileValidationEnabled}
 		{/fbvFormSection}
 
@@ -53,6 +51,12 @@
 			{fbvElement type="checkbox" name="submissionCloseEnabled" label="plugins.generic.pprPlugin.settings.submissionCloseEnabled.label" id="submissionCloseEnabled" checked=$submissionCloseEnabled}
 			{fbvElement type="checkbox" name="submissionConfirmationChecklistEnabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled.label" id="submissionConfirmationChecklistEnabled" checked=$submissionConfirmationChecklistEnabled}
 			{fbvElement type="checkbox" name="submissionUploadFileValidationEnabled" label="plugins.generic.pprPlugin.settings.submissionUploadFileValidationEnabled.label" id="submissionUploadFileValidationEnabled" checked=$submissionUploadFileValidationEnabled}
+		{/fbvFormSection}
+
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.emails" list="true"}
+			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
+			{fbvElement type="checkbox" name="reviewReminderEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label" id="reviewReminderEmailOverrideEnabled" checked=$reviewReminderEmailOverrideEnabled}
+			{fbvElement type="checkbox" name="submissionConfirmationContributorsEmailDisabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label" id="submissionConfirmationContributorsEmailDisabled" checked=$submissionConfirmationContributorsEmailDisabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}

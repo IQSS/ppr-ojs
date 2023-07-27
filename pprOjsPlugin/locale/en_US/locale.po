@@ -35,6 +35,9 @@ msgstr "Reviews"
 msgid "plugins.generic.pprPlugin.settings.section.submissions"
 msgstr "Submissions"
 
+msgid "plugins.generic.pprPlugin.settings.section.emails"
+msgstr "Emails"
+
 msgid "plugins.generic.pprPlugin.settings.section.tasks"
 msgstr "Scheduled Tasks"
 
@@ -61,6 +64,9 @@ msgstr "Disable the create reviewer registration email"
 
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label"
 msgstr "Add review reminder action email template override based on review being accepted"
+
+msgid "plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label"
+msgstr "Disable the submission confirmation contributors email"
 
 msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
 msgstr "Add the review file validation to the Complete Review flow"

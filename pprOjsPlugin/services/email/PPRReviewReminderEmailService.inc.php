@@ -3,7 +3,7 @@
 /**
  * Service to manage the review reminder action from the reviewers component.
  */
-class PPRReviewReminderService {
+class PPRReviewReminderEmailService {
 
     const OJS_REVIEW_REMINDER_EMAIL_TEMPLATES = ['REVIEW_REMIND', 'REVIEW_REMIND_ONECLICK'];
     const TEMPLATE = 'PPR_REVIEW_REQUEST_DUE_DATE_REVIEWER';

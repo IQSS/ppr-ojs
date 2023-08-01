@@ -8,7 +8,7 @@ import('classes.notification.Notification');
 import('lib.pkp.classes.notification.NotificationDAO');
 import('lib.pkp.classes.submission.reviewAssignment.ReviewAssignment');
 
-class PPRNotificationRegistryTest extends PPRTestCase {
+class PPRTaskNotificationRegistryTest extends PPRTestCase {
 
     const PPR_NOTIFICATION = PPRTaskNotificationRegistry::NOTIFICATION_TYPE_PPR_PLUGIN;
 

@@ -1,7 +1,7 @@
 <?php
 
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
-require_once(dirname(__FILE__) . '/PPRNotificationRegistry.inc.php');
+require_once(dirname(__FILE__) . '/PPRTaskNotificationRegistry.inc.php');
 require_once(dirname(__FILE__) . '/PPRDueReviewData.inc.php');
 
 /**

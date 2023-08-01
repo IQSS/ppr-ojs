@@ -2,7 +2,7 @@
 all::
 
 all:: dev
-.PHONY: dev dev34 down up release docker docker34 new_version clean test
+.PHONY: dev dev34 down up release docker docker34 docker-test new_version clean test
 
 DETACHED_MODE := $(if $(DETACHED),-d,)
 PWD := $(shell pwd)
@@ -13,7 +13,8 @@ PHP_VERSION = php7
 dev34 docker34:   OJS_VERSION = 3_4_0rc3
 dev34 docker34:   PHP_VERSION = php81
 
-PPR_OJS_IMAGE = ppr_ojs:$(OJS_VERSION)
+PPR_OJS_IMAGE = hmdc/ppr_ojs:$(OJS_VERSION)
+PPR_OJS_TEST_IMAGE = hmdc/ppr_ojs_test:$(OJS_VERSION)
 ENV = env PPR_OJS_IMAGE=$(PPR_OJS_IMAGE)
 
 dev dev34: down up
@@ -48,6 +49,8 @@ clean:
 docker docker34:
 	docker build --build-arg OJS_VERSION=$(OJS_VERSION) --build-arg PHP_VERSION=$(PHP_VERSION) -t $(PPR_OJS_IMAGE) -f environment/Dockerfile ./environment
 
-test:
-	docker run --rm -v $(PWD)/pprOjsPlugin:/app jitesoft/phpunit:7.4 ./tests/run_tests.sh
+docker-test:
+	docker build -t $(PPR_OJS_TEST_IMAGE) -f environment/Dockerfile.test ./environment
 
+test:
+	docker run --rm --workdir=/var/www/html/plugins/generic/pprOjsPlugin -v $(PWD)/pprOjsPlugin:/var/www/html/plugins/generic/pprOjsPlugin $(PPR_OJS_TEST_IMAGE) tests/run_tests.sh

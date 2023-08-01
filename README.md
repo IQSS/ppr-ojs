@@ -68,6 +68,17 @@ To start the OJS application fresh, you will need to clean the DB and OJS files 
 Execute the following target to delete all data files:
 ``make clean``
 
+## Automated testing
+
+
+### Build the PPR test Docker image
+Build test image with the PHP, PHPUnit and the OJS source code.
+``make docker-test``
+
+The Docker image is based on the OJS installation images from https://gitlab.com/pkp-org/docker/ojs
+
+The PPR test Docker image is located: ``environment/Dockerfile.test``
+
 # Technical Notes
 ## Plugin Development
 When starting the local environment, the contents of the PPR plugin is mounted into the OJS ``plugins/generic`` directory and it will be ready to use.

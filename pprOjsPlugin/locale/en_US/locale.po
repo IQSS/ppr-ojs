@@ -68,6 +68,9 @@ msgstr "Add review reminder action email template override based on review being
 msgid "plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label"
 msgstr "Disable the submission confirmation contributors email"
 
+msgid "plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label"
+msgstr "Remove contributors from editorial decisions emails"
+
 msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
 msgstr "Add the review file validation to the Complete Review flow"
 

@@ -6,6 +6,7 @@
 class PPREditorialDecisionsEmailService {
 
     const OJS_SEND_TO_CONTRIBUTORS_TEMPLATES = ['EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT'];
+    const AUTHOR_TEMPLATE_VARIABLE = '{$authorFullName}';
 
     private $pprPlugin;
 
@@ -28,9 +29,9 @@ class PPREditorialDecisionsEmailService {
             $authorFullName =  htmlspecialchars($author->getFullName());
 
             $sendReviewForm->setData('authorName', $authorFullName);
-            $sendReviewForm->setData('personalMessage', str_replace('{$authorFullName}', $authorFullName, $sendReviewForm->getData('personalMessage')));
-            $sendReviewForm->setData('revisionsEmail', str_replace('{$authorFullName}', $authorFullName, $templateMgr->getTemplateVars('revisionsEmail')));
-            $sendReviewForm->setData('resubmitEmail', str_replace('{$authorFullName}', $authorFullName, $templateMgr->getTemplateVars('resubmitEmail')));
+            $sendReviewForm->setData('personalMessage', str_replace(self::AUTHOR_TEMPLATE_VARIABLE, $authorFullName, $sendReviewForm->getData('personalMessage')));
+            $sendReviewForm->setData('revisionsEmail', str_replace(self::AUTHOR_TEMPLATE_VARIABLE, $authorFullName, $templateMgr->getTemplateVars('revisionsEmail')));
+            $sendReviewForm->setData('resubmitEmail', str_replace(self::AUTHOR_TEMPLATE_VARIABLE, $authorFullName, $templateMgr->getTemplateVars('resubmitEmail')));
         }
 
         return false;

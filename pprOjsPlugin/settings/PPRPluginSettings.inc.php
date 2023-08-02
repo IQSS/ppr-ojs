@@ -32,6 +32,7 @@ class PPRPluginSettings {
 
         'reviewerRegistrationEmailDisabled' => ['bool', null],
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
+        'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
     );
 
     private $contextId;
@@ -148,6 +149,10 @@ class PPRPluginSettings {
 
     public function submissionConfirmationContributorsEmailDisabled() {
         return $this->getValue('submissionConfirmationContributorsEmailDisabled');
+    }
+
+    public function editorialDecisionsEmailRemoveContributorsEnabled() {
+        return $this->getValue('editorialDecisionsEmailRemoveContributorsEnabled');
     }
 
     private function getValue($propertyName) {

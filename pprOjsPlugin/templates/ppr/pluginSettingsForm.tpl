@@ -23,6 +23,7 @@
 			{fbvElement type="checkbox" name="displayWorkflowMessageEnabled" label="plugins.generic.pprPlugin.settings.workflowMessage.label" id="displayWorkflowMessageEnabled" checked=$displayWorkflowMessageEnabled}
 			{fbvElement type="checkbox" name="displayContributorsEnabled" label="plugins.generic.pprPlugin.settings.contributors.label" id="displayContributorsEnabled" checked=$displayContributorsEnabled}
 			{fbvElement type="checkbox" name="displaySuggestedReviewersEnabled" label="plugins.generic.pprPlugin.settings.reviewers.label" id="displaySuggestedReviewersEnabled" checked=$displaySuggestedReviewersEnabled}
+		    {fbvElement type="checkbox" name="hideReviewRoundSelectionEnabled" label="plugins.generic.pprPlugin.settings.hideReviewRoundSelectionEnabled.label" id="hideReviewRoundSelectionEnabled" checked=$hideReviewRoundSelectionEnabled}
 			{fbvElement type="checkbox" name="submissionRequestRevisionsFileValidationEnabled" label="plugins.generic.pprPlugin.settings.submissionRequestRevisionsFileValidationEnabled.label" id="submissionRequestRevisionsFileValidationEnabled" checked=$submissionRequestRevisionsFileValidationEnabled}
 		{/fbvFormSection}
 

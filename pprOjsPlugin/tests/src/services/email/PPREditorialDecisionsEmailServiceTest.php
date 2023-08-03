@@ -50,15 +50,15 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         TemplateManager::getManager()->setData([
             'revisionsEmail' => 'Test: {$authorFullName} template text',
             'resubmitEmail' => 'Test: {$authorFullName} template text',
-            ]);
+        ]);
 
         $sendReviewForm->expects($this->exactly(4))
             ->method('setData')->withConsecutive(
-            ['authorName', $expectedAuthorName],
-            ['personalMessage', "Test: $expectedAuthorName template text"],
-            ['revisionsEmail', "Test: $expectedAuthorName template text"],
-            ['resubmitEmail', "Test: $expectedAuthorName template text"],
-        );
+                ['authorName', $expectedAuthorName],
+                ['personalMessage', "Test: $expectedAuthorName template text"],
+                ['revisionsEmail', "Test: $expectedAuthorName template text"],
+                ['resubmitEmail', "Test: $expectedAuthorName template text"],
+            );
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
         $target->sendReviewsFormDisplay('sendreviewsform::display', [$sendReviewForm]);
@@ -148,7 +148,7 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
     public function test_requestRevisionsUpdateRecipients_should_not_update_template_when_email_key_is_not_known() {
         $mailTemplate = $this->createSubmissionEmailTemplate('not_known_email', self::SUBJECT_WITH_TITLE_VAR, 'title', null, []);
 
-        $this->assertEquals(false, in_array($mailTemplate->emailKey,PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES));
+        $this->assertEquals(false, in_array($mailTemplate->emailKey, PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES));
 
         $mailTemplate->expects($this->never())->method($this->anything());
 

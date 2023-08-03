@@ -4,6 +4,13 @@ use PHPUnit\Framework\TestCase;
 
 class PPRTestCase extends TestCase {
 
+    public function setUp(): void {
+        parent::setUp();
+        //RESET HOOKS ON EVERY CALL
+        $emptyHooks = [];
+        Registry::set('hooks', $emptyHooks);
+    }
+
 
     public function countHooks() {
         $hookList = HookRegistry::getHooks();

@@ -21,6 +21,7 @@ class PPRPluginSettings {
         'submissionConfirmationChecklistEnabled' => ['bool', null],
         'submissionUploadFileValidationEnabled' => ['bool', null],
         'submissionRequestRevisionsFileValidationEnabled' => ['bool', null],
+        'hideReviewRoundSelectionEnabled' => ['bool', null],
         //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
         'reviewReminderEditorTaskEnabled' => ['bool', true],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
@@ -69,6 +70,10 @@ class PPRPluginSettings {
 
     public function hideReviewRecommendationEnabled() {
         return $this->getValue('hideReviewRecommendationEnabled');
+    }
+
+    public function hideReviewRoundSelectionEnabled() {
+        return $this->getValue('hideReviewRoundSelectionEnabled');
     }
 
     public function hidePreferredPublicNameEnabled() {

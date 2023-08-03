@@ -104,6 +104,9 @@ msgstr "Add the submission file validation to the Create Submission flow"
 msgid "plugins.generic.pprPlugin.settings.submissionRequestRevisionsFileValidationEnabled.label"
 msgstr "Add the revisions file validation to the Request Revisions form"
 
+msgid "plugins.generic.pprPlugin.settings.hideReviewRoundSelectionEnabled.label"
+msgstr "Hide the require review round selection section from the \"Send to Author\" form"
+
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorTaskEnabled.label"
 msgstr "Add automated review response/submit due date notification for associate editors"
 

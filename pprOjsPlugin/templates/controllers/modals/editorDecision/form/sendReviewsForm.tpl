@@ -3,10 +3,17 @@
 {include file="controllers/modals/editorDecision/form/sendReviewsForm.tpl.load_ojs"}
 
 {if $pprPluginSettings->hideReviewRoundSelectionEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
-<script type="text/javascript">
-	{** HIDE REQUIRE REVISIONS ROUND SECTION *}
-	$('form#sendReviews #decisionRevisions').closest('div').hide();
-</script>
+	<script type="text/javascript">
+		{** HIDE REQUIRE REVISIONS ROUND SECTION *}
+		$('form#sendReviews [id="decisionRevisions"]').closest('div').hide();
+	</script>
+{/if}
+
+{if $pprPluginSettings->hideSendToReviewersEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
+	<script type="text/javascript">
+		{** HIDE SEND TO REVIEWERS SECTION *}
+		$('form#sendReviews [id="bccReviewers[]"]').closest('div').hide();
+	</script>
 {/if}
 
 {if $pprPluginSettings->submissionRequestRevisionsFileValidationEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}

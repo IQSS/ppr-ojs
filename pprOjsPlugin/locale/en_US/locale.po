@@ -105,7 +105,10 @@ msgid "plugins.generic.pprPlugin.settings.submissionRequestRevisionsFileValidati
 msgstr "Add the revisions file validation to the Request Revisions form"
 
 msgid "plugins.generic.pprPlugin.settings.hideReviewRoundSelectionEnabled.label"
-msgstr "Hide the require review round selection section from the \"Send to Author\" form"
+msgstr "Hide the \"Require New Review Round\" section from the \"Send to Author\" form"
+
+msgid "plugins.generic.pprPlugin.settings.hideSendToReviewersEnabled.label"
+msgstr "Hide the \"Send to Reviewers\" section from the \"Send to Author\" form"
 
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorTaskEnabled.label"
 msgstr "Add automated review response/submit due date notification for associate editors"

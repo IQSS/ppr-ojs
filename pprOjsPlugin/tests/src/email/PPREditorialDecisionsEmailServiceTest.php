@@ -12,11 +12,14 @@ import('lib.pkp.classes.mail.SubmissionMailTemplate');
 class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
 
     const CONTEXT_ID = 130;
+    const SUBJECT_WITH_TITLE_VAR = 'Subject: {$submissionTitle} Variable';
     private $defaultPPRPlugin;
+    private $dafaultEmailKey;
 
     public function setUp(): void {
         parent::setUp();
         $this->defaultPPRPlugin = new PPRPluginMock(self::CONTEXT_ID, []);
+        $this->dafaultEmailKey = PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES[0];
     }
 
     public function test_register_should_not_register_any_hooks_when_editorialDecisionsEmailRemoveContributorsEnabled_is_false() {
@@ -97,7 +100,7 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
 
     public function test_requestRevisionsUpdateRecipients_should_set_recipients_when_primary_author_not_null() {
         $expectedAuthorName = 'Author Name';
-        $mailTemplate = $this->createSubmissionEmailTemplate(PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES[0], $expectedAuthorName, []);
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', $expectedAuthorName, []);
 
         $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
 
@@ -107,7 +110,7 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
 
     public function test_requestRevisionsUpdateRecipients_should_set_first_contributor_as_recipients_when_primary_author_is_null() {
         $expectedAuthorName = 'First Contributor';
-        $mailTemplate = $this->createSubmissionEmailTemplate(PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES[0], null, [$expectedAuthorName, 'invalid', 'not used']);
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', null, [$expectedAuthorName, 'invalid', 'not used']);
 
         $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
 
@@ -116,7 +119,7 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
     }
 
     public function test_requestRevisionsUpdateRecipients_should_not_set_recipients_when_authors_are_null() {
-        $mailTemplate = $this->createSubmissionEmailTemplate(PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES[0], null, []);
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', null, []);
 
         $mailTemplate->expects($this->never())->method('setRecipients');
 
@@ -124,22 +127,46 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
     }
 
-    public function test_requestRevisionsUpdateRecipients_should_not_set_recipients_when_email_key_is_not_known() {
-        $mailTemplate = $this->createSubmissionEmailTemplate('not_known_email', null, []);
+    public function test_requestRevisionsUpdateRecipients_should_set_update_subject_when_submission_title_variable_is_set() {
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'Submission Title', null, []);
+
+        $mailTemplate->expects($this->once())->method('setSubject')->with('Subject: Submission Title Variable');
+
+        $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
+        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+    }
+
+    public function test_requestRevisionsUpdateRecipients_should_set_not_subject_when_submission_title_variable_is_not_set() {
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, 'My Subject', 'Submission Title', null, []);
+
+        $mailTemplate->expects($this->once())->method('setSubject')->with('My Subject');
+
+        $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
+        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+    }
+
+    public function test_requestRevisionsUpdateRecipients_should_not_update_template_when_email_key_is_not_known() {
+        $mailTemplate = $this->createSubmissionEmailTemplate('not_known_email', self::SUBJECT_WITH_TITLE_VAR, 'title', null, []);
 
         $this->assertEquals(false, in_array($mailTemplate->emailKey,PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES));
 
-        $mailTemplate->expects($this->never())->method('setRecipients');
+        $mailTemplate->expects($this->never())->method($this->anything());
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
         $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
     }
 
-    private function createSubmissionEmailTemplate($emailKey, $primaryAuthorName, $contributorsNames) {
+    private function createSubmissionEmailTemplate($emailKey, $subject, $submissionTitle, $primaryAuthorName, $contributorsNames) {
         $submission = $this->createSubmissionWithAuthors($primaryAuthorName, $contributorsNames);
         $submissionMailTemplate = $this->createMock(SubmissionMailTemplate::class);
         $submissionMailTemplate->submission = $submission;
         $submissionMailTemplate->emailKey = $emailKey;
+        $emailParams = [];
+        if($submissionTitle) {
+            $emailParams['submissionTitle'] = $submissionTitle;
+        }
+        $submissionMailTemplate->params = $emailParams;
+        $submissionMailTemplate->method('getSubject')->willReturn($subject);
         return $submissionMailTemplate;
     }
 

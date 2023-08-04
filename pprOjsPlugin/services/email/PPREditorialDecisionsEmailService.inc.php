@@ -44,6 +44,9 @@ class PPREditorialDecisionsEmailService {
             if (isset($author)) {
                 $emailTemplate->setRecipients(array(['name' => $author->getFullName(), 'email' => $author->getEmail()]));
             }
+
+            $newSubject = str_replace('{$submissionTitle}', $emailTemplate->params['submissionTitle'], $emailTemplate->getSubject());
+            $emailTemplate->setSubject($newSubject);
         }
 
         return false;

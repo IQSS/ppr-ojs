@@ -70,6 +70,14 @@ class PPRTemplateOverrideService {
         if ($this->pprPlugin->getPluginSettings()->submissionRequestRevisionsFileValidationEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
         }
+
+        if ($this->pprPlugin->getPluginSettings()->hideReviewRoundSelectionEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->hideSendToReviewersEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
+        }
     }
 
     function register() {
@@ -92,6 +100,10 @@ class PPRTemplateOverrideService {
 
         // CURRENT TEMPLATE NOT IN OUR LIST => IGNORE OVERRIDES
         return false;
+    }
+
+    function getOverriddenTemplates() {
+        return $this->overriddenTemplates;
     }
 
 }

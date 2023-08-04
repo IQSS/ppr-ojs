@@ -2,7 +2,21 @@
 {** THIS WILL ALLOW TO ADD DATA BEFORE OR AFTER A TEMPLATE WITHOUT OVERRIDING ITS CONTENTS *}
 {include file="controllers/modals/editorDecision/form/sendReviewsForm.tpl.load_ojs"}
 
-{if $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
+{if $pprPluginSettings->hideReviewRoundSelectionEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
+	<script type="text/javascript">
+		{** HIDE REQUIRE REVISIONS ROUND SECTION *}
+		$('form#sendReviews [id="decisionRevisions"]').closest('div').hide();
+	</script>
+{/if}
+
+{if $pprPluginSettings->hideSendToReviewersEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
+	<script type="text/javascript">
+		{** HIDE SEND TO REVIEWERS SECTION *}
+		$('form#sendReviews [id="bccReviewers[]"]').closest('div').hide();
+	</script>
+{/if}
+
+{if $pprPluginSettings->submissionRequestRevisionsFileValidationEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
 	{** ONLY ADD FILE VALIDATION FOR REQUEST REVISIONS ACTION *}
 	{assign var="modalId" value="requestRevisionsFileMessage"|uniqid|escape}
 	{include file="ppr/modalMessage.tpl" cancelButton=true modalId=$modalId
@@ -12,6 +26,7 @@
 		modalButtonCancel="revisions.ppr.review.files.validation.button.cancel"|translate}
 	<script type="text/javascript">
 		$(function (){ldelim}
+			{** FILE VALIDATION LOGIC *}
 			$('#{$modalId} .modalButtonOk').click(function() {ldelim}
 				$('#sendReviews button[type=submit]').trigger('click', [true]);
 				{rdelim});

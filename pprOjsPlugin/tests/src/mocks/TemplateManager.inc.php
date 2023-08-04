@@ -8,6 +8,7 @@ class TemplateManager {
     public static function getManager($request = null) {
         if (self::$instance === null) {
             self::$instance = new TemplateManager();
+            self::$instance->data = [];
         }
 
         return self::$instance;
@@ -15,6 +16,10 @@ class TemplateManager {
 
     public function getTemplateVars($varName) {
         return $this->data[$varName] ?? null;
+    }
+
+    public function assign($variables) {
+        $this->data = array_merge($this->data, $variables);
     }
 
     public function setData($data) {

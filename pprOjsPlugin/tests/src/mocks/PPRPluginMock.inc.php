@@ -20,4 +20,8 @@ class PPRPluginMock {
         return new PPRPluginSettings($this->contextId, $this);
     }
 
+    public function getPluginPath() {
+        return 'plugins/generic/pprOjsPlugin';
+    }
+
 }

@@ -38,9 +38,8 @@
 
 	<!-- PPR ELIGIBILITY CHECKBOX -->
 	<input class="ppr_toggle" type="checkbox" name="eligibility" value="1" required {if $eligibility} checked="checked"{/if}>
-	<label class="ppr_eligibility_label">
-		I have confirmed that I am eligible to participate in this program based on the <a href="/index.php/iqss/Eligibility">requirements</a>.
-	</label>
+	{capture assign="eligibilityPageUrl"}{url router=$smarty.const.ROUTE_PAGE page='Eligibility' escape=false}{/capture}
+	<label class="ppr_eligibility_label"> {translate key="registration.ppr.eligibility.label" pageUrl=$eligibilityPageUrl}</label>
 
 	<form class="cmp_form register" id="register" method="post" action="{url op="register"}">
 		{csrf}

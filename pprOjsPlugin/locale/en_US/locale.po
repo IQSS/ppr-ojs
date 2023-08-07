@@ -214,3 +214,6 @@ msgstr "Close"
 
 msgid "tasks.ppr.editor.groupName"
 msgstr "Associate Editor"
+
+msgid "registration.ppr.eligibility.label"
+msgstr "I have confirmed that I am eligible to participate in this program based on the <a href=\"{$pageUrl}\" target=\"_blank\">requirements</a>."

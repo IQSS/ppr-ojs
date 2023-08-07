@@ -156,6 +156,17 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
     }
 
+    public function test_expected_known_templates() {
+        $expectedTemplates =  ['EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT', 'EDITOR_DECISION_DECLINE'];
+        foreach ($expectedTemplates as $expectedTemplate) {
+            $this->assertEquals(true, in_array($expectedTemplate, PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES));
+        }
+
+        foreach (PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES as $knownTemplate) {
+            $this->assertEquals(true, in_array($knownTemplate, $expectedTemplates));
+        }
+    }
+
     private function createSubmissionEmailTemplate($emailKey, $subject, $submissionTitle, $primaryAuthorName, $contributorsNames) {
         $submission = $this->createSubmissionWithAuthors($primaryAuthorName, $contributorsNames);
         $submissionMailTemplate = $this->createMock(SubmissionMailTemplate::class);

@@ -21,6 +21,7 @@ class PPRPluginSettings {
         'submissionConfirmationChecklistEnabled' => ['bool', null],
         'submissionUploadFileValidationEnabled' => ['bool', null],
         'submissionRequestRevisionsFileValidationEnabled' => ['bool', null],
+        'publicationOverrideEnabled' => ['bool', null],
         'hideReviewRoundSelectionEnabled' => ['bool', null],
         'hideSendToReviewersEnabled' => ['bool', null],
         //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
@@ -123,6 +124,10 @@ class PPRPluginSettings {
 
     public function submissionRequestRevisionsFileValidationEnabled() {
         return $this->getValue('submissionRequestRevisionsFileValidationEnabled');
+    }
+
+    public function publicationOverrideEnabled() {
+        return $this->getValue('publicationOverrideEnabled');
     }
 
     public function reviewReminderEditorTaskEnabled() {

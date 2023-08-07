@@ -24,4 +24,8 @@ class PPRPluginMock {
         return 'plugins/generic/pprOjsPlugin';
     }
 
+    public function import($className) {
+        import($className);
+    }
+
 }

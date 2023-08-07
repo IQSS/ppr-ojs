@@ -30,6 +30,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'submissionConfirmationChecklistEnabled' => [null, null],
             'submissionUploadFileValidationEnabled' => [null, null],
             'submissionRequestRevisionsFileValidationEnabled' => [null, null],
+            'publicationOverrideEnabled' => [null, null],
             'hideReviewRoundSelectionEnabled' => [null, null],
             'hideSendToReviewersEnabled' => [null, null],
             'reviewReminderEditorTaskEnabled' => [null, true],

@@ -2,10 +2,16 @@
 
 use PHPUnit\Framework\TestCase;
 
+import('classes.core.Request');
+
 class PPRTestCase extends TestCase {
 
     public function setUp(): void {
         parent::setUp();
+
+        $request = $this->createMock(Request::class);
+        AppLocale::initialize($request);
+
         //RESET HOOKS ON EVERY CALL
         $emptyHooks = [];
         Registry::set('hooks', $emptyHooks);
@@ -32,6 +38,10 @@ class PPRTestCase extends TestCase {
         }
 
         return $hooks;
+    }
+
+    public function getRandomId() {
+        return rand(10000, 9999999);
     }
 
 }

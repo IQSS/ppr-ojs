@@ -31,6 +31,7 @@ class PPRPluginSettings {
         'reviewReminderReviewerTaskEnabled' => ['bool', true],
         'reviewReminderReviewerDaysFromDueDate' => ['int', null],
         'reviewReminderEmailOverrideEnabled' => ['bool', null],
+        'reviewAddEditorToBccEnabled' => ['bool', null],
         'reviewUploadFileValidationEnabled' => ['bool', null],
 
         'reviewerRegistrationEmailDisabled' => ['bool', null],
@@ -152,6 +153,10 @@ class PPRPluginSettings {
 
     public function reviewReminderEmailOverrideEnabled() {
         return $this->getValue('reviewReminderEmailOverrideEnabled');
+    }
+
+    public function reviewAddEditorToBccEnabled() {
+        return $this->getValue('reviewAddEditorToBccEnabled');
     }
 
     public function reviewUploadFileValidationEnabled() {

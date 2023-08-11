@@ -26,6 +26,7 @@
 		    {fbvElement type="checkbox" name="hideReviewRoundSelectionEnabled" label="plugins.generic.pprPlugin.settings.hideReviewRoundSelectionEnabled.label" id="hideReviewRoundSelectionEnabled" checked=$hideReviewRoundSelectionEnabled}
 		    {fbvElement type="checkbox" name="hideSendToReviewersEnabled" label="plugins.generic.pprPlugin.settings.hideSendToReviewersEnabled.label" id="hideSendToReviewersEnabled" checked=$hideSendToReviewersEnabled}
 			{fbvElement type="checkbox" name="submissionRequestRevisionsFileValidationEnabled" label="plugins.generic.pprPlugin.settings.submissionRequestRevisionsFileValidationEnabled.label" id="submissionRequestRevisionsFileValidationEnabled" checked=$submissionRequestRevisionsFileValidationEnabled}
+			{fbvElement type="checkbox" name="publicationOverrideEnabled" label="plugins.generic.pprPlugin.settings.publicationOverrideEnabled.label" id="publicationOverrideEnabled" checked=$publicationOverrideEnabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.users" list="true"}

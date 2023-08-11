@@ -118,7 +118,6 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
         $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_DUE_DATE_REVIEWER_NOTIFICATION;
         $reviewerId = 123;
         $reviewId = 100;
-        $this->createMock(NotificationDAO::class);
         $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
 
         $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);

@@ -65,6 +65,9 @@ msgstr "Disable the create reviewer registration email"
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label"
 msgstr "Add review reminder action email template override based on review being accepted"
 
+msgid "plugins.generic.pprPlugin.settings.reviewAddEditorToBccEnabled.label"
+msgstr "Add Managing Editor as BCC to thank reviewer email"
+
 msgid "plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label"
 msgstr "Disable the submission confirmation contributors email"
 
@@ -217,6 +220,9 @@ msgstr "Close"
 
 msgid "tasks.ppr.editor.groupName"
 msgstr "Associate Editor"
+
+msgid "tasks.ppr.managingEditor.groupName"
+msgstr "Managing Editor"
 
 msgid "registration.ppr.eligibility.label"
 msgstr "I have confirmed that I am eligible to participate in this program based on the <a href=\"{$pageUrl}\" target=\"_blank\">requirements</a>."

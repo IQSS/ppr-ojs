@@ -62,10 +62,13 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $editorialDecisionsEmailService = new PPREditorialDecisionsEmailService($this);
             $editorialDecisionsEmailService->register();
 
-
             $this->import('services.email.PPRReviewAddEditorEmailService');
             $addEditorEmailService = new PPRReviewAddEditorEmailService($this);
             $addEditorEmailService->register();
+
+            $this->import('services.email.PPRReviewerFormEmailService');
+            $reviewerFormEmailService = new PPRReviewerFormEmailService($this);
+            $reviewerFormEmailService->register();
 
             // THIS HOOK WILL ONLY BE CALLED WHEN THE acron PLUGIN IS RELOADED
             HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'addScheduledTasks'));

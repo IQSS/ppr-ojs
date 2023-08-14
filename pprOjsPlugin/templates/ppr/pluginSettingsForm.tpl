@@ -62,6 +62,7 @@
 			{fbvElement type="checkbox" name="reviewAddEditorToBccEnabled" label="plugins.generic.pprPlugin.settings.reviewAddEditorToBccEnabled.label" id="reviewAddEditorToBccEnabled" checked=$reviewAddEditorToBccEnabled}
 			{fbvElement type="checkbox" name="submissionConfirmationContributorsEmailDisabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label" id="submissionConfirmationContributorsEmailDisabled" checked=$submissionConfirmationContributorsEmailDisabled}
 			{fbvElement type="checkbox" name="editorialDecisionsEmailRemoveContributorsEnabled" label="plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label" id="editorialDecisionsEmailRemoveContributorsEnabled" checked=$editorialDecisionsEmailRemoveContributorsEnabled}
+			{fbvElement type="checkbox" name="addReviewerEmailServiceEnabled" label="plugins.generic.pprPlugin.settings.addReviewerEmailServiceEnabled.label" id="addReviewerEmailServiceEnabled" checked=$addReviewerEmailServiceEnabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}

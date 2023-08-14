@@ -74,6 +74,9 @@ msgstr "Disable the submission confirmation contributors email"
 msgid "plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label"
 msgstr "Remove contributors from editorial decisions emails"
 
+msgid "plugins.generic.pprPlugin.settings.addReviewerEmailServiceEnabled.label"
+msgstr "Add reviewer first name to assign reviewer email"
+
 msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
 msgstr "Add the review file validation to the Complete Review flow"
 
@@ -217,6 +220,9 @@ msgstr "Please upload your blinded review document in PDF format before selectin
 
 msgid "review.ppr.files.validation.button.ok"
 msgstr "Close"
+
+msgid "review.ppr.reviewer.firstName.label"
+msgstr "Reviewer First Name"
 
 msgid "tasks.ppr.editor.groupName"
 msgstr "Associate Editor"

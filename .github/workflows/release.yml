@@ -2,19 +2,23 @@ name: release
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [ "test" ]
-    branches: [ main ]
-    types:
-      - completed
 
 permissions:
   contents: write
 
 jobs:
+  build-and-test-ppr-ojs-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v2
+      - name: test pprOjsPlugin
+        working-directory: .
+        run: make test
   create-release-plugin:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    needs: [build-and-test-ppr-ojs-plugin]
+    if: needs.build-and-test-ppr-ojs-plugin.result == 'success'
     env:
       PLUGIN_NAME: "pprOjsPlugin"
     steps:

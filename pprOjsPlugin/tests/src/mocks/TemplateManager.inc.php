@@ -18,8 +18,14 @@ class TemplateManager {
         return $this->data[$varName] ?? null;
     }
 
-    public function assign($variables) {
-        $this->data = array_merge($this->data, $variables);
+    public function assign($variable, $value = null, $nocache = false) {
+        if (is_array($variable)) {
+            foreach ($variable as $_key => $_val) {
+                $this->assign($_key, $_val, $nocache);
+            }
+        } else {
+            $this->data[ $variable ] = $value;
+        }
     }
 
     public function setData($data) {

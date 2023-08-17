@@ -19,7 +19,8 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
     public function setUp(): void {
         parent::setUp();
         $this->defaultPPRPlugin = new PPRPluginMock(self::CONTEXT_ID, []);
-        $this->dafaultEmailKey = PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES[0];
+        $this->dafaultEmailKey = PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES[array_rand(PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES)];
+
     }
 
     public function test_register_should_not_register_any_hooks_when_editorialDecisionsEmailRemoveContributorsEnabled_is_false() {
@@ -105,7 +106,9 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_requestRevisionsUpdateRecipients_should_set_first_contributor_as_recipients_when_primary_author_is_null() {
@@ -115,7 +118,9 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_requestRevisionsUpdateRecipients_should_not_set_recipients_when_authors_are_null() {
@@ -124,7 +129,9 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->never())->method('setRecipients');
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_requestRevisionsUpdateRecipients_should_set_update_subject_when_submission_title_variable_is_set() {
@@ -133,7 +140,9 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->once())->method('setSubject')->with('Subject: Submission Title Variable');
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_requestRevisionsUpdateRecipients_should_set_not_subject_when_submission_title_variable_is_not_set() {
@@ -142,7 +151,9 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->once())->method('setSubject')->with('My Subject');
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_requestRevisionsUpdateRecipients_should_not_update_template_when_email_key_is_not_known() {
@@ -153,7 +164,9 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->never())->method($this->anything());
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_expected_known_templates() {

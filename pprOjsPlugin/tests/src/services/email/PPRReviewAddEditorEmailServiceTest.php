@@ -10,10 +10,12 @@ class PPRReviewAddEditorEmailServiceTest extends PPRTestCase {
 
     const CONTEXT_ID = 130;
     private $defaultPPRPlugin;
+    private $dafaultEmailKey;
 
     public function setUp(): void {
         parent::setUp();
         $this->defaultPPRPlugin = new PPRPluginMock(self::CONTEXT_ID, []);
+        $this->dafaultEmailKey = PPRReviewAddEditorEmailService::TEMPLATES_MANAGING_EDITOR_BCC[array_rand(PPRReviewAddEditorEmailService::TEMPLATES_MANAGING_EDITOR_BCC)];
     }
 
     public function test_register_should_not_register_any_hooks_when_reviewAddEditorToBccEnabled_is_false() {
@@ -36,11 +38,13 @@ class PPRReviewAddEditorEmailServiceTest extends PPRTestCase {
     public function test_addManagingEditorToBCC_should_add_managing_editor_to_email_bcc_when_emailKey_is_known() {
         $expectedEditorName = "Antonio Santana";
         $this->addGetManagingEditorMock(__('tasks.ppr.managingEditor.groupName'), [$expectedEditorName]);
-        $mailTemplate = $this->createSubmissionEmailTemplate(PPRReviewAddEditorEmailService::TEMPLATES_MANAGING_EDITOR_BCC[0]);
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey);
         $mailTemplate->expects($this->once())->method('addBcc')->with($expectedEditorName, $expectedEditorName);
 
         $target = new PPRReviewAddEditorEmailService($this->defaultPPRPlugin);
-        $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        $response = $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_addManagingEditorToBCC_should_not_add_managing_editor_to_email_bcc_when_emailKey_is_not_known() {
@@ -52,25 +56,31 @@ class PPRReviewAddEditorEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->never())->method('addBcc');
 
         $target = new PPRReviewAddEditorEmailService($this->defaultPPRPlugin);
-        $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        $response = $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_addManagingEditorToBCC_should_not_call_addBcc_when_no_managing_editors_found() {
         $this->addGetManagingEditorMock(__('tasks.ppr.managingEditor.groupName'), []);
-        $mailTemplate = $this->createSubmissionEmailTemplate(PPRReviewAddEditorEmailService::TEMPLATES_MANAGING_EDITOR_BCC[0]);
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey);
         $mailTemplate->expects($this->never())->method('addBcc');
 
         $target = new PPRReviewAddEditorEmailService($this->defaultPPRPlugin);
-        $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        $response = $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     public function test_addManagingEditorToBCC_should_not_call_addBcc_when_group_not_found() {
         $this->addGetManagingEditorMock('invalid group name', null);
-        $mailTemplate = $this->createSubmissionEmailTemplate(PPRReviewAddEditorEmailService::TEMPLATES_MANAGING_EDITOR_BCC[0]);
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey);
         $mailTemplate->expects($this->never())->method('addBcc');
 
         $target = new PPRReviewAddEditorEmailService($this->defaultPPRPlugin);
-        $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        $response = $target->addManagingEditorToBCC('Mail::send', [$mailTemplate]);
+        // SHOULD ALWAYS RETURN FALSE
+        $this->assertEquals(false, $response);
     }
 
     private function createSubmissionEmailTemplate($emailKey) {

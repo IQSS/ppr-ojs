@@ -43,6 +43,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'reviewerRegistrationEmailDisabled' => [null, null],
             'submissionConfirmationContributorsEmailDisabled' => [null, null],
             'editorialDecisionsEmailRemoveContributorsEnabled' => [null, null],
+            'addReviewerEmailServiceEnabled' => [null, null],
         );
 
         foreach (PPRPluginSettings::CONFIG_VARS as $configVar => $varInfo) {

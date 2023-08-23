@@ -2,6 +2,8 @@
 
 class PPRPluginSettings {
 
+    private $contextId;
+
     const CONFIG_VARS = array(
         // PROPERTY NAME => [TYPE, DEFAULT VALUE]
         //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
@@ -16,7 +18,11 @@ class PPRPluginSettings {
         'userCustomFieldsEnabled' => ['bool', null],
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
         'institutionOptions' => ['string', 'Harvard University, Washington University in St. Louis'],
-        'submissionCustomFieldsEnabled' => ['bool', null],
+        //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
+        'submissionCommentsForReviewerEnabled' => ['bool', true],
+        'submissionResearchTypeEnabled' => ['bool', null],
+        'researchTypeOptions' => ['string', 'Manuscript Draft, Meta-Analysis, Paper, Pre-Analysis Plan, Grant Proposal, Book Proposal, Other'],
+        'submissionHidePrefixEnabled' => ['bool', null],
         'submissionCloseEnabled' => ['bool', null],
         'submissionConfirmationChecklistEnabled' => ['bool', null],
         'submissionUploadFileValidationEnabled' => ['bool', null],
@@ -39,8 +45,6 @@ class PPRPluginSettings {
         'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
         'addReviewerEmailServiceEnabled' => ['bool', null],
     );
-
-    private $contextId;
     private $pprPlugin;
 
     public function __construct($contextId, $pprPlugin) {
@@ -108,8 +112,22 @@ class PPRPluginSettings {
         return array_combine($institutionOptions, $institutionOptions);
     }
 
-    public function submissionCustomFieldsEnabled() {
-        return $this->getValue('submissionCustomFieldsEnabled');
+    public function submissionCommentsForReviewerEnabled() {
+        return $this->getValue('submissionCommentsForReviewerEnabled');
+    }
+
+    public function submissionResearchTypeEnabled() {
+        return $this->getValue('submissionResearchTypeEnabled');
+    }
+
+    public function getResearchTypeOptions() {
+        $researchTypeString =  $this->getValue('researchTypeOptions');
+        $researchTypeOptions = array_filter(array_map('trim', explode(',', $researchTypeString)));
+        return array_combine($researchTypeOptions, $researchTypeOptions);
+    }
+
+    public function submissionHidePrefixEnabled() {
+        return $this->getValue('submissionHidePrefixEnabled');
     }
 
     public function submissionCloseEnabled() {

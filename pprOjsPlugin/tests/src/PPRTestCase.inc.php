@@ -31,7 +31,7 @@ class PPRTestCase extends TestCase {
     }
 
     public function getHooks($hookName) {
-        $hooksForName = HookRegistry::getHooks($hookName);
+        $hooksForName = HookRegistry::getHooks($hookName) ?? [];
         $hooks = [];
         foreach ($hooksForName as $priority => $registeredHooks) {
             $hooks = array_merge($hooks, $registeredHooks);

@@ -95,8 +95,17 @@ msgstr "Institutional position dropdown options. Comma separated list of values"
 msgid "plugins.generic.pprPlugin.settings.institutionOptions.label"
 msgstr "Institution dropdown options for registration form. Comma separated list of values"
 
-msgid "plugins.generic.pprPlugin.settings.submissionCustomFields.label"
+msgid "plugins.generic.pprPlugin.settings.submissionCommentsForReviewerEnabled.label"
 msgstr "Add comments for the reviewer to author submission form and show the data in the review"
+
+msgid "plugins.generic.pprPlugin.settings.submissionResearchTypeEnabled.label"
+msgstr "Add research type to author submission form and pre-select the review form based on the value"
+
+msgid "plugins.generic.pprPlugin.settings.researchTypeOptions.label"
+msgstr "Research type dropdown options. Comma separated list of values"
+
+msgid "plugins.generic.pprPlugin.settings.submissionHidePrefixEnabled.label"
+msgstr "Hide the prefix field in the submit an article metadata section"
 
 msgid "plugins.generic.pprPlugin.settings.submissionCloseEnabled.label"
 msgstr "Add close submission functionality to editorial actions component"
@@ -166,6 +175,12 @@ msgstr "Comments for the Reviewer"
 
 msgid "submission.comments.reviewer.description"
 msgstr "If you'd like to direct the reviewer's attention to any particular area of the paper, please describe it here."
+
+msgid "submission.research.type"
+msgstr "Research Type"
+
+msgid "submission.research.type.description"
+msgstr "Capture the type of research document."
 
 msgid "submission.close.button.title"
 msgstr "Close Submission"

@@ -38,9 +38,13 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $onLeaveCustomFieldsService = new PPROnLeaveCustomFieldsService($this);
             $onLeaveCustomFieldsService->register();
 
-            $this->import('services.PPRSubmissionCustomFieldsService');
-            $submissionCustomFieldsService = new PPRSubmissionCustomFieldsService($this);
-            $submissionCustomFieldsService->register();
+            $this->import('services.submission.PPRSubmissionCommentsForReviewerService');
+            $submissionCommentsForReviewerService = new PPRSubmissionCommentsForReviewerService($this);
+            $submissionCommentsForReviewerService->register();
+
+            $this->import('services.submission.PPRSubmissionResearchTypeService');
+            $submissionResearchTypeService = new PPRSubmissionResearchTypeService($this);
+            $submissionResearchTypeService->register();
 
             $this->import('services.submission.PPRSubmissionActionsService');
             $submissionActionsService = new PPRSubmissionActionsService($this);

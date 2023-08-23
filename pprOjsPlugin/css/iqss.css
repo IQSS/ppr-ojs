@@ -106,6 +106,23 @@ div.pkpPublication .pkpTabs__buttons #issue-button {
 }
 
 /**
+  RESEARCH TYPE
+ */
+#pprResearchType {
+	padding: 2rem 2rem 0 2rem;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	background: #fff;
+}
+
+div span.pprTitle {
+	font-weight: 700;
+}
+
+div span.pprValue {
+}
+
+/**
   SETTINGS FORM
  */
 form#pprPluginSettingsForm div.subsection {

@@ -50,7 +50,12 @@
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.submissions" list="true"}
-			{fbvElement type="checkbox" name="submissionCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.submissionCustomFields.label" id="submissionCustomFieldsEnabled" checked=$submissionCustomFieldsEnabled}
+			{fbvElement type="checkbox" name="submissionCommentsForReviewerEnabled" label="plugins.generic.pprPlugin.settings.submissionCommentsForReviewerEnabled.label" id="submissionCommentsForReviewerEnabled" checked=$submissionCommentsForReviewerEnabled}
+			{fbvElement type="checkbox" name="submissionResearchTypeEnabled" label="plugins.generic.pprPlugin.settings.submissionResearchTypeEnabled.label" id="submissionResearchTypeEnabled" checked=$submissionResearchTypeEnabled}
+			<div class="subsection">
+				{fbvElement type="text" name="researchTypeOptions" label="plugins.generic.pprPlugin.settings.researchTypeOptions.label" id="researchTypeOptions" value=$researchTypeOptions}
+			</div>
+			{fbvElement type="checkbox" name="submissionHidePrefixEnabled" label="plugins.generic.pprPlugin.settings.submissionHidePrefixEnabled.label" id="submissionHidePrefixEnabled" checked=$submissionHidePrefixEnabled}
 			{fbvElement type="checkbox" name="submissionCloseEnabled" label="plugins.generic.pprPlugin.settings.submissionCloseEnabled.label" id="submissionCloseEnabled" checked=$submissionCloseEnabled}
 			{fbvElement type="checkbox" name="submissionConfirmationChecklistEnabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled.label" id="submissionConfirmationChecklistEnabled" checked=$submissionConfirmationChecklistEnabled}
 			{fbvElement type="checkbox" name="submissionUploadFileValidationEnabled" label="plugins.generic.pprPlugin.settings.submissionUploadFileValidationEnabled.label" id="submissionUploadFileValidationEnabled" checked=$submissionUploadFileValidationEnabled}

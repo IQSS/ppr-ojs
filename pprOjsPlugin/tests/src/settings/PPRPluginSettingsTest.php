@@ -14,6 +14,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
 
     public function test_default_values() {
         $expectedDefaultValues = array(
+            // fieldName => [methodName, defaultValue]
             'displayWorkflowMessageEnabled' => [null, true],
             'displayContributorsEnabled' => [null, null],
             'displaySuggestedReviewersEnabled' => [null, null],
@@ -25,7 +26,10 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'userCustomFieldsEnabled' => [null, null],
             'categoryOptions' => ['getCategoryOptions', ['Faculty' => 'Faculty', 'Fellow (Post-Doc)' => 'Fellow (Post-Doc)', 'Grad Student' => 'Grad Student', 'Staff' => 'Staff', 'Student' => 'Student']],
             'institutionOptions' => ['getInstitutionOptions', ['Harvard University' => 'Harvard University', 'Washington University in St. Louis' => 'Washington University in St. Louis']],
-            'submissionCustomFieldsEnabled' => [null, null],
+            'submissionCommentsForReviewerEnabled' => [null, true],
+            'submissionResearchTypeEnabled' => [null, null],
+            'researchTypeOptions' => ['getResearchTypeOptions', ['Manuscript Draft' => 'Manuscript Draft', 'Meta-Analysis' => 'Meta-Analysis', 'Paper' => 'Paper', 'Pre-Analysis Plan' => 'Pre-Analysis Plan', 'Grant Proposal' => 'Grant Proposal', 'Book Proposal' => 'Book Proposal', 'Other' => 'Other']],
+            'submissionHidePrefixEnabled' => [null, null],
             'submissionCloseEnabled' => [null, null],
             'submissionConfirmationChecklistEnabled' => [null, null],
             'submissionUploadFileValidationEnabled' => [null, null],

@@ -26,7 +26,6 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/tab/workflow/editorial.tpl';
         $expectedOverriddenTemplates[] = 'templates/controllers/tab/workflow/production.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl';
         $expectedOverriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
         $expectedOverriddenTemplates[] = 'templates/controllers/grid/users/reviewer/readReview.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
@@ -44,7 +43,6 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/submission/form/step4.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/submission/form/step2.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/ppr/modalMessage.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
 
         $target = new PPRTemplateOverrideService($this->pprPluginMock);

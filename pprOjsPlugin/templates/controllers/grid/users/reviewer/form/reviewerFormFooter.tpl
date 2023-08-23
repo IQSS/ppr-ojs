@@ -70,13 +70,18 @@
 	{/if}
 
 	{if count($reviewForms)>0}
+		{** PPR - RESEARCH TYPE CUSTOM FIELD **}
+		{fbvFormSection title="submission.research.type"}
+			{$submissionResearchType}
+		{/fbvFormSection}
+
 		{** PPR - REMOVED DEFAULT OPTION **}
 		{if !$pprPluginSettings->hideReviewFormDefaultEnabled()}
 			{assign var=defaultLabel value="manager.reviewForms.noneChosen"|translate}
 			{assign var=defaultValue value=0}
 		{/if}
 		{fbvFormSection title="submission.reviewForm"}
-			{fbvElement type="select" name="reviewFormId" id="reviewFormId" defaultLabel=$defaultLabel defaultValue=$defaultValue translate=false from=$reviewForms selected=$reviewFormId}
+			{fbvElement type="select" name="reviewFormId" id="reviewFormId" defaultLabel=$defaultLabel defaultValue=$defaultValue translate=false from=$reviewForms selected=$selectedReviewForm}
 		{/fbvFormSection}
 	{/if}
 

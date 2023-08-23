@@ -56,6 +56,6 @@ msgstr "Reviewer Thanked"
 msgid "plugins.report.pprReviewsPlugin.status.declined"
 msgstr "Declined"
 
-msgid "plugins.report.pprReviewsPlugin.status.canceled"
+msgid "plugins.report.pprReviewsPlugin.status.cancelled"
 msgstr "Cancelled"
 

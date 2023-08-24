@@ -6,14 +6,16 @@ class PPRPluginMock {
 
     private $contextId;
     private $data;
+    private $defaultValue;
 
-    public function __construct($contextId, $data) {
+    public function __construct($contextId, $data, $defaultValue = null) {
         $this->contextId = $contextId;
         $this->data = $data;
+        $this->defaultValue = $defaultValue;
     }
 
     public function getSetting($contextId, $settingName) {
-        return $this->data[$settingName] ?? null;
+        return $this->data[$settingName] ?? $this->defaultValue;
     }
 
     public function getPluginSettings() {

@@ -16,7 +16,7 @@
     {/if}
 {/capture}
 
-{if $pprPluginSettings->submissionCustomFieldsEnabled()}
+{if $pprPluginSettings->submissionCommentsForReviewerEnabled()}
     <!-- SHOW COMMENTS FOR REVIEWER DATA -->
     <div class="pkp_notification">
         {include file="controllers/notification/inPlaceNotificationContent.tpl" notificationId="pprCommentsForReviewer"

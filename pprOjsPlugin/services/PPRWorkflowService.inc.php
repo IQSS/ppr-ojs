@@ -11,14 +11,17 @@ class PPRWorkflowService {
     }
 
     function register() {
-        if ($this->pprPlugin->getPluginSettings()->submissionCustomFieldsEnabled()) {
+        if ($this->pprPlugin->getPluginSettings()->submissionCommentsForReviewerEnabled()) {
             HookRegistry::register('Template::Workflow', array($this, 'addCommentsForReviewerToWorkflow'));
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionResearchTypeEnabled()) {
+            HookRegistry::register('Template::Workflow', array($this, 'addResearchTypeToWorkflow'));
         }
 
         if ($this->pprPlugin->getPluginSettings()->displayContributorsEnabled()) {
             HookRegistry::register('Template::Workflow', array($this, 'addContributorsToWorkflow'));
             HookRegistry::register('LoadComponentHandler', array($this, 'addPPRAuthorGridHandler'));
-
         }
 
         if ($this->pprPlugin->getPluginSettings()->displaySuggestedReviewersEnabled()) {
@@ -46,8 +49,18 @@ class PPRWorkflowService {
         $smarty =& $hookArgs[1];
         $output =& $hookArgs[2];
 
-        // ADD THE SUGGESTED REVIEWERS COMPONENT TO THE WORKFLOW TEMPLATE
+        // ADD THE COMMENTS FOR REVIEWER CUSTOM FIELD TO THE WORKFLOW TEMPLATE
         $output .= $smarty->fetch($this->pprPlugin->getTemplateResource('ppr/workflowCommentsForReviewer.tpl'));
+
+        return false;
+    }
+
+    function addResearchTypeToWorkflow($hookName, $hookArgs) {
+        $smarty =& $hookArgs[1];
+        $output =& $hookArgs[2];
+
+        // ADD THE RESEARCH TYPE CUSTOM FIELD TO THE WORKFLOW TEMPLATE
+        $output .= $smarty->fetch($this->pprPlugin->getTemplateResource('ppr/workflowResearchType.tpl'));
 
         return false;
     }

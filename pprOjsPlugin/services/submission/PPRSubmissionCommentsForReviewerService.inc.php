@@ -1,7 +1,12 @@
 <?php
 
-class PPRSubmissionCustomFieldsService {
-    const SUBMISSION_FORM_FIELD = 'commentsForReviewer';
+/**
+ * Service to add the commentsForReviewer custom field to the create submission > metadata form
+ *
+ * This services adds the custom field to the create review form for the reviewer
+ */
+class PPRSubmissionCommentsForReviewerService {
+    const COMMENTS_FOR_REVIEWER_FIELD = 'commentsForReviewer';
 
     private $pprPlugin;
 
@@ -10,11 +15,11 @@ class PPRSubmissionCustomFieldsService {
     }
 
     function register() {
-        if ($this->pprPlugin->getPluginSettings()->submissionCustomFieldsEnabled()) {
+        if ($this->pprPlugin->getPluginSettings()->submissionCommentsForReviewerEnabled()) {
             HookRegistry::register('Schema::get::publication', array($this, 'addFieldsToPublicationDatabaseSchema'));
-            HookRegistry::register('submissionsubmitstep3form::initdata', array($this, 'initSubmissionData'));
-            HookRegistry::register('submissionsubmitstep3form::readuservars', array($this, 'readUserVars'));
-            HookRegistry::register('submissionsubmitstep3form::execute', array($this, 'executeSubmission'));
+            HookRegistry::register('submissionsubmitstep3form::initdata', array($this, 'initSubmissionFormData'));
+            HookRegistry::register('submissionsubmitstep3form::readuservars', array($this, 'readCommentsForReviewerVars'));
+            HookRegistry::register('submissionsubmitstep3form::execute', array($this, 'executeSubmissionCommentsForReviewer'));
 
 
             HookRegistry::register('reviewerreviewstep3form::initdata', array($this, 'initReviewData'));
@@ -31,14 +36,13 @@ class PPRSubmissionCustomFieldsService {
         return false;
     }
 
-    function initSubmissionData($hookName, $params) {
+    function initSubmissionFormData($hookName, $params) {
         $form = $params[0];
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
 
         $publication = $form->submission->getCurrentPublication();
-        $commentsForReviewer = $publication->getData(self::SUBMISSION_FORM_FIELD);
-        $templateVars = [self::SUBMISSION_FORM_FIELD => $commentsForReviewer];
-        $templateMgr->assign($templateVars);
+        $commentsForReviewer = $publication->getData(self::COMMENTS_FOR_REVIEWER_FIELD);
+        $templateMgr->assign([self::COMMENTS_FOR_REVIEWER_FIELD => $commentsForReviewer]);
 
         return false;
     }
@@ -48,25 +52,25 @@ class PPRSubmissionCustomFieldsService {
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
 
         $publication = $form->getReviewerSubmission()->getCurrentPublication();
-        $commentsForReviewer = nl2br($publication->getLocalizedData(self::SUBMISSION_FORM_FIELD));
-        $templateVars = [self::SUBMISSION_FORM_FIELD => $commentsForReviewer];
+        $commentsForReviewer = nl2br($publication->getLocalizedData(self::COMMENTS_FOR_REVIEWER_FIELD));
+        $templateVars = [self::COMMENTS_FOR_REVIEWER_FIELD => $commentsForReviewer];
         $templateMgr->assign($templateVars);
 
         return false;
     }
 
-    function readUserVars($hookName, $params) {
+    function readCommentsForReviewerVars($hookName, $params) {
         $fieldArray = &$params[1];
-        $fieldArray[] = self::SUBMISSION_FORM_FIELD;
+        $fieldArray[] = self::COMMENTS_FOR_REVIEWER_FIELD;
 
         return false;
     }
 
-    function executeSubmission($hookName, $params) {
+    function executeSubmissionCommentsForReviewer($hookName, $params) {
         $form = $params[0];
         $publication = $form->submission->getCurrentPublication();
         $pubId = $publication->getData('id');
-        $commentsForReviewer = $form->getData(self::SUBMISSION_FORM_FIELD);
+        $commentsForReviewer = $form->getData(self::COMMENTS_FOR_REVIEWER_FIELD);
         $publicationDao = DAORegistry::getDAO('PublicationDAO');
 
         // STORE INTO THE publication_settings TABLE. ALL LOCALE VALUES
@@ -74,7 +78,7 @@ class PPRSubmissionCustomFieldsService {
             $valuesArray = [
                 'publication_id' => $pubId,
                 'locale' => $locale,
-                'setting_name' => self::SUBMISSION_FORM_FIELD,
+                'setting_name' => self::COMMENTS_FOR_REVIEWER_FIELD,
                 'setting_value'  => $value
             ];
             $columns = ['publication_id', 'locale', 'setting_name'];

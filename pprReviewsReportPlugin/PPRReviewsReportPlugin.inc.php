@@ -9,7 +9,6 @@ class PPRReviewsReportPlugin extends ReportPlugin {
 
     const PPR_MISSING_DATA = '';
     private $userCache = [];
-    private $reviewFormCache = [];
 
 	/**
 	 * @copydoc Plugin::register()
@@ -79,7 +78,7 @@ class PPRReviewsReportPlugin extends ReportPlugin {
         }
 
         //PRINT HEADERS
-        $headers = ['OJS ID', 'Authors Name', 'Title of Document', 'Authors Email', 'Authors Category', 'Authors Institution', 'Authors Department', 'Document Type', 'Associate Editor', 'Review Status', 'Author - Paper Received'];
+        $headers = ['OJS ID', 'Authors Name', 'Title of Document', 'Authors Email', 'Authors Category', 'Authors Institution', 'Authors Department', 'Research Document Type', 'Associate Editor', 'Review Status', 'Author - Paper Received'];
         $headers = array_merge($headers, ['Coauthors Name', 'Coauthors Institute', 'Coauthors Email', 'Coauthors Category', 'Coauthors Department']);
         $headers = array_merge($headers, ['Reviewer', 'Reviewer Email', 'Reviewer Institution', 'Reviewer - 1st Email', 'Reviewer - Sent for Review', 'Reviewer - Response Time', 'Reviewer - Due Date']);
         $headers = array_merge($headers, ['Reviewer - Paper Returned', 'Reviewer - Time (days)', 'Author - Date Returned', 'Author - Review Time (days)']);
@@ -134,9 +133,7 @@ class PPRReviewsReportPlugin extends ReportPlugin {
                 $row[] = $author ? $author->getLocalizedData('affiliation') : self::PPR_MISSING_DATA;
                 $row[] = $author ? $author->getData('department') : self::PPR_MISSING_DATA;
 
-                //CALCULATE DOC TYPE FROM REVIEW FORM
-                $reviewForm = $this->getReviewForm($journal->getId(), $review ? $review->getReviewFormId() : null);
-                $row[] = $reviewForm ? $reviewForm->getLocalizedTitle() : self::PPR_MISSING_DATA;
+                $row[] = $submission->getData('researchType');
 
                 $row[] = $editor ? $editor->getFullName() : self::PPR_MISSING_DATA;
                 $row[] = $reportUtil->getStatusText($submissionSentToReview, $review ? $review->getStatus(): null);
@@ -229,19 +226,6 @@ class PPRReviewsReportPlugin extends ReportPlugin {
         }
 
         return $this->userCache[$userId];
-    }
-
-    private function getReviewForm($contextId, $reviewFormId) {
-        if($reviewFormId === null) {
-            return null;
-        }
-
-        if(!isset($this->reviewFormCache[$reviewFormId])) {
-            $reviewFormDao = DAORegistry::getDAO('ReviewFormDAO');
-            $this->reviewFormCache[$reviewFormId] = $reviewFormId ? $reviewFormDao->getById($reviewFormId, Application::getContextAssocType(), $contextId) : null;
-        }
-
-        return $this->reviewFormCache[$reviewFormId];
     }
 
 }

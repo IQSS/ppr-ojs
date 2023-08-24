@@ -70,6 +70,11 @@
 	{/if}
 
 	{if count($reviewForms)>0}
+		{** PPR - RESEARCH TYPE CUSTOM FIELD **}
+		{fbvFormSection title="submission.research.type"}
+			{$submissionResearchType}
+		{/fbvFormSection}
+
 		{** PPR - REMOVED DEFAULT OPTION **}
 		{if !$pprPluginSettings->hideReviewFormDefaultEnabled()}
 			{assign var=defaultLabel value="manager.reviewForms.noneChosen"|translate}

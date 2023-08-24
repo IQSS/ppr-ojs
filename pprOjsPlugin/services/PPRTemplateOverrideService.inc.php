@@ -49,9 +49,17 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
         }
 
-        if ($this->pprPlugin->getPluginSettings()->submissionCustomFieldsEnabled()) {
+        if ($this->pprPlugin->getPluginSettings()->submissionCommentsForReviewerEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
             $this->overriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionResearchTypeEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionHidePrefixEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
         }
 
         if ($this->pprPlugin->getPluginSettings()->submissionCloseEnabled()) {

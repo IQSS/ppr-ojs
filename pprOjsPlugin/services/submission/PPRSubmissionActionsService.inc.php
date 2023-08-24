@@ -2,6 +2,10 @@
 
 import('lib.pkp.classes.linkAction.LinkAction');
 import('lib.pkp.classes.linkAction.request.AjaxModal');
+
+/**
+ * Service to add the close submission functionality to the editorial actions panel
+ */
 class PPRSubmissionActionsService {
 
     private $pprPlugin;

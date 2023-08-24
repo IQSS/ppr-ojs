@@ -81,7 +81,7 @@
 			{assign var=defaultValue value=0}
 		{/if}
 		{fbvFormSection title="submission.reviewForm"}
-			{fbvElement type="select" name="reviewFormId" id="reviewFormId" defaultLabel=$defaultLabel defaultValue=$defaultValue translate=false from=$reviewForms selected=$selectedReviewForm}
+			{fbvElement type="select" name="reviewFormId" id="reviewFormId" defaultLabel=$defaultLabel defaultValue=$defaultValue translate=false from=$reviewForms selected=$reviewFormId}
 		{/fbvFormSection}
 	{/if}
 

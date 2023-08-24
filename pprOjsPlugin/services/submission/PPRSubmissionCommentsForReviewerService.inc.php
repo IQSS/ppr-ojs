@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Service to add the commentsForReviewer custom field to the create submission > metadata form
+ *
+ * This services adds the custom field to the create review form for the reviewer
+ */
 class PPRSubmissionCommentsForReviewerService {
     const COMMENTS_FOR_REVIEWER_FIELD = 'commentsForReviewer';
 

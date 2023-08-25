@@ -177,10 +177,10 @@ msgid "submission.comments.reviewer.description"
 msgstr "If you'd like to direct the reviewer's attention to any particular area of the paper, please describe it here."
 
 msgid "submission.research.type"
-msgstr "Research Type"
+msgstr "Research Document Type"
 
 msgid "submission.research.type.description"
-msgstr "Capture the type of research document."
+msgstr "Please select from the dropdown your research document type. (e.g. Paper, Pre-Analysis, etc.)"
 
 msgid "submission.close.button.title"
 msgstr "Close Submission"

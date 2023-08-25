@@ -117,6 +117,7 @@ div.pkpPublication .pkpTabs__buttons #issue-button {
 
 div span.pprTitle {
 	font-weight: 700;
+	margin-right: 0.2rem;
 }
 
 div span.pprValue {

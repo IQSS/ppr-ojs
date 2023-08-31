@@ -44,6 +44,7 @@ class PPRPluginSettings {
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
         'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
         'addReviewerEmailServiceEnabled' => ['bool', null],
+        'unassignReviewerEmailOverrideEnabled' => ['bool', null],
     );
     private $pprPlugin;
 
@@ -196,6 +197,10 @@ class PPRPluginSettings {
 
     public function addReviewerEmailServiceEnabled() {
         return $this->getValue('addReviewerEmailServiceEnabled');
+    }
+
+    public function unassignReviewerEmailOverrideEnabled() {
+        return $this->getValue('unassignReviewerEmailOverrideEnabled');
     }
 
     private function getValue($propertyName) {

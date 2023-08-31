@@ -54,6 +54,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $publicationOverrideService = new PPRPublicationOverrideService($this);
             $publicationOverrideService->register();
 
+            $this->import('services.reviewer.PPRReviewerGridService');
+            $reviewerGridService = new PPRReviewerGridService($this);
+            $reviewerGridService->register();
+
             $this->import('services.email.PPRDisableEmailService');
             $disableEmailService = new PPRDisableEmailService($this);
             $disableEmailService->register();
@@ -169,8 +173,6 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
     public function getPluginSettings() {
         return $this->pprPluginSettings;
     }
-
-
 
 }
 

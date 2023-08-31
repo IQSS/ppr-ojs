@@ -99,64 +99,64 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $target->sendReviewsFormDisplay('sendreviewsform::display', [$sendReviewForm]);
     }
 
-    public function test_requestRevisionsUpdateRecipients_should_set_recipients_when_primary_author_not_null() {
+    public function test_editorDecisionEmailsSetRecipients_should_set_recipients_when_primary_author_not_null() {
         $expectedAuthorName = 'Author Name';
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', $expectedAuthorName, []);
 
         $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
         // SHOULD ALWAYS RETURN FALSE
         $this->assertEquals(false, $response);
     }
 
-    public function test_requestRevisionsUpdateRecipients_should_set_first_contributor_as_recipients_when_primary_author_is_null() {
+    public function test_editorDecisionEmailsSetRecipients_should_set_first_contributor_as_recipients_when_primary_author_is_null() {
         $expectedAuthorName = 'First Contributor';
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', null, [$expectedAuthorName, 'invalid', 'not used']);
 
         $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
         // SHOULD ALWAYS RETURN FALSE
         $this->assertEquals(false, $response);
     }
 
-    public function test_requestRevisionsUpdateRecipients_should_not_set_recipients_when_authors_are_null() {
+    public function test_editorDecisionEmailsSetRecipients_should_not_set_recipients_when_authors_are_null() {
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', null, []);
 
         $mailTemplate->expects($this->never())->method('setRecipients');
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
         // SHOULD ALWAYS RETURN FALSE
         $this->assertEquals(false, $response);
     }
 
-    public function test_requestRevisionsUpdateRecipients_should_set_update_subject_when_submission_title_variable_is_set() {
+    public function test_editorDecisionEmailsSetRecipients_should_set_update_subject_when_submission_title_variable_is_set() {
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'Submission Title', null, []);
 
         $mailTemplate->expects($this->once())->method('setSubject')->with('Subject: Submission Title Variable');
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
         // SHOULD ALWAYS RETURN FALSE
         $this->assertEquals(false, $response);
     }
 
-    public function test_requestRevisionsUpdateRecipients_should_set_not_subject_when_submission_title_variable_is_not_set() {
+    public function test_editorDecisionEmailsSetRecipients_should_set_not_subject_when_submission_title_variable_is_not_set() {
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, 'My Subject', 'Submission Title', null, []);
 
         $mailTemplate->expects($this->once())->method('setSubject')->with('My Subject');
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
         // SHOULD ALWAYS RETURN FALSE
         $this->assertEquals(false, $response);
     }
 
-    public function test_requestRevisionsUpdateRecipients_should_not_update_template_when_email_key_is_not_known() {
+    public function test_editorDecisionEmailsSetRecipients_should_not_update_template_when_email_key_is_not_known() {
         $mailTemplate = $this->createSubmissionEmailTemplate('not_known_email', self::SUBJECT_WITH_TITLE_VAR, 'title', null, []);
 
         $this->assertEquals(false, in_array($mailTemplate->emailKey, PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES));
@@ -164,13 +164,13 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate->expects($this->never())->method($this->anything());
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->requestRevisionsUpdateRecipients('Mail::send', [$mailTemplate]);
+        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
         // SHOULD ALWAYS RETURN FALSE
         $this->assertEquals(false, $response);
     }
 
     public function test_expected_known_templates() {
-        $expectedTemplates =  ['EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT', 'EDITOR_DECISION_DECLINE'];
+        $expectedTemplates =  ['EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT', 'EDITOR_DECISION_INITIAL_DECLINE', 'EDITOR_DECISION_DECLINE'];
         foreach ($expectedTemplates as $expectedTemplate) {
             $this->assertEquals(true, in_array($expectedTemplate, PPREditorialDecisionsEmailService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES));
         }

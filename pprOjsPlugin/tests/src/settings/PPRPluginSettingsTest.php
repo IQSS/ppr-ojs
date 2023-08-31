@@ -22,6 +22,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'hideReviewFormDefaultEnabled' => [null, null],
             'hideReviewRecommendationEnabled' => [null, null],
             'hidePreferredPublicNameEnabled' => [null, null],
+            'hideUserBioEnabled' => [null, null],
             'userOnLeaveEnabled' => [null, null],
             'userCustomFieldsEnabled' => [null, null],
             'categoryOptions' => ['getCategoryOptions', ['Faculty' => 'Faculty', 'Fellow (Post-Doc)' => 'Fellow (Post-Doc)', 'Grad Student' => 'Grad Student', 'Staff' => 'Staff', 'Student' => 'Student']],

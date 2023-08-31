@@ -31,6 +31,7 @@
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.users" list="true"}
 			{fbvElement type="checkbox" name="hidePreferredPublicNameEnabled" label="plugins.generic.pprPlugin.settings.preferredPublicName.label" id="hidePreferredPublicNameEnabled" checked=$hidePreferredPublicNameEnabled}
+			{fbvElement type="checkbox" name="hideUserBioEnabled" label="plugins.generic.pprPlugin.settings.hideUserBioEnabled.label" id="hideUserBioEnabled" checked=$hideUserBioEnabled}
 			{fbvElement type="checkbox" name="userOnLeaveEnabled" label="plugins.generic.pprPlugin.settings.userOnLeaveEnabled.label" id="userOnLeaveEnabled" checked=$userOnLeaveEnabled}
 			{fbvElement type="checkbox" name="userCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.userCustomFields.label" id="userCustomFieldsEnabled" checked=$userCustomFieldsEnabled}
 			<div class="subsection">

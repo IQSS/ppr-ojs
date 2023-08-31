@@ -35,6 +35,7 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/frontend/pages/userRegister.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/contactForm.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
+        $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/publicProfileForm.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
         $expectedOverriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';

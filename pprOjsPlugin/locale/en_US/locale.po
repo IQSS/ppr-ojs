@@ -86,6 +86,9 @@ msgstr "Add the review file validation to the Complete Review flow"
 msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
 
+msgid "plugins.generic.pprPlugin.settings.hideUserBioEnabled.label"
+msgstr "Hide \"Bio\" field from the user and profile > public form"
+
 msgid "plugins.generic.pprPlugin.settings.userOnLeaveEnabled.label"
 msgstr "Add \"On Leave\" tag to users"
 

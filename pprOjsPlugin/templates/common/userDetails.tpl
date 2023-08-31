@@ -170,9 +170,12 @@
 			{fbvElement type="text" label="user.affiliation" multilingual="true" name="affiliation" id="affiliation" required="true" value=$affiliation inline=true size=$fbvStyles.size.LARGE}
 		{/fbvFormSection}
 
-		{fbvFormSection}
-			{fbvElement type="textarea" label="user.biography" multilingual="true" name="biography" id="biography" rich=true value=$biography}
-		{/fbvFormSection}
+		<!-- PPR PROGRAM - REMOVE BIO -->
+		{if !$pprPluginSettings->hideUserBioEnabled()}
+			{fbvFormSection}
+				{fbvElement type="textarea" label="user.biography" multilingual="true" name="biography" id="biography" rich=true value=$biography}
+			{/fbvFormSection}
+		{/if}
 
 		{if !$disableMailingSection}
 			{fbvFormSection}

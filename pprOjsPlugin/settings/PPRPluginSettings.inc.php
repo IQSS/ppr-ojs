@@ -14,6 +14,7 @@ class PPRPluginSettings {
         'hideReviewFormDefaultEnabled' => ['bool', null],
         'hideReviewRecommendationEnabled' => ['bool', null],
         'hidePreferredPublicNameEnabled' => ['bool', null],
+        'hideUserBioEnabled' => ['bool', null],
         'userOnLeaveEnabled' => ['bool', null],
         'userCustomFieldsEnabled' => ['bool', null],
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
@@ -91,6 +92,10 @@ class PPRPluginSettings {
 
     public function hidePreferredPublicNameEnabled() {
         return $this->getValue('hidePreferredPublicNameEnabled');
+    }
+
+    public function hideUserBioEnabled() {
+        return $this->getValue('hideUserBioEnabled');
     }
 
     public function userOnLeaveEnabled() {

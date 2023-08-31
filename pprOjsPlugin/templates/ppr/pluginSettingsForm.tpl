@@ -31,6 +31,7 @@
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.users" list="true"}
 			{fbvElement type="checkbox" name="hidePreferredPublicNameEnabled" label="plugins.generic.pprPlugin.settings.preferredPublicName.label" id="hidePreferredPublicNameEnabled" checked=$hidePreferredPublicNameEnabled}
+			{fbvElement type="checkbox" name="hideUserBioEnabled" label="plugins.generic.pprPlugin.settings.hideUserBioEnabled.label" id="hideUserBioEnabled" checked=$hideUserBioEnabled}
 			{fbvElement type="checkbox" name="userOnLeaveEnabled" label="plugins.generic.pprPlugin.settings.userOnLeaveEnabled.label" id="userOnLeaveEnabled" checked=$userOnLeaveEnabled}
 			{fbvElement type="checkbox" name="userCustomFieldsEnabled" label="plugins.generic.pprPlugin.settings.userCustomFields.label" id="userCustomFieldsEnabled" checked=$userCustomFieldsEnabled}
 			<div class="subsection">
@@ -68,6 +69,7 @@
 			{fbvElement type="checkbox" name="submissionConfirmationContributorsEmailDisabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label" id="submissionConfirmationContributorsEmailDisabled" checked=$submissionConfirmationContributorsEmailDisabled}
 			{fbvElement type="checkbox" name="editorialDecisionsEmailRemoveContributorsEnabled" label="plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label" id="editorialDecisionsEmailRemoveContributorsEnabled" checked=$editorialDecisionsEmailRemoveContributorsEnabled}
 			{fbvElement type="checkbox" name="addReviewerEmailServiceEnabled" label="plugins.generic.pprPlugin.settings.addReviewerEmailServiceEnabled.label" id="addReviewerEmailServiceEnabled" checked=$addReviewerEmailServiceEnabled}
+			{fbvElement type="checkbox" name="unassignReviewerEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.unassignReviewerEmailOverrideEnabled.label" id="unassignReviewerEmailOverrideEnabled" checked=$unassignReviewerEmailOverrideEnabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}

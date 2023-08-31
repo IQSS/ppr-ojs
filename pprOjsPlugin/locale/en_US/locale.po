@@ -77,11 +77,17 @@ msgstr "Remove contributors from editorial decisions emails"
 msgid "plugins.generic.pprPlugin.settings.addReviewerEmailServiceEnabled.label"
 msgstr "Add reviewer first name to assign reviewer email"
 
+msgid "plugins.generic.pprPlugin.settings.unassignReviewerEmailOverrideEnabled.label"
+msgstr "Override unassign reviewer confirmation email based on assignment status"
+
 msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
 msgstr "Add the review file validation to the Complete Review flow"
 
 msgid "plugins.generic.pprPlugin.settings.preferredPublicName.label"
 msgstr "Hide \"Preferred Public Name\" field from the user and contributor form"
+
+msgid "plugins.generic.pprPlugin.settings.hideUserBioEnabled.label"
+msgstr "Hide \"Bio\" field from the user and profile > public form"
 
 msgid "plugins.generic.pprPlugin.settings.userOnLeaveEnabled.label"
 msgstr "Add \"On Leave\" tag to users"

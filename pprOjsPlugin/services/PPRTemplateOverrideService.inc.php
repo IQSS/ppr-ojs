@@ -35,6 +35,11 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
         }
 
+        if ($this->pprPlugin->getPluginSettings()->hideUserBioEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
+            $this->overriddenTemplates[] = 'lib/pkp/templates/user/publicProfileForm.tpl';
+        }
+
         if ($this->pprPlugin->getPluginSettings()->userCustomFieldsEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/createReviewerForm.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';

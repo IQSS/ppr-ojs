@@ -73,8 +73,9 @@ class PPRWorkflowServiceTest extends PPRTestCase {
         $target = new PPRWorkflowService($this->defaultPPRPlugin);
         $componentName = 'grid.users.author.AuthorGridHandler';
         $arguments = [& $componentName];
-        $target->addPPRAuthorGridHandler('LoadComponentHandler', $arguments);
+        $result = $target->addPPRAuthorGridHandler('LoadComponentHandler', $arguments);
 
+        $this->assertEquals(true, $result);
         $this->assertEquals('plugins.generic.pprOjsPlugin.services.PPRAuthorGridHandler', $componentName);
     }
 
@@ -82,8 +83,9 @@ class PPRWorkflowServiceTest extends PPRTestCase {
         $target = new PPRWorkflowService($this->defaultPPRPlugin);
         $componentName = 'component.name';
         $arguments = [& $componentName];
-        $target->addPPRAuthorGridHandler('LoadComponentHandler', $arguments);
+        $result = $target->addPPRAuthorGridHandler('LoadComponentHandler', $arguments);
 
+        $this->assertEquals(false, $result);
         $this->assertEquals('component.name', $componentName);
     }
 

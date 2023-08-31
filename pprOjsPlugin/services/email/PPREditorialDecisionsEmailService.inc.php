@@ -5,7 +5,7 @@
  */
 class PPREditorialDecisionsEmailService {
 
-    const OJS_SEND_TO_CONTRIBUTORS_TEMPLATES = ['EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT', 'EDITOR_DECISION_DECLINE'];
+    const OJS_SEND_TO_CONTRIBUTORS_TEMPLATES = ['EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT', 'EDITOR_DECISION_INITIAL_DECLINE', 'EDITOR_DECISION_DECLINE'];
     const AUTHOR_TEMPLATE_VARIABLE = '{$authorFullName}';
 
     private $pprPlugin;
@@ -17,7 +17,7 @@ class PPREditorialDecisionsEmailService {
     function register() {
         if ($this->pprPlugin->getPluginSettings()->editorialDecisionsEmailRemoveContributorsEnabled()) {
             HookRegistry::register('sendreviewsform::display', array($this, 'sendReviewsFormDisplay'));
-            HookRegistry::register('Mail::send', array($this, 'requestRevisionsUpdateRecipients'));
+            HookRegistry::register('Mail::send', array($this, 'editorDecisionEmailsSetRecipients'));
         }
     }
 
@@ -37,7 +37,10 @@ class PPREditorialDecisionsEmailService {
         return false;
     }
 
-    function requestRevisionsUpdateRecipients($hookName, $arguments) {
+    /**
+     * This is needed to remove submission contributors from the list of recipients and only send the email to the main author
+     */
+    function editorDecisionEmailsSetRecipients($hookName, $arguments) {
         $emailTemplate = $arguments[0];
         if ($emailTemplate instanceof SubmissionMailTemplate && in_array($emailTemplate->emailKey,self::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES)) {
             $author = $this->getAuthor($emailTemplate->submission);

@@ -14,6 +14,7 @@ class PPRPluginSettings {
         'hideReviewFormDefaultEnabled' => ['bool', null],
         'hideReviewRecommendationEnabled' => ['bool', null],
         'hidePreferredPublicNameEnabled' => ['bool', null],
+        'hideUserBioEnabled' => ['bool', null],
         'userOnLeaveEnabled' => ['bool', null],
         'userCustomFieldsEnabled' => ['bool', null],
         'categoryOptions' => ['string', 'Faculty, Fellow (Post-Doc), Grad Student, Staff, Student'],
@@ -44,6 +45,7 @@ class PPRPluginSettings {
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
         'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
         'addReviewerEmailServiceEnabled' => ['bool', null],
+        'unassignReviewerEmailOverrideEnabled' => ['bool', null],
     );
     private $pprPlugin;
 
@@ -90,6 +92,10 @@ class PPRPluginSettings {
 
     public function hidePreferredPublicNameEnabled() {
         return $this->getValue('hidePreferredPublicNameEnabled');
+    }
+
+    public function hideUserBioEnabled() {
+        return $this->getValue('hideUserBioEnabled');
     }
 
     public function userOnLeaveEnabled() {
@@ -196,6 +202,10 @@ class PPRPluginSettings {
 
     public function addReviewerEmailServiceEnabled() {
         return $this->getValue('addReviewerEmailServiceEnabled');
+    }
+
+    public function unassignReviewerEmailOverrideEnabled() {
+        return $this->getValue('unassignReviewerEmailOverrideEnabled');
     }
 
     private function getValue($propertyName) {

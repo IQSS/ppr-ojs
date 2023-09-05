@@ -41,24 +41,24 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $this->assertEquals(1, count($this->getHooks('Mail::send')));
     }
 
-    public function test_sendReviewsFormDisplay_should_set_primary_author_name_in_template_data_when_primary_author_not_null() {
-        $expectedAuthorName = 'First Last';
+    public function test_sendReviewsFormDisplay_should_set_primary_author_data_in_template_data_when_primary_author_not_null() {
+        $expectedAuthorName = 'John';
 
         $sendReviewForm = $this->createMock(SendReviewsForm::class);
         $sendReviewForm->method('getSubmission')->willReturn($this->createSubmissionWithAuthors($expectedAuthorName, []));
-        $sendReviewForm->method('getData')->with('personalMessage')->willReturn('Test: {$authorFullName} template text');
+        $sendReviewForm->method('getData')->with('personalMessage')->willReturn($this->createStringTemplate('personal'));
 
         TemplateManager::getManager()->setData([
-            'revisionsEmail' => 'Test: {$authorFullName} template text',
-            'resubmitEmail' => 'Test: {$authorFullName} template text',
+            'revisionsEmail' => $this->createStringTemplate('revisions'),
+            'resubmitEmail' => $this->createStringTemplate('resubmit'),
         ]);
 
         $sendReviewForm->expects($this->exactly(4))
             ->method('setData')->withConsecutive(
-                ['authorName', $expectedAuthorName],
-                ['personalMessage', "Test: $expectedAuthorName template text"],
-                ['revisionsEmail', "Test: $expectedAuthorName template text"],
-                ['resubmitEmail', "Test: $expectedAuthorName template text"],
+                ['authorName', 'John Smith'],
+                ['personalMessage', 'Test - Full: John Smith First: John template personal'],
+                ['revisionsEmail', 'Test - Full: John Smith First: John template revisions'],
+                ['resubmitEmail', 'Test - Full: John Smith First: John template resubmit'],
             );
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
@@ -70,19 +70,19 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
 
         $sendReviewForm = $this->createMock(SendReviewsForm::class);
         $sendReviewForm->method('getSubmission')->willReturn($this->createSubmissionWithAuthors(null, [$expectedAuthorName, 'invalid', 'invalid']));
-        $sendReviewForm->method('getData')->with('personalMessage')->willReturn('Test: {$authorFullName} template text');
+        $sendReviewForm->method('getData')->with('personalMessage')->willReturn($this->createStringTemplate('personal'),);
 
         TemplateManager::getManager()->setData([
-            'revisionsEmail' => 'Test: {$authorFullName} template text',
-            'resubmitEmail' => 'Test: {$authorFullName} template text',
+            'revisionsEmail' => $this->createStringTemplate('revisions'),
+            'resubmitEmail' => $this->createStringTemplate('resubmit'),
         ]);
 
         $sendReviewForm->expects($this->exactly(4))
             ->method('setData')->withConsecutive(
-                ['authorName', $expectedAuthorName],
-                ['personalMessage', "Test: $expectedAuthorName template text"],
-                ['revisionsEmail', "Test: $expectedAuthorName template text"],
-                ['resubmitEmail', "Test: $expectedAuthorName template text"],
+                ['authorName', 'First Contributor Smith'],
+                ['personalMessage', 'Test - Full: First Contributor Smith First: First Contributor template personal'],
+                ['revisionsEmail', 'Test - Full: First Contributor Smith First: First Contributor template revisions'],
+                ['resubmitEmail', 'Test - Full: First Contributor Smith First: First Contributor template resubmit'],
             );
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
@@ -103,7 +103,7 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $expectedAuthorName = 'Author Name';
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', $expectedAuthorName, []);
 
-        $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
+        $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => 'Author Name Smith', 'email' => $expectedAuthorName]));
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
         $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
@@ -115,7 +115,7 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $expectedAuthorName = 'First Contributor';
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', null, [$expectedAuthorName, 'invalid', 'not used']);
 
-        $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => $expectedAuthorName, 'email' => $expectedAuthorName]));
+        $mailTemplate->expects($this->once())->method('setRecipients')->with(array(['name' => 'First Contributor Smith', 'email' => $expectedAuthorName]));
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
         $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
@@ -127,28 +127,6 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'title', null, []);
 
         $mailTemplate->expects($this->never())->method('setRecipients');
-
-        $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
-        // SHOULD ALWAYS RETURN FALSE
-        $this->assertEquals(false, $response);
-    }
-
-    public function test_editorDecisionEmailsSetRecipients_should_set_update_subject_when_submission_title_variable_is_set() {
-        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, self::SUBJECT_WITH_TITLE_VAR, 'Submission Title', null, []);
-
-        $mailTemplate->expects($this->once())->method('setSubject')->with('Subject: Submission Title Variable');
-
-        $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
-        $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
-        // SHOULD ALWAYS RETURN FALSE
-        $this->assertEquals(false, $response);
-    }
-
-    public function test_editorDecisionEmailsSetRecipients_should_set_not_subject_when_submission_title_variable_is_not_set() {
-        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, 'My Subject', 'Submission Title', null, []);
-
-        $mailTemplate->expects($this->once())->method('setSubject')->with('My Subject');
 
         $target = new PPREditorialDecisionsEmailService($this->defaultPPRPlugin);
         $response = $target->editorDecisionEmailsSetRecipients('Mail::send', [$mailTemplate]);
@@ -180,6 +158,10 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
         }
     }
 
+    private function createStringTemplate($type) {
+        return 'Test - Full: {$authorFullName} First: {$authorFirstName} template ' . $type;
+    }
+
     private function createSubmissionEmailTemplate($emailKey, $subject, $submissionTitle, $primaryAuthorName, $contributorsNames) {
         $submission = $this->createSubmissionWithAuthors($primaryAuthorName, $contributorsNames);
         $submissionMailTemplate = $this->createMock(SubmissionMailTemplate::class);
@@ -199,14 +181,16 @@ class PPREditorialDecisionsEmailServiceTest extends PPRTestCase {
 
         if ($primaryAuthorName) {
             $primaryAuthor = $this->createMock(Author::class);
-            $primaryAuthor->method('getFullName')->willReturn($primaryAuthorName);
+            $primaryAuthor->method('getFullName')->willReturn("$primaryAuthorName Smith");
+            $primaryAuthor->method('getLocalizedGivenName')->willReturn($primaryAuthorName);
             $primaryAuthor->method('getEmail')->willReturn($primaryAuthorName);
         }
 
         $contributors = [];
         foreach ($contributorsNames as $name) {
             $contributor = $this->createMock(Author::class);
-            $contributor->method('getFullName')->willReturn($name);
+            $contributor->method('getFullName')->willReturn("$name Smith");
+            $contributor->method('getLocalizedGivenName')->willReturn($name);
             $contributor->method('getEmail')->willReturn($name);
             $contributors[] = $contributor;
         }

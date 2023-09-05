@@ -6,7 +6,8 @@
 class PPREditorialDecisionsEmailService {
 
     const OJS_SEND_TO_CONTRIBUTORS_TEMPLATES = ['EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT', 'EDITOR_DECISION_INITIAL_DECLINE', 'EDITOR_DECISION_DECLINE'];
-    const AUTHOR_TEMPLATE_VARIABLE = '{$authorFullName}';
+    const AUTHOR_FULL_NAME_VARIABLE = '{$authorFullName}';
+    const AUTHOR_FIRST_NAME_VARIABLE = '{$authorFirstName}';
 
     private $pprPlugin;
 
@@ -27,11 +28,24 @@ class PPREditorialDecisionsEmailService {
         if (isset($author)) {
             $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
             $authorFullName =  htmlspecialchars($author->getFullName());
+            $authorFirstName =  htmlspecialchars($author->getLocalizedGivenName());
 
             $sendReviewForm->setData('authorName', $authorFullName);
-            $sendReviewForm->setData('personalMessage', str_replace(self::AUTHOR_TEMPLATE_VARIABLE, $authorFullName, $sendReviewForm->getData('personalMessage')));
-            $sendReviewForm->setData('revisionsEmail', str_replace(self::AUTHOR_TEMPLATE_VARIABLE, $authorFullName, $templateMgr->getTemplateVars('revisionsEmail')));
-            $sendReviewForm->setData('resubmitEmail', str_replace(self::AUTHOR_TEMPLATE_VARIABLE, $authorFullName, $templateMgr->getTemplateVars('resubmitEmail')));
+
+            $personalMessage = $sendReviewForm->getData('personalMessage');
+            $personalMessage = str_replace(self::AUTHOR_FULL_NAME_VARIABLE, $authorFullName, $personalMessage);
+            $personalMessage = str_replace(self::AUTHOR_FIRST_NAME_VARIABLE, $authorFirstName, $personalMessage);
+            $sendReviewForm->setData('personalMessage', $personalMessage);
+
+            $revisionsEmail = $templateMgr->getTemplateVars('revisionsEmail');
+            $revisionsEmail = str_replace(self::AUTHOR_FULL_NAME_VARIABLE, $authorFullName, $revisionsEmail);
+            $revisionsEmail = str_replace(self::AUTHOR_FIRST_NAME_VARIABLE, $authorFirstName, $revisionsEmail);
+            $sendReviewForm->setData('revisionsEmail', $revisionsEmail);
+
+            $resubmitEmail = $templateMgr->getTemplateVars('resubmitEmail');
+            $resubmitEmail = str_replace(self::AUTHOR_FULL_NAME_VARIABLE, $authorFullName, $resubmitEmail);
+            $resubmitEmail = str_replace(self::AUTHOR_FIRST_NAME_VARIABLE, $authorFirstName, $resubmitEmail);
+            $sendReviewForm->setData('resubmitEmail', $resubmitEmail);
         }
 
         return false;
@@ -48,8 +62,6 @@ class PPREditorialDecisionsEmailService {
                 $emailTemplate->setRecipients(array(['name' => $author->getFullName(), 'email' => $author->getEmail()]));
             }
 
-            $newSubject = str_replace('{$submissionTitle}', $emailTemplate->params['submissionTitle'], $emailTemplate->getSubject());
-            $emailTemplate->setSubject($newSubject);
         }
 
         return false;

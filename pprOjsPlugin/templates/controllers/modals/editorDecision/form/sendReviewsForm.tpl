@@ -9,7 +9,7 @@
 	</script>
 {/if}
 
-{if $pprPluginSettings->hideSendToReviewersEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
+{if $pprPluginSettings->hideSendToReviewersEnabled() && in_array($decision, [constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS'), constant('SUBMISSION_EDITOR_DECISION_DECLINE')])}
 	<script type="text/javascript">
 		{** HIDE SEND TO REVIEWERS SECTION *}
 		$('form#sendReviews [id="bccReviewers[]"]').closest('div').hide();

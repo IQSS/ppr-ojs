@@ -18,3 +18,9 @@ jobs:
       - name: test pprOjsPlugin
         working-directory: .
         run: make test
+      - name: test pprReviewReportPlugin
+        working-directory: .
+        run: make test_report
+      - name: test pprReviewReportPlugin
+        working-directory: .
+        run: make test_report

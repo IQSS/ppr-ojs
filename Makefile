@@ -54,3 +54,9 @@ docker-test:
 
 test:
 	docker run --rm --workdir=/var/www/html/plugins/generic/pprOjsPlugin -v $(PWD)/pprOjsPlugin:/var/www/html/plugins/generic/pprOjsPlugin $(PPR_OJS_TEST_IMAGE) tests/run_tests.sh
+
+test_report:
+	docker run --rm --workdir=/var/www/html/plugins/reports/pprReviewsReportPlugin -v $(PWD)/pprReviewsReportPlugin:/var/www/html/plugins/reports/pprReviewsReportPlugin $(PPR_OJS_TEST_IMAGE) tests/run_tests.sh
+
+test_report:
+	docker run --rm --workdir=/var/www/html/plugins/reports/pprReviewsReportPlugin -v $(PWD)/pprReviewsReportPlugin:/var/www/html/plugins/reports/pprReviewsReportPlugin $(PPR_OJS_TEST_IMAGE) tests/run_tests.sh

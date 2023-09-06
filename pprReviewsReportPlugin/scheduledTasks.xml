@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  * plugins/generic/pprReviewsReportPlugin/scheduledTasks.xml
+  *
+  * This file describes the schedule tasks for the Peer Pre-Review Program Report Plugin
+  *
+  -->
+
+<!DOCTYPE scheduled_tasks SYSTEM "../../../lib/pkp/dtd/scheduledTasks.dtd">
+
+<scheduled_tasks>
+	<task class="plugins.reports.pprReviewsReportPlugin.tasks.PPREditorReportTask">
+		<descr>Scheduled submissions report for editors</descr>
+		<frequency dayofweek="0"/>
+	</task>
+</scheduled_tasks>

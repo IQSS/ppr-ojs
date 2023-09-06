@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-05-12T11:05:16+00:00\n"
-"PO-Revision-Date: 2023-05-12T11:05:16+00:00\n"
+"POT-Creation-Date: 2023-09-10T11:05:16+00:00\n"
+"PO-Revision-Date: 2023-09-10T11:05:16+00:00\n"
 "Language: \n"
 
 msgid "plugins.report.pprReviewsPlugin.displayName"
@@ -16,6 +16,24 @@ msgstr "IQSS Peer Pre-Review Reviews Report"
 
 msgid "plugins.report.pprReviewsPlugin.description"
 msgstr "Reviews report for use in the Peer Pre-Review Program at Harvard’s IQSS"
+
+msgid "plugins.reports.pprReviewsPlugin.settings.description"
+msgstr "Settings and Feature Flags for the IQSS Peer Pre-Review Program Reviews Report Plugin."
+
+msgid "plugins.reports.pprReviewsPlugin.settings.section.featureFlags"
+msgstr "Feature Flags"
+
+msgid "plugins.reports.pprReviewsPlugin.settings.section.tasks"
+msgstr "Schduled Tasks"
+
+msgid "plugins.reports.pprReviewsPlugin.settings.submissionsReviewsReportEnabled.label"
+msgstr "Add automated submissions/review report"
+
+msgid "plugins.reports.pprReviewsPlugin.settings.submissionsReviewsReportRecipients.label"
+msgstr "List of recipients for the submissions/review report. Comma separated list of values"
+
+msgid "plugins.reports.pprReviewsPlugin.settings.scheduledTasksReset.label"
+msgstr "Trigger the execution of notifications from scheduled task"
 
 msgid "plugins.report.pprReviewsPlugin.author.groupName"
 msgstr "author"

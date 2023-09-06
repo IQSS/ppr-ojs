@@ -35,6 +35,14 @@ div.pkpPublication .pkpTabs__buttons #issue-button {
 }
 
 /**
+  PUBLICATION
+  HIDE ACTION BUTTONS
+ */
+div.pkpPublication__header div.pkpHeader__actions{
+	display: none;
+}
+
+/**
   SUBMISSION
  */
 #ppr_confirmation_submissionChecklist {

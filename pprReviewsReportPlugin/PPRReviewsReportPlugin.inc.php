@@ -10,11 +10,11 @@ class PPRReviewsReportPlugin extends ReportPlugin {
     private $pprPluginSettings;
     private $pprPluginSettingsHandler;
 
-	/**
-	 * @copydoc Plugin::register()
-	 */
-	function register($category, $path, $mainContextId = null) {
-		$success = parent::register($category, $path, $mainContextId);
+    /**
+     * @copydoc Plugin::register()
+     */
+    function register($category, $path, $mainContextId = null) {
+        $success = parent::register($category, $path, $mainContextId);
         $currentContextId = ($mainContextId === null) ? $this->getCurrentContextId() : $mainContextId;
 
         $this->import('settings.PPRReportPluginSettings');
@@ -29,8 +29,8 @@ class PPRReviewsReportPlugin extends ReportPlugin {
             HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'addScheduledTasks'));
         }
 
-		return $success;
-	}
+        return $success;
+    }
 
     function getActions($request, $actionArgs) {
         return array_merge($this->pprPluginSettingsHandler->getActions($request, $actionArgs), parent::getActions($request, $actionArgs));
@@ -40,28 +40,28 @@ class PPRReviewsReportPlugin extends ReportPlugin {
         return $this->pprPluginSettingsHandler->manage($args, $request);
     }
 
-	/**
-	 * Get the name of this plugin. The name must be unique within
-	 * its category.
-	 * @return String name of plugin
-	 */
-	function getName() {
-		return 'PPRReviewsReportPlugin';
-	}
+    /**
+     * Get the name of this plugin. The name must be unique within
+     * its category.
+     * @return String name of plugin
+     */
+    function getName() {
+        return 'PPRReviewsReportPlugin';
+    }
 
-	/**
-	 * @copydoc Plugin::getDisplayName()
-	 */
-	function getDisplayName() {
-		return __('plugins.report.pprReviewsPlugin.displayName');
-	}
+    /**
+     * @copydoc Plugin::getDisplayName()
+     */
+    function getDisplayName() {
+        return __('plugins.report.pprReviewsPlugin.displayName');
+    }
 
-	/**
-	 * @copydoc Plugin::getDescriptionName()
-	 */
-	function getDescription() {
-		return __('plugins.report.pprReviewsPlugin.description');
-	}
+    /**
+     * @copydoc Plugin::getDescriptionName()
+     */
+    function getDescription() {
+        return __('plugins.report.pprReviewsPlugin.description');
+    }
 
     /**
      * Added scheduled tasks to the acron plugin
@@ -75,21 +75,21 @@ class PPRReviewsReportPlugin extends ReportPlugin {
         return false;
     }
 
-	/**
-	 * @copydoc ReportPlugin::display()
-	 */
-	function display($args, $request) {
+    /**
+     * @copydoc ReportPlugin::display()
+     */
+    function display($args, $request) {
         $this->import('reports.PPRSubmissionsReviewsReport');
         $report = new PPRSubmissionsReviewsReport();
-		$journal = $request->getJournal();
-		$acronym = PKPString::regexp_replace("/[^A-Za-z0-9 ]/", '', $journal->getLocalizedAcronym());
+        $journal = $request->getJournal();
+        $acronym = PKPString::regexp_replace("/[^A-Za-z0-9 ]/", '', $journal->getLocalizedAcronym());
 
-		// Prepare for UTF8-encoded CSV output.
-		header('content-type: text/comma-separated-values');
-		header('content-disposition: attachment; filename=ppr-reviews-' . $acronym . '-' . date('Ymd') . '.csv');
+        // Prepare for UTF8-encoded CSV output.
+        header('content-type: text/comma-separated-values');
+        header('content-disposition: attachment; filename=ppr-reviews-' . $acronym . '-' . date('Ymd') . '.csv');
 
         $report->createReport('php://output');
-	}
+    }
 
     public function getPluginSettings() {
         return $this->pprPluginSettings;

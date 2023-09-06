@@ -10,13 +10,13 @@ class PPRSubmissionsReviewsReport {
     const PPR_MISSING_DATA = '';
     private $userCache = [];
 
-	function createReport($file) {
+    function createReport($file) {
         $request = Application::get()->getRequest();
-		$journal = $request->getJournal();
+        $journal = $request->getJournal();
 
-		$fp = fopen($file, 'wt');
-		// Add BOM (byte order mark) to fix UTF-8 in Excel
-		fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
+        $fp = fopen($file, 'wt');
+        // Add BOM (byte order mark) to fix UTF-8 in Excel
+        fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
 
         $reportUtil = new PPRReportUtil();
 
@@ -152,8 +152,8 @@ class PPRSubmissionsReviewsReport {
             }
         }
 
-		fclose($fp);
-	}
+        fclose($fp);
+    }
 
     /**
      * Get the associate editor and author group ids to identify users assigned to the submission.

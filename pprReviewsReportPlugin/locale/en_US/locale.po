@@ -24,7 +24,7 @@ msgid "plugins.reports.pprReviewsPlugin.settings.section.featureFlags"
 msgstr "Feature Flags"
 
 msgid "plugins.reports.pprReviewsPlugin.settings.section.tasks"
-msgstr "Schduled Tasks"
+msgstr "Scheduled Tasks"
 
 msgid "plugins.reports.pprReviewsPlugin.settings.submissionsReviewsReportEnabled.label"
 msgstr "Add automated submissions/review report"

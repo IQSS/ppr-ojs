@@ -22,6 +22,8 @@ class PPRSubmissionResearchTypeService {
             HookRegistry::register('submissionsubmitstep3form::execute', array($this, 'executeSubmissionResearchType'));
 
             HookRegistry::register('advancedsearchreviewerform::display', array($this, 'initReviewerFormData'));
+            HookRegistry::register('createreviewerform::display', array($this, 'initReviewerFormData'));
+            HookRegistry::register('enrollexistingreviewerform::display', array($this, 'initReviewerFormData'));
         }
     }
 

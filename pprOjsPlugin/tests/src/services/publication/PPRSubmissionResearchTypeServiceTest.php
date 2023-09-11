@@ -31,12 +31,14 @@ class PPRSubmissionResearchTypeServiceTest extends PPRTestCase {
         $target = new PPRSubmissionResearchTypeService($pprPluginMock);
         $target->register();
 
-        $this->assertEquals(5, $this->countHooks());
+        $this->assertEquals(7, $this->countHooks());
         $this->assertEquals(1, count($this->getHooks('Schema::get::submission')));
         $this->assertEquals(1, count($this->getHooks('submissionsubmitstep3form::initdata')));
         $this->assertEquals(1, count($this->getHooks('submissionsubmitstep3form::readuservars')));
         $this->assertEquals(1, count($this->getHooks('submissionsubmitstep3form::execute')));
         $this->assertEquals(1, count($this->getHooks('advancedsearchreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('createreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('enrollexistingreviewerform::display')));
     }
 
     public function test_addFieldsToSubmissionDatabaseSchema_should_update_schema() {

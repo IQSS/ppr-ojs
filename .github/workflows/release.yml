@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ${{ github.sha }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: test pprOjsPlugin
         working-directory: .
         run: make test
@@ -34,7 +34,7 @@ jobs:
         run: make release
       - name: Get plugin Version
         id: get_plugin_version
-        run: echo ::set-output name=PLUGIN_ARTIFACT_NAME::${{ env.PLUGIN_NAME }}-$(cat VERSION)
+        run: echo "PLUGIN_ARTIFACT_NAME=${{ env.PLUGIN_NAME }}-$(cat VERSION)" >> $GITHUB_OUTPUT
       - name: Commit new version
         run: |
           git config user.name "${GITHUB_ACTOR}"

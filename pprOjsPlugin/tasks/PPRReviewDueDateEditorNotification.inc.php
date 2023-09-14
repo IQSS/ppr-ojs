@@ -96,7 +96,7 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
         }
 
         $pprNotificationRegistry = new PPRTaskNotificationRegistry($context->getId());
-        $reviewReminderEditorDaysFromDueDate = $pprPlugin->getPluginSettings()->reviewReminderEditorDaysFromDueDate();
+        $reviewReminderEditorDaysFromDueDate = $pprPlugin->getPluginSettings()->getReviewReminderEditorDaysFromDueDate();
         $this->log($context, 'Processing reviews - $reviewReminderEditorDaysFromDueDate=' . implode(", ", $reviewReminderEditorDaysFromDueDate));
         if (empty($reviewReminderEditorDaysFromDueDate)) {
             // NO CONFIGURED FROM DUE DATES

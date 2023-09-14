@@ -12,6 +12,6 @@
 <scheduled_tasks>
 	<task class="plugins.reports.pprReviewsReportPlugin.tasks.PPREditorReportTask">
 		<descr>Scheduled submissions report for editors</descr>
-		<frequency dayofweek="0"/>
+		<frequency dayofweek="1"/>
 	</task>
 </scheduled_tasks>

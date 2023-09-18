@@ -91,6 +91,14 @@ class PPRTemplateOverrideService {
         if ($this->pprPlugin->getPluginSettings()->hideSendToReviewersEnabled()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
         }
+
+        if ($this->pprPlugin->getPluginSettings()->authorSurveyHtml()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/submission/form/complete.tpl';
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->reviewerSurveyHtml()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/reviewer/review/reviewCompleted.tpl';
+        }
     }
 
     function register() {

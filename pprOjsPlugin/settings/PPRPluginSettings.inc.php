@@ -41,6 +41,9 @@ class PPRPluginSettings {
         'reviewAddEditorToBccEnabled' => ['bool', null],
         'reviewUploadFileValidationEnabled' => ['bool', null],
 
+        'authorSurveyHtml' => ['string', null],
+        'reviewerSurveyHtml' => ['string', null],
+
         'reviewerRegistrationEmailDisabled' => ['bool', null],
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
         'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
@@ -206,6 +209,14 @@ class PPRPluginSettings {
 
     public function unassignReviewerEmailOverrideEnabled() {
         return $this->getValue('unassignReviewerEmailOverrideEnabled');
+    }
+
+    public function authorSurveyHtml() {
+        return $this->getValue('authorSurveyHtml');
+    }
+
+    public function reviewerSurveyHtml() {
+        return $this->getValue('reviewerSurveyHtml');
     }
 
     private function getValue($propertyName) {

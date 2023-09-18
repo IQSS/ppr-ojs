@@ -210,6 +210,15 @@ form#pprPluginSettingsForm div.subsection {
 }
 
 /**
+ SURVEY
+ */
+.ppr-survey {
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid #eee;
+}
+
+/**
  CUSTOMIZATIONS IMPLEMENTED BY PKP
  
  Removes user homepage/orcid id/include in browse list from contributor settings

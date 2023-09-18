@@ -1,6 +1,7 @@
 <?php
 
 import('tests.src.PPRTestCase');
+import('tests.src.mocks.PPRPluginMock');
 import('services.PPRTemplateOverrideService');
 import('settings.PPRPluginSettings');
 import('PeerPreReviewProgramPlugin');
@@ -18,47 +19,6 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
         $this->pprPluginMock->method('getPluginSettings')->willReturn($pluginSettingsMock);
     }
     
-    public function test_overridden_templates() {
-        $expectedOverriddenTemplates = [];
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/ppr/workflowInvalidTabMessage.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/tab/authorDashboard/editorial.tpl';
-        $expectedOverriddenTemplates[] = 'templates/controllers/tab/authorDashboard/production.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/tab/workflow/editorial.tpl';
-        $expectedOverriddenTemplates[] = 'templates/controllers/tab/workflow/production.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl';
-        $expectedOverriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
-        $expectedOverriddenTemplates[] = 'templates/controllers/grid/users/reviewer/readReview.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/grid/users/reviewer/form/createReviewerForm.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/frontend/components/registrationForm.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/frontend/pages/userRegister.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/contactForm.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/publicProfileForm.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/common/userDetails.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/user/identityForm.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl';
-        $expectedOverriddenTemplates[] = 'templates/reviewer/review/step3.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/workflow/editorialLinkActions.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/submission/form/step4.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/submission/form/step2.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/ppr/modalMessage.tpl';
-        $expectedOverriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
-
-        $target = new PPRTemplateOverrideService($this->pprPluginMock);
-        // ENSURE ALL CONFIGURED TEMPLATES ARE EXPECTED
-        foreach($target->getOverriddenTemplates() as $configuredTemplate) {
-            $this->assertEquals(true, in_array($configuredTemplate, $expectedOverriddenTemplates));
-        }
-
-        // ENSURE ALL EXPECTED TEMPLATES ARE CONFIGURED
-        foreach($expectedOverriddenTemplates as $expectedTemplate) {
-            $this->assertEquals(true, in_array($expectedTemplate, $target->getOverriddenTemplates()));
-        }
-
-    }
-
     public function test_register_should_always_register_template_hook() {
         $target = new PPRTemplateOverrideService($this->pprPluginMock);
         $target->register();
@@ -89,6 +49,125 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
 
         $target = new PPRTemplateOverrideService($this->pprPluginMock);
         $target->overrideTemplate('TemplateResource::getFilename', [&$template]);
+    }
+
+    public function test_expected_overridden_templates_for_each_setting() {
+        $expectedTemplatesForSetting = [];
+        $expectedTemplatesForSetting['displayWorkflowMessageEnabled'] = [
+            'lib/pkp/templates/ppr/workflowInvalidTabMessage.tpl',
+            'lib/pkp/templates/controllers/tab/authorDashboard/editorial.tpl',
+            'templates/controllers/tab/authorDashboard/production.tpl',
+            'lib/pkp/templates/controllers/tab/workflow/editorial.tpl',
+            'templates/controllers/tab/workflow/production.tpl',
+        ];
+
+        $expectedTemplatesForSetting['hideReviewMethodEnabled'] = [
+            'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl'
+        ];
+
+        $expectedTemplatesForSetting['hideReviewFormDefaultEnabled'] = [
+            'lib/pkp/templates/controllers/grid/users/reviewer/form/reviewerFormFooter.tpl'
+        ];
+
+        $expectedTemplatesForSetting['hideReviewRecommendationEnabled'] = [
+            'templates/reviewer/review/step3.tpl',
+            'templates/controllers/grid/users/reviewer/readReview.tpl',
+        ];
+
+        $expectedTemplatesForSetting['hidePreferredPublicNameEnabled'] = [
+            'lib/pkp/templates/common/userDetails.tpl',
+        ];
+
+        $expectedTemplatesForSetting['hideUserBioEnabled'] = [
+            'lib/pkp/templates/common/userDetails.tpl',
+            'lib/pkp/templates/user/publicProfileForm.tpl',
+        ];
+
+        $expectedTemplatesForSetting['userCustomFieldsEnabled'] = [
+            'lib/pkp/templates/controllers/grid/users/reviewer/form/createReviewerForm.tpl',
+            'lib/pkp/templates/common/userDetails.tpl',
+            'lib/pkp/templates/frontend/components/registrationForm.tpl',
+            'lib/pkp/templates/frontend/pages/userRegister.tpl',
+            'lib/pkp/templates/user/contactForm.tpl',
+            'lib/pkp/templates/user/identityForm.tpl',
+        ];
+
+        $expectedTemplatesForSetting['userOnLeaveEnabled'] = [
+            'lib/pkp/templates/common/userDetails.tpl',
+            'lib/pkp/templates/user/identityForm.tpl',
+        ];
+
+        $expectedTemplatesForSetting['submissionCommentsForReviewerEnabled'] = [
+            'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl',
+            'templates/reviewer/review/step3.tpl',
+        ];
+
+        $expectedTemplatesForSetting['submissionResearchTypeEnabled'] = [
+            'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl',
+        ];
+
+        $expectedTemplatesForSetting['submissionHidePrefixEnabled'] = [
+            'lib/pkp/templates/submission/submissionMetadataFormTitleFields.tpl',
+        ];
+
+        $expectedTemplatesForSetting['submissionCloseEnabled'] = [
+            'lib/pkp/templates/workflow/editorialLinkActions.tpl',
+        ];
+
+        $expectedTemplatesForSetting['submissionConfirmationChecklistEnabled'] = [
+            'lib/pkp/templates/submission/form/step4.tpl',
+        ];
+
+        $expectedTemplatesForSetting['submissionUploadFileValidationEnabled'] = [
+            'lib/pkp/templates/submission/form/step2.tpl',
+            'lib/pkp/templates/ppr/modalMessage.tpl',
+        ];
+
+        $expectedTemplatesForSetting['submissionRequestRevisionsFileValidationEnabled'] = [
+            'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl',
+        ];
+
+        $expectedTemplatesForSetting['hideReviewRoundSelectionEnabled'] = [
+            'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl',
+        ];
+
+        $expectedTemplatesForSetting['hideSendToReviewersEnabled'] = [
+            'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl',
+        ];
+
+        $expectedTemplatesForSetting['authorSurveyHtml'] = [
+            'lib/pkp/templates/submission/form/complete.tpl',
+        ];
+
+        $expectedTemplatesForSetting['reviewerSurveyHtml'] = [
+            'lib/pkp/templates/reviewer/review/reviewCompleted.tpl',
+        ];
+
+        $expectedOverriddenTemplates = array_merge(...array_values($expectedTemplatesForSetting));
+        $target = new PPRTemplateOverrideService($this->pprPluginMock);
+        // ENSURE ALL CONFIGURED TEMPLATES ARE EXPECTED
+        foreach($target->getOverriddenTemplates() as $configuredTemplate) {
+            $this->assertEquals(true, in_array($configuredTemplate, $expectedOverriddenTemplates), "Missing template in test: $configuredTemplate");
+        }
+
+        // ENSURE ALL EXPECTED TEMPLATES ARE CONFIGURED
+        foreach($expectedOverriddenTemplates as $expectedTemplate) {
+            $this->assertEquals(true, in_array($expectedTemplate, $target->getOverriddenTemplates()), "Expected template: $expectedTemplate");
+        }
+
+        // CHECK EXPECTED TEMPLATES PER SETTINGS
+        foreach ($expectedTemplatesForSetting as $setting => $templates) {
+            $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, [$setting => true], false);
+            $target = new PPRTemplateOverrideService($pprPluginMock);
+
+            foreach($target->getOverriddenTemplates() as $configuredTemplate) {
+                $this->assertEquals(true, in_array($configuredTemplate, $templates));
+            }
+
+            foreach($templates as $expectedTemplate) {
+                $this->assertEquals(true, in_array($expectedTemplate, $target->getOverriddenTemplates()));
+            }
+        }
     }
 
 }

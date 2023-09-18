@@ -62,6 +62,16 @@
 			{fbvElement type="checkbox" name="submissionUploadFileValidationEnabled" label="plugins.generic.pprPlugin.settings.submissionUploadFileValidationEnabled.label" id="submissionUploadFileValidationEnabled" checked=$submissionUploadFileValidationEnabled}
 		{/fbvFormSection}
 
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.surveys" list="true"}
+			<div class="subsection">
+				{fbvElement type="textarea" name="authorSurveyHtml" label="plugins.generic.pprPlugin.settings.authorSurveyHtml.label" id="authorSurveyHtml" value=$authorSurveyHtml height=$fbvStyles.height.SHORT}
+			</div>
+
+			<div class="subsection">
+				{fbvElement type="textarea" name="reviewerSurveyHtml" label="plugins.generic.pprPlugin.settings.reviewerSurveyHtml.label" id="reviewerSurveyHtml" value=$reviewerSurveyHtml height=$fbvStyles.height.SHORT}
+			</div>
+		{/fbvFormSection}
+
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.emails" list="true"}
 			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
 			{fbvElement type="checkbox" name="reviewReminderEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label" id="reviewReminderEmailOverrideEnabled" checked=$reviewReminderEmailOverrideEnabled}

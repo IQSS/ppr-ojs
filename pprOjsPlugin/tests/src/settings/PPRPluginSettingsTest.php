@@ -50,6 +50,8 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'editorialDecisionsEmailRemoveContributorsEnabled' => [null, null],
             'addReviewerEmailServiceEnabled' => [null, null],
             'unassignReviewerEmailOverrideEnabled' => [null, null],
+            'authorSurveyHtml' => [null, null],
+            'reviewerSurveyHtml' => [null, null],
         );
 
         foreach (PPRPluginSettings::CONFIG_VARS as $configVar => $varInfo) {

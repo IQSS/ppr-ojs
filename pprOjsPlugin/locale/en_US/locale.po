@@ -35,6 +35,9 @@ msgstr "Reviews"
 msgid "plugins.generic.pprPlugin.settings.section.submissions"
 msgstr "Submissions"
 
+msgid "plugins.generic.pprPlugin.settings.section.surveys"
+msgstr "Surveys"
+
 msgid "plugins.generic.pprPlugin.settings.section.emails"
 msgstr "Emails"
 
@@ -125,6 +128,9 @@ msgstr "Add the submission file validation to the Create Submission flow"
 msgid "plugins.generic.pprPlugin.settings.submissionRequestRevisionsFileValidationEnabled.label"
 msgstr "Add the revisions file validation to the Request Revisions form"
 
+msgid "plugins.generic.pprPlugin.settings.authorSurveyHtml.label"
+msgstr "HTML for the authors survey widget"
+
 msgid "plugins.generic.pprPlugin.settings.publicationOverrideEnabled.label"
 msgstr "Show contributors primary contact as author in submission breadcrumbs"
 
@@ -145,6 +151,9 @@ msgstr "Add automated review due date notification for reviewers"
 
 msgid "plugins.generic.pprPlugin.settings.reviewReminderReviewerDaysFromDueDate.label"
 msgstr "Number of days before (negative) or after (positive) the due date to send notifications to the reviewer"
+
+msgid "plugins.generic.pprPlugin.settings.reviewerSurveyHtml.label"
+msgstr "HTML for the reviewers survey widget"
 
 msgid "plugins.generic.pprPlugin.settings.scheduledTasksReset.label"
 msgstr "Trigger the execution of notifications from scheduled task"

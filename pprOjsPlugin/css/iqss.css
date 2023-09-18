@@ -218,6 +218,10 @@ form#pprPluginSettingsForm div.subsection {
 	border: 1px solid #eee;
 }
 
+.ppr-survey iframe {
+	border: none;
+}
+
 /**
  CUSTOMIZATIONS IMPLEMENTED BY PKP
  

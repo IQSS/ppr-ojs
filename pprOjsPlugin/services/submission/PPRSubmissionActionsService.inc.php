@@ -90,6 +90,7 @@ class PPRSubmissionActionsService {
             $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.submission.SubmissionActionsHandler';
             return true;
         }
+
         return false;
     }
 

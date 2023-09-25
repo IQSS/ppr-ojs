@@ -2,10 +2,12 @@
 
 import('tests.src.PPRTestCase');
 import('tests.src.mocks.PPRPluginMock');
+import('services.PPRObjectFactory');
 import('services.submission.PPRSubmissionActionsService');
 
 import('lib.pkp.classes.core.Dispatcher');
 import('lib.pkp.classes.linkAction.LinkAction');
+import('controllers.modals.editorDecision.form.InitiateExternalReviewForm');
 
 class PPRSubmissionActionsServiceTest extends PPRTestCase {
 
@@ -18,8 +20,8 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
         $this->defaultPPRPlugin = new PPRPluginMock(self::CONTEXT_ID, []);
     }
 
-    public function test_register_should_not_register_any_hooks_when_submissionCloseEnabled_is_false() {
-        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['submissionCloseEnabled' => false]);
+    public function test_register_should_not_register_any_hooks_when_service_toggles_are_false() {
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['submissionCloseEnabled' => false, 'submissionApprovedEmailEnabled' => false], true);
         $target = new PPRSubmissionActionsService($pprPluginMock);
         $target->register();
 
@@ -27,7 +29,7 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
     }
 
     public function test_register_should_register_service_hooks_when_submissionCloseEnabled_is_true() {
-        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['submissionCloseEnabled' => true]);
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['submissionCloseEnabled' => true], false);
         $target = new PPRSubmissionActionsService($pprPluginMock);
         $target->register();
 
@@ -35,6 +37,15 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
         $this->assertEquals(1, count($this->getHooks('Schema::get::submission')));
         $this->assertEquals(1, count($this->getHooks('TemplateManager::fetch')));
         $this->assertEquals(1, count($this->getHooks('LoadComponentHandler')));
+    }
+
+    public function test_register_should_register_service_hooks_when_submissionApprovedEmailEnabled_is_true() {
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['submissionApprovedEmailEnabled' => true], false);
+        $target = new PPRSubmissionActionsService($pprPluginMock);
+        $target->register();
+
+        $this->assertEquals(1, $this->countHooks());
+        $this->assertEquals(1, count($this->getHooks('initiateexternalreviewform::execute')));
     }
 
     public function test_addFieldsToSubmissionDatabaseSchema_should_update_schema() {
@@ -74,6 +85,44 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
         $this->check_addActionSubmissionButton(STATUS_PUBLISHED, 'open');
     }
 
+    public function test_addActionSubmissionButton_should_not_update_template_manager_when_it_is_not_editorialLinkActions_template() {
+        $target = new PPRSubmissionActionsService($this->defaultPPRPlugin);
+        $template = 'otherTemplate.tpl';
+
+        $result = $target->addActionSubmissionButton('TemplateManager::fetch', ['template_name', $template]);
+        $this->assertEquals(false, $result);
+    }
+
+    public function test_sendSubmissionApprovedEmail_should_send_email() {
+        $form = $this->createExternalReviewFormWithSubmission('Santana');
+        $this->getDispatcherMock()->expects($this->once())->method('url')->willReturn('http://submission/url');
+
+        $objectFactory = $this->createMock(PPRObjectFactory::class);
+        $submissionTemplate = $this->createMock(SubmissionMailTemplate::class);
+        $objectFactory->expects($this->once())->method('submissionMailTemplate')->with($form->getSubmission(), 'PPR_SUBMISSION_APPROVED')->willReturn($submissionTemplate);
+        $submissionTemplate->expects($this->once())->method('addRecipient')->with('Santana@email.com', 'Santana');
+        $submissionTemplate->expects($this->once())->method('assignParams')->with([
+            'authorFullName' => 'Santana',
+            'authorFirstName' => 'Santana',
+            'submissionUrl' => 'http://submission/url',
+            ]);
+        $submissionTemplate->expects($this->once())->method('send');
+
+        $target = new PPRSubmissionActionsService($this->defaultPPRPlugin, $objectFactory);
+        $target->sendSubmissionApprovedEmail('initiateexternalreviewform::execute', [$form]);
+    }
+
+    public function test_sendSubmissionApprovedEmail_should_not_send_email_if_no_authors() {
+        $form = $this->createExternalReviewFormWithSubmission(null);
+
+        $objectFactory = $this->createMock(PPRObjectFactory::class);
+        $objectFactory->expects($this->never())->method('submissionMailTemplate');
+
+
+        $target = new PPRSubmissionActionsService($this->defaultPPRPlugin, $objectFactory);
+        $target->sendSubmissionApprovedEmail('initiateexternalreviewform::execute', [$form]);
+    }
+
     private function check_addActionSubmissionButton($submissionStatus, $expectedActionType) {
         $target = new PPRSubmissionActionsService($this->defaultPPRPlugin);
         $template = 'workflow/editorialLinkActions.tpl';
@@ -93,11 +142,11 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
         $this->assertEquals(__("submission.$expectedActionType.button.title"), $templateManager->getTemplateVars('pprAction')->getTitle());
     }
 
-    public function test_addActionSubmissionButton_should_not_update_template_manager_when_it_is_not_editorialLinkActions_template() {
-        $target = new PPRSubmissionActionsService($this->defaultPPRPlugin);
-        $template = 'otherTemplate.tpl';
+    private function createExternalReviewFormWithSubmission($primaryAuthorName) {
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors($primaryAuthorName);
 
-        $result = $target->addActionSubmissionButton('TemplateManager::fetch', ['template_name', $template]);
-        $this->assertEquals(false, $result);
+        $form = $this->createMock(InitiateExternalReviewForm::class);
+        $form->method('getSubmission')->willReturn($submission);
+        return $form;
     }
 }

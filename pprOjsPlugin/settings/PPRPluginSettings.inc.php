@@ -25,6 +25,7 @@ class PPRPluginSettings {
         'researchTypeOptions' => ['string', 'Manuscript Draft, Meta-Analysis, Paper, Pre-Analysis Plan, Grant Proposal, Book Proposal, Other'],
         'submissionHidePrefixEnabled' => ['bool', null],
         'submissionCloseEnabled' => ['bool', null],
+        'submissionApprovedEmailEnabled' => ['bool', null],
         'submissionConfirmationChecklistEnabled' => ['bool', null],
         'submissionUploadFileValidationEnabled' => ['bool', null],
         'submissionRequestRevisionsFileValidationEnabled' => ['bool', null],
@@ -141,6 +142,10 @@ class PPRPluginSettings {
 
     public function submissionCloseEnabled() {
         return $this->getValue('submissionCloseEnabled');
+    }
+
+    public function submissionApprovedEmailEnabled() {
+        return $this->getValue('submissionApprovedEmailEnabled');
     }
 
     public function submissionConfirmationChecklistEnabled() {

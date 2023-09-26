@@ -119,6 +119,9 @@ msgstr "Hide the prefix field in the submit an article metadata section"
 msgid "plugins.generic.pprPlugin.settings.submissionCloseEnabled.label"
 msgstr "Add close submission functionality to editorial actions component"
 
+msgid "plugins.generic.pprPlugin.settings.submissionApprovedEmailEnabled.label"
+msgstr "Send submission approved confirmation email to author"
+
 msgid "plugins.generic.pprPlugin.settings.submissionConfirmationChecklistEnabled.label"
 msgstr "Add the submission checklist to the confirmation page"
 

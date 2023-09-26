@@ -32,6 +32,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'researchTypeOptions' => ['getResearchTypeOptions', ['Manuscript Draft' => 'Manuscript Draft', 'Meta-Analysis' => 'Meta-Analysis', 'Paper' => 'Paper', 'Pre-Analysis Plan' => 'Pre-Analysis Plan', 'Grant Proposal' => 'Grant Proposal', 'Book Proposal' => 'Book Proposal', 'Other' => 'Other']],
             'submissionHidePrefixEnabled' => [null, null],
             'submissionCloseEnabled' => [null, null],
+            'submissionApprovedEmailEnabled' => [null, null],
             'submissionConfirmationChecklistEnabled' => [null, null],
             'submissionUploadFileValidationEnabled' => [null, null],
             'submissionRequestRevisionsFileValidationEnabled' => [null, null],

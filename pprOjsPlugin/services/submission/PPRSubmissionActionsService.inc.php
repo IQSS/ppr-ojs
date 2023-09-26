@@ -4,14 +4,20 @@ import('lib.pkp.classes.linkAction.LinkAction');
 import('lib.pkp.classes.linkAction.request.AjaxModal');
 
 /**
- * Service to add the close submission functionality to the editorial actions panel
+ * Service to attach additional functionality to editor actions panel:
+ *  - Add the close submission functionality
+ *  - Add the submission approved email to authors
  */
 class PPRSubmissionActionsService {
 
     private $pprPlugin;
 
-    public function __construct($plugin) {
+    private $pprObjectFactory;
+
+    public function __construct($plugin, $pprObjectFactory = null) {
         $this->pprPlugin = $plugin;
+        $this->pprPlugin->import('services.PPRObjectFactory');
+        $this->pprObjectFactory = $pprObjectFactory ?: new PPRObjectFactory();
     }
 
     function register() {
@@ -19,6 +25,10 @@ class PPRSubmissionActionsService {
             HookRegistry::register('Schema::get::submission', array($this, 'addFieldsToSubmissionDatabaseSchema'));
             HookRegistry::register('TemplateManager::fetch', array($this, 'addActionSubmissionButton'));
             HookRegistry::register('LoadComponentHandler', array($this, 'addPPRSubmissionActionsHandler'));
+        }
+
+        if ($this->pprPlugin->getPluginSettings()->submissionApprovedEmailEnabled()) {
+            HookRegistry::register('initiateexternalreviewform::execute', array($this, 'sendSubmissionApprovedEmail'));
         }
     }
 
@@ -92,6 +102,42 @@ class PPRSubmissionActionsService {
         }
 
         return false;
+    }
+
+    /**
+     * Send the submission approved confirmation email to the author
+     */
+    function sendSubmissionApprovedEmail($hookName, $args) {
+        $form = $args[0];
+        $submission = $form->getSubmission();
+        $submissionId = $submission->getId();
+        $author = $this->getAuthor($submission);
+        if (!$author) {
+            error_log("PPR[sendSubmissionApprovedEmail] submissionId=$submissionId message=no author found");
+            return;
+        }
+
+        $request = Application::get()->getRequest();
+        $submissionUrl = $request->getDispatcher()->url($request, ROUTE_PAGE, null, 'authorDashboard', 'submission', $submissionId);
+        $email = $this->pprObjectFactory->submissionMailTemplate($submission, 'PPR_SUBMISSION_APPROVED');
+        $email->setContext(Application::get()->getRequest()->getContext());
+        $email->addRecipient($author->getEmail(), $author->getFullName());
+        $email->assignParams([
+            'authorFullName' => htmlspecialchars($author->getFullName()),
+            'authorFirstName' => htmlspecialchars($author->getLocalizedGivenName()),
+            'submissionUrl' => $submissionUrl,
+        ]);
+        $email->send();
+    }
+
+    private function getAuthor($submission) {
+        $author = $submission->getPrimaryAuthor();
+        $contributors = $submission->getAuthors();
+        if (!isset($author) && !empty($contributors)) {
+            $author = $contributors[0];
+        }
+
+        return $author;
     }
 
 }

@@ -51,6 +51,13 @@ div.pkpPublication__header div.pkpHeader__actions{
 }
 
 /**
+  Remove the Other file type added by OJS automatically
+ */
+button.-linkButton.listPanel--submissionFiles__setGenreButton:nth-last-child(1) {
+	display: none;
+}
+
+/**
   WORKFLOW - SUBMISSION
   HIDE ACCEPT AND SKIP REVIEW BUTTON - NOT REQUIRED BY PPR
  */

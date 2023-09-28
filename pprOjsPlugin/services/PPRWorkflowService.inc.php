@@ -11,6 +11,10 @@ class PPRWorkflowService {
     }
 
     function register() {
+        if ($this->pprPlugin->getPluginSettings()->authorDashboardSurveyHtml()) {
+            HookRegistry::register('Template::Workflow', array($this, 'addAuthorDashboardSurveyToWorkflow'));
+        }
+
         if ($this->pprPlugin->getPluginSettings()->submissionCommentsForReviewerEnabled()) {
             HookRegistry::register('Template::Workflow', array($this, 'addCommentsForReviewerToWorkflow'));
         }
@@ -42,6 +46,27 @@ class PPRWorkflowService {
             $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.PPRAuthorGridHandler';
             return true;
         }
+        return false;
+    }
+
+    function addAuthorDashboardSurveyToWorkflow($hookName, $hookArgs) {
+        $smarty =& $hookArgs[1];
+        $output =& $hookArgs[2];
+
+        if ( $smarty->tpl_vars['requestedPage'] == 'authorDashboard' && $smarty->tpl_vars['submission']) {
+            // ADD THE AUTHOR SURVEY HTML TO THE WORKFLOW TEMPLATE
+            $submission = $smarty->tpl_vars['submission']->value;
+            $reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO');
+            $reviews = $reviewAssignmentDao->getBySubmissionId($submission->getId());
+            $atLeastOneReviewCompleted = array_reduce($reviews, function ($reviewCompleted, $review) {
+                return $reviewCompleted || $review->getDateCompleted();
+            }, false);
+
+            if($atLeastOneReviewCompleted) {
+                $output .= $smarty->fetch($this->pprPlugin->getTemplateResource('ppr/workflowSurvey.tpl'));
+            }
+        }
+
         return false;
     }
 

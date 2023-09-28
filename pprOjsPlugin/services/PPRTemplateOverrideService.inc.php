@@ -92,7 +92,7 @@ class PPRTemplateOverrideService {
             $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl';
         }
 
-        if ($this->pprPlugin->getPluginSettings()->authorSurveyHtml()) {
+        if ($this->pprPlugin->getPluginSettings()->authorSubmissionSurveyHtml()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/submission/form/complete.tpl';
         }
 

@@ -135,7 +135,7 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
             'lib/pkp/templates/controllers/modals/editorDecision/form/sendReviewsForm.tpl',
         ];
 
-        $expectedTemplatesForSetting['authorSurveyHtml'] = [
+        $expectedTemplatesForSetting['authorSubmissionSurveyHtml'] = [
             'lib/pkp/templates/submission/form/complete.tpl',
         ];
 

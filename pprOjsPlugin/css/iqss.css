@@ -121,6 +121,19 @@ button.-linkButton.listPanel--submissionFiles__setGenreButton:nth-last-child(1) 
 }
 
 /**
+  Surveys
+ */
+#pprAuthorSurveyWrapper {
+	padding: 2rem;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	background: #fff;
+}
+
+#pprAuthorSurveyWrapper .pkp_controllers_extrasOnDemand {
+	display: block;
+}
+/**
   RESEARCH TYPE
  */
 #pprResearchType {

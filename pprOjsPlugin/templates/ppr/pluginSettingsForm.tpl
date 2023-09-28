@@ -64,9 +64,11 @@
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.surveys" list="true"}
 			<div class="subsection">
-				{fbvElement type="textarea" name="authorSurveyHtml" label="plugins.generic.pprPlugin.settings.authorSurveyHtml.label" id="authorSurveyHtml" value=$authorSurveyHtml height=$fbvStyles.height.SHORT}
+				{fbvElement type="textarea" name="authorSubmissionSurveyHtml" label="plugins.generic.pprPlugin.settings.authorSubmissionSurveyHtml.label" id="authorSubmissionSurveyHtml" value=$authorSubmissionSurveyHtml height=$fbvStyles.height.SHORT}
 			</div>
-
+			<div class="subsection">
+				{fbvElement type="textarea" name="authorDashboardSurveyHtml" label="plugins.generic.pprPlugin.settings.authorDashboardSurveyHtml.label" id="authorDashboardSurveyHtml" value=$authorDashboardSurveyHtml height=$fbvStyles.height.SHORT}
+			</div>
 			<div class="subsection">
 				{fbvElement type="textarea" name="reviewerSurveyHtml" label="plugins.generic.pprPlugin.settings.reviewerSurveyHtml.label" id="reviewerSurveyHtml" value=$reviewerSurveyHtml height=$fbvStyles.height.SHORT}
 			</div>

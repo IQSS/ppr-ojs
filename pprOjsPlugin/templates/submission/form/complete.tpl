@@ -2,8 +2,8 @@
 {** THIS WILL ALLOW TO ADD DATA BEFORE OR AFTER A TEMPLATE WITHOUT OVERRIDING ITS CONTENTS *}
 {include file="submission/form/complete.tpl.load_ojs"}
 
-{if $pprPluginSettings->authorSurveyHtml()}
+{if $pprPluginSettings->authorSubmissionSurveyHtml()}
 	<div class="ppr-survey">
-		{$pprPluginSettings->authorSurveyHtml()}
+		{$pprPluginSettings->authorSubmissionSurveyHtml()}
 	</div>
 {/if}

@@ -131,8 +131,11 @@ msgstr "Add the submission file validation to the Create Submission flow"
 msgid "plugins.generic.pprPlugin.settings.submissionRequestRevisionsFileValidationEnabled.label"
 msgstr "Add the revisions file validation to the Request Revisions form"
 
-msgid "plugins.generic.pprPlugin.settings.authorSurveyHtml.label"
-msgstr "HTML for the authors survey widget"
+msgid "plugins.generic.pprPlugin.settings.authorSubmissionSurveyHtml.label"
+msgstr "HTML for the authors submission completed survey widget"
+
+msgid "plugins.generic.pprPlugin.settings.authorDashboardSurveyHtml.label"
+msgstr "HTML for the authors dashboard survey widget"
 
 msgid "plugins.generic.pprPlugin.settings.publicationOverrideEnabled.label"
 msgstr "Show contributors primary contact as author in submission breadcrumbs"
@@ -265,3 +268,9 @@ msgstr "Managing Editor"
 
 msgid "registration.ppr.eligibility.label"
 msgstr "I have confirmed that I am eligible to participate in this program based on the <a href=\"{$pageUrl}\" target=\"_blank\">requirements</a>."
+
+msgid "surveys.ppr.author.showDetails"
+msgstr "Click here to provide feedback"
+
+msgid "surveys.ppr.author.hideDetails"
+msgstr "Hide feedback form"

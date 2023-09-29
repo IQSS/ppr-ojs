@@ -47,6 +47,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'reviewAddEditorToBccEnabled' => [null, null],
             'reviewUploadFileValidationEnabled' => [null, null],
             'reviewerRegistrationEmailDisabled' => [null, null],
+            'reviewAcceptedEmailEnabled' => [null, null],
             'submissionConfirmationContributorsEmailDisabled' => [null, null],
             'editorialDecisionsEmailRemoveContributorsEnabled' => [null, null],
             'addReviewerEmailServiceEnabled' => [null, null],

@@ -2,10 +2,9 @@
 
 import('tests.src.PPRTestCase');
 import('tests.src.mocks.PPRPluginMock');
-import('services.PPRObjectFactory');
 import('services.submission.PPRSubmissionActionsService');
+import('util.PPRObjectFactory');
 
-import('lib.pkp.classes.core.Dispatcher');
 import('lib.pkp.classes.linkAction.LinkAction');
 import('controllers.modals.editorDecision.form.InitiateExternalReviewForm');
 
@@ -126,11 +125,7 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
     private function check_addActionSubmissionButton($submissionStatus, $expectedActionType) {
         $target = new PPRSubmissionActionsService($this->defaultPPRPlugin);
         $template = 'workflow/editorialLinkActions.tpl';
-        $request = $this->createMock(Request::class);
-        $dispatcher = $this->createMock(Dispatcher::class);
-        $request->method('getDispatcher')->willReturn($dispatcher);
-        Registry::set('request', $request);
-        AppLocale::initialize($request);
+
         $templateManager = TemplateManager::getManager();
         $templateManager->setData(['submissionStatus' => $submissionStatus]);
 

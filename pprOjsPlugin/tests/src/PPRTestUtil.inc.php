@@ -44,6 +44,7 @@ class PPRTestUtil {
     public function createUser($id, $familyName, $givenName = null) {
         $author = $this->testCase->createMock(User::class);
         $author->method('getId')->willReturn($id);
+        $author->method('getUsername')->willReturn(strtolower($familyName));
         $author->method('getLocalizedFamilyName')->willReturn($familyName);
         $author->method('getLocalizedGivenName')->willReturn($givenName);
         $author->method('getFullName')->willReturn($familyName);

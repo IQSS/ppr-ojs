@@ -16,7 +16,7 @@ class PPRSubmissionActionsService {
 
     public function __construct($plugin, $pprObjectFactory = null) {
         $this->pprPlugin = $plugin;
-        $this->pprPlugin->import('services.PPRObjectFactory');
+        $this->pprPlugin->import('util.PPRObjectFactory');
         $this->pprObjectFactory = $pprObjectFactory ?: new PPRObjectFactory();
     }
 

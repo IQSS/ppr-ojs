@@ -65,6 +65,9 @@ msgstr "Hide the review recommendation field and default \"Revisions Required\""
 msgid "plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label"
 msgstr "Disable the create reviewer registration email"
 
+msgid "plugins.generic.pprPlugin.settings.reviewAcceptedEmailEnabled.label"
+msgstr "Send review accepted confirmation email to reviewer"
+
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label"
 msgstr "Add review reminder action email template override based on review being accepted"
 

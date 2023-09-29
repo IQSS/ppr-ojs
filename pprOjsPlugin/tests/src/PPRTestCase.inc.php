@@ -64,6 +64,12 @@ class PPRTestCase extends TestCase {
         return $hooks;
     }
 
+    public function resultFactoryMock($dataArray) {
+        $resultFactory = $this->createMock(DAOResultFactory::class);
+        $resultFactory->method('toArray')->willReturn($dataArray);
+        return $resultFactory;
+    }
+
     public function servicesRegister($servicesArray) {
         Services::register(new PPRServicesProviderMock($servicesArray));
     }

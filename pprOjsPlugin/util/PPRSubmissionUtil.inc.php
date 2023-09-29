@@ -36,16 +36,21 @@ class PPRSubmissionUtil {
     }
 
     /**
-     * Returns the Associate Editor group if based on the group name text.
+     * Returns the Associate Editor groupId based on the group name text.
      */
     public function getEditorGroupId($contextId) {
-        $ASSOCIATE_EDITOR_GROUP_NAME = __('tasks.ppr.editor.groupName');
+        return $this->getGroupId($contextId, __('tasks.ppr.editor.groupName'));
+    }
 
+    /**
+     * Returns the groupId based on the group name text.
+     */
+    public function getGroupId($contextId, $groupName) {
         $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
         $userGroups = $userGroupDao->getByContextId($contextId)->toArray();
 
-        $editorGroups = array_filter($userGroups, function($userGroup) use ($ASSOCIATE_EDITOR_GROUP_NAME) {
-            return (0 === strcasecmp($userGroup->getLocalizedName(), $ASSOCIATE_EDITOR_GROUP_NAME));
+        $editorGroups = array_filter($userGroups, function($userGroup) use ($groupName) {
+            return (0 === strcasecmp($userGroup->getLocalizedName(), $groupName));
         });
 
         return empty($editorGroups) ? null : reset($editorGroups)->getId();

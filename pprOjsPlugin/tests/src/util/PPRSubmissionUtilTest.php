@@ -20,37 +20,50 @@ class PPRSubmissionUtilTest extends PPRTestCase {
         $this->assertEquals(9999, $result);
     }
 
-    public function test_getEditorGroupId_should_return_the_first_groupId_that_matches_associate_editor_text() {
+    public function test_geGroupId_should_return_the_groupId_that_matches_group_text() {
         $this->createUserGroups([
-            123 => 'No_Match',
-            9999 => __('tasks.ppr.editor.groupName'),
-            1234 => __('tasks.ppr.editor.groupName'),
+            123 => 'One',
+            9999 => 'GroupNameMatch',
+            1234 => 'Other',
         ]);
 
         $target = new PPRSubmissionUtil();
-        $result = $target->getEditorGroupId(self::CONTEXT_ID);
+        $result = $target->getGroupId(self::CONTEXT_ID, 'GroupNameMatch');
 
         $this->assertEquals(9999, $result);
     }
 
-    public function test_getEditorGroupId_should_return_null_when_no_matches() {
+    public function test_geGroupId_should_return_the_first_groupId_that_matches_associate_editor_text() {
         $this->createUserGroups([
-            1234 => 'No_Match',
+            123 => 'No_Match',
+            9999 => 'GroupNameMatch',
+            1234 => 'GroupNameMatch',
+        ]);
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getGroupId(self::CONTEXT_ID, 'GroupNameMatch');
+
+        $this->assertEquals(9999, $result);
+    }
+
+    public function test_getGroupId_should_return_null_when_no_matches() {
+        $this->createUserGroups([
+            1234 => 'One',
             12345 => 'Other',
             12342 => 'Third',
         ]);
 
         $target = new PPRSubmissionUtil();
-        $result = $target->getEditorGroupId(self::CONTEXT_ID);
+        $result = $target->getGroupId(self::CONTEXT_ID, 'NoMatch');
 
         $this->assertNull($result);
     }
 
-    public function test_getEditorGroupId_should_return_null_when_no_groups() {
+    public function test_getGroupId_should_return_null_when_no_groups() {
         $this->createUserGroups([]);
 
         $target = new PPRSubmissionUtil();
-        $result = $target->getEditorGroupId(self::CONTEXT_ID);
+        $result = $target->getGroupId(self::CONTEXT_ID, 'GroupName');
 
         $this->assertNull($result);
     }

@@ -22,6 +22,8 @@ services:
     environment:
       - MAILDEV_SMTP_PORT=25
       - MAILDEV_MAIL_DIRECTORY=/mail
+      #- MAILDEV_INCOMING_USER=smtp
+      #- MAILDEV_INCOMING_PASS=password
     networks:
       - inside
     #volumes:

@@ -48,6 +48,16 @@ class PPRReviewAcceptedService {
             $editorFirstName = htmlspecialchars($editor->getLocalizedGivenName());
         }
 
+        $reviewUrlArgs = array('submissionId' => $review->getSubmissionId());
+        $accessKeyLifeTime = $this->pprPlugin->getPluginSettings()->accessKeyLifeTime();
+        if ($accessKeyLifeTime) {
+            import('lib.pkp.classes.security.AccessKeyManager');
+            $accessKeyManager = $this->pprObjectFactory->accessKeyManager();
+
+            $accessKey = $accessKeyManager->createKey($context->getId(), $reviewer->getId(), $reviewId, $accessKeyLifeTime);
+            $reviewUrlArgs = array_merge($reviewUrlArgs, array('reviewId' => $reviewId, 'key' => $accessKey));
+        }
+
         $email = $this->pprObjectFactory->submissionMailTemplate($submission, 'PPR_REVIEW_ACCEPTED');
         $email->setContext($context);
         $email->setFrom($context->getData('contactEmail'), $context->getData('contactName'));
@@ -60,7 +70,7 @@ class PPRReviewAcceptedService {
             'editorFullName' => $editorFullName,
             'editorFirstName' => $editorFirstName,
             'passwordResetUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'login', 'lostPassword'),
-            'submissionReviewUrl' => $dispatcher->url($request, ROUTE_PAGE, null, 'reviewer', 'submission', null, array('submissionId' => $review->getSubmissionId()))
+            'submissionReviewUrl' => $dispatcher->url($request, ROUTE_PAGE, null, 'reviewer', 'submission', null, $reviewUrlArgs)
         ]);
         $email->send();
     }

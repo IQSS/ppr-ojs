@@ -55,6 +55,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'authorSubmissionSurveyHtml' => [null, null],
             'authorDashboardSurveyHtml' => [null, null],
             'reviewerSurveyHtml' => [null, null],
+            'accessKeyLifeTime' => [null, 30],
         );
 
         foreach (PPRPluginSettings::CONFIG_VARS as $configVar => $varInfo) {

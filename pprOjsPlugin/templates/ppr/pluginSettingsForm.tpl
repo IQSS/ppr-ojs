@@ -19,6 +19,12 @@
 
 		<h2>{translate key="plugins.generic.pprPlugin.settings.section.featureFlags"}</h2>
 
+		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.core" list="true"}
+			<div class="subsection">
+				{fbvElement type="text" name="accessKeyLifeTime" label="plugins.generic.pprPlugin.settings.accessKeyLifeTime.label" id="accessKeyLifeTime" value=$accessKeyLifeTime}
+			</div>
+		{/fbvFormSection}
+
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.workflow" list="true"}
 			{fbvElement type="checkbox" name="displayWorkflowMessageEnabled" label="plugins.generic.pprPlugin.settings.workflowMessage.label" id="displayWorkflowMessageEnabled" checked=$displayWorkflowMessageEnabled}
 			{fbvElement type="checkbox" name="displayContributorsEnabled" label="plugins.generic.pprPlugin.settings.contributors.label" id="displayContributorsEnabled" checked=$displayContributorsEnabled}

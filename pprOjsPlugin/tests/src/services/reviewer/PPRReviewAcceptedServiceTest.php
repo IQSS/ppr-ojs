@@ -10,6 +10,7 @@ import('lib.pkp.classes.context.Context');
 import('lib.pkp.classes.linkAction.LinkAction');
 import('lib.pkp.classes.submission.reviewer.form.PKPReviewerReviewStep1Form');
 import('lib.pkp.classes.submission.reviewAssignment.ReviewAssignment');
+import('lib.pkp.classes.security.AccessKeyManager');
 import('lib.pkp.classes.security.UserGroup');
 import('lib.pkp.classes.security.UserGroupDAO');
 import('lib.pkp.classes.stageAssignment.StageAssignmentDAO');
@@ -21,7 +22,7 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
 
     public function setUp(): void {
         parent::setUp();
-        $this->defaultPPRPlugin = new PPRPluginMock(self::CONTEXT_ID, []);
+        $this->defaultPPRPlugin = new PPRPluginMock(self::CONTEXT_ID, ['accessKeyLifeTime' => 99]);
     }
 
     public function test_register_should_not_register_any_hooks_when_service_toggles_are_false() {
@@ -50,12 +51,35 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         $context->method('getData')->withConsecutive(['contactEmail'], ['contactName'])
             ->willReturnOnConsecutiveCalls('context@email.com', 'ContextName');
         $context->expects($this->once())->method('getLocalizedDateFormatShort')->willReturn('%Y-%m-%d');
-        $context->expects($this->once())->method('getId')->willReturn(self::CONTEXT_ID);
+        $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
         $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), 'EditorFull', 'EditorFirst');
+        $accessKeyManager = $this->createMock(AccessKeyManager::class);
+        $accessKeyManager->expects($this->once())->method('createKey');
+        $objectFactory->expects($this->once())->method('accessKeyManager')->willReturn($accessKeyManager);
 
         $target = new PPRReviewAcceptedService($this->defaultPPRPlugin, $objectFactory);
+        $target->sendReviewAcceptedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
+    }
+
+    public function test_sendReviewAcceptedConfirmationEmail_should_send_email_with_no_access_key_when_accessKeyLifeTime_has_not_been_setup() {
+        $form = $this->createReviewFormWithReviewer('Santana');
+
+        $this->getDispatcherMock()->method('url')->willReturnOnConsecutiveCalls('http://password/reset', 'http://submission/url');
+
+        $context = $this->createMock(Context::class);
+        $context->method('getData')->withConsecutive(['contactEmail'], ['contactName'])
+            ->willReturnOnConsecutiveCalls('context@email.com', 'ContextName');
+        $context->expects($this->once())->method('getLocalizedDateFormatShort')->willReturn('%Y-%m-%d');
+        $context->method('getId')->willReturn(self::CONTEXT_ID);
+        $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
+
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), 'EditorFull', 'EditorFirst');
+        $objectFactory->expects($this->never())->method('accessKeyManager');
+
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['accessKeyLifeTime' => 0]);
+        $target = new PPRReviewAcceptedService($pprPluginMock, $objectFactory);
         $target->sendReviewAcceptedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
     }
 
@@ -68,10 +92,13 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         $context->method('getData')->withConsecutive(['contactEmail'], ['contactName'])
             ->willReturnOnConsecutiveCalls('context@email.com', 'ContextName');
         $context->expects($this->once())->method('getLocalizedDateFormatShort')->willReturn('%Y-%m-%d');
-        $context->expects($this->once())->method('getId')->willReturn(self::CONTEXT_ID);
+        $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
         $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), null, null);
+        $accessKeyManager = $this->createMock(AccessKeyManager::class);
+        $accessKeyManager->expects($this->once())->method('createKey');
+        $objectFactory->expects($this->once())->method('accessKeyManager')->willReturn($accessKeyManager);
 
         $target = new PPRReviewAcceptedService($this->defaultPPRPlugin, $objectFactory);
         $target->sendReviewAcceptedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
@@ -82,6 +109,7 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
 
         $objectFactory = $this->createMock(PPRObjectFactory::class);
         $objectFactory->expects($this->never())->method('submissionMailTemplate');
+        $objectFactory->expects($this->never())->method('accessKeyManager');
 
         $target = new PPRReviewAcceptedService($this->defaultPPRPlugin, $objectFactory);
         $target->sendReviewAcceptedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);

@@ -12,6 +12,11 @@ class PPRObjectFactory {
         return new SubmissionMailTemplate($submission, $emailKey, $locale, $context, $includeSignature);
     }
 
+    public function accessKeyManager() {
+        import('lib.pkp.classes.security.AccessKeyManager');
+        return new AccessKeyManager();
+    }
+
     public function submissionUtil() {
         return new PPRSubmissionUtil();
     }

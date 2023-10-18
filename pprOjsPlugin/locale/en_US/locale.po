@@ -23,6 +23,9 @@ msgstr "Settings and Feature Flags for the IQSS Peer Pre-Review Program Plugin."
 msgid "plugins.generic.pprPlugin.settings.section.featureFlags"
 msgstr "Feature Flags"
 
+msgid "plugins.generic.pprPlugin.settings.section.core"
+msgstr "Core Settings"
+
 msgid "plugins.generic.pprPlugin.settings.section.workflow"
 msgstr "Submission / Review Workflow"
 
@@ -167,8 +170,14 @@ msgstr "HTML for the reviewers survey widget"
 msgid "plugins.generic.pprPlugin.settings.scheduledTasksReset.label"
 msgstr "Trigger the execution of notifications from scheduled task"
 
+msgid "plugins.generic.pprPlugin.settings.accessKeyLifeTime.label"
+msgstr "Number of days for the URL access key to be valid"
+
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.invalid"
 msgstr "The number of days allowed are values from -20 to 20"
+
+msgid "plugins.generic.pprPlugin.settings.accessKeyLifeTime.invalid"
+msgstr "The number of days allowed are values from 0 to 100"
 
 msgid "user.category"
 msgstr "Institutional Position"

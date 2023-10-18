@@ -21,11 +21,13 @@ class PPRPluginSettingsForm extends Form {
         //IMPORT SETTINGS TO USE CONFIG VARIABLES
         $this->plugin->import('settings.PPRPluginSettings');
         $this->plugin->import('settings.PPRReviewReminderDaysValidator');
+        $this->plugin->import('settings.PPRAccessKeyLifeTimeValidator');
 
         parent::__construct($plugin->getTemplateResource('ppr/pluginSettingsForm.tpl'));
         $this->addCheck(new FormValidatorPost($this));
         $this->addCheck(new FormValidatorCSRF($this));
         $this->addCheck(new PPRReviewReminderDaysValidator($this));
+        $this->addCheck(new PPRAccessKeyLifeTimeValidator($this));
     }
 
     /**

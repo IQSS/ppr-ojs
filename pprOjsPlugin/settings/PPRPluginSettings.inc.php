@@ -52,6 +52,8 @@ class PPRPluginSettings {
         'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
         'addReviewerEmailServiceEnabled' => ['bool', null],
         'unassignReviewerEmailOverrideEnabled' => ['bool', null],
+
+        'accessKeyLifeTime' => ['int', 30],
     );
     private $pprPlugin;
 
@@ -232,6 +234,11 @@ class PPRPluginSettings {
 
     public function reviewerSurveyHtml() {
         return $this->getValue('reviewerSurveyHtml');
+    }
+
+
+    public function accessKeyLifeTime() {
+        return $this->getValue('accessKeyLifeTime');
     }
 
     private function getValue($propertyName) {

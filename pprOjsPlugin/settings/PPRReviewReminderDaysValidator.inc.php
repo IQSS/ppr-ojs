@@ -17,7 +17,7 @@ class PPRReviewReminderDaysValidator extends FormValidator {
         $value = $this->getFieldValue();
         $reminderDays = array_map('intval', explode(',', $value));
         foreach ($reminderDays as $reminderDay) {
-            if (abs($reminderDay) >= 20) {
+            if (abs($reminderDay) > 20) {
                 return false;
             }
         }

@@ -54,6 +54,7 @@ class PPRPluginSettings {
         'unassignReviewerEmailOverrideEnabled' => ['bool', null],
 
         'accessKeyLifeTime' => ['int', 30],
+        'fileUploadTextOverrideEnabled' => ['bool', null],
     );
     private $pprPlugin;
 
@@ -198,6 +199,10 @@ class PPRPluginSettings {
 
     public function reviewUploadFileValidationEnabled() {
         return $this->getValue('reviewUploadFileValidationEnabled');
+    }
+
+    public function fileUploadTextOverrideEnabled() {
+        return $this->getValue('fileUploadTextOverrideEnabled');
     }
 
     public function reviewerRegistrationEmailDisabled() {

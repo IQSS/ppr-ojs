@@ -143,6 +143,10 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
             'lib/pkp/templates/reviewer/review/reviewCompleted.tpl',
         ];
 
+        $expectedTemplatesForSetting['fileUploadTextOverrideEnabled'] = [
+            'lib/pkp/templates/controllers/wizard/fileUpload/fileUploadWizard.tpl',
+        ];
+
         $expectedOverriddenTemplates = array_merge(...array_values($expectedTemplatesForSetting));
         $target = new PPRTemplateOverrideService($this->pprPluginMock);
         // ENSURE ALL CONFIGURED TEMPLATES ARE EXPECTED

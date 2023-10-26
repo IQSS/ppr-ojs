@@ -99,6 +99,10 @@ class PPRTemplateOverrideService {
         if ($this->pprPlugin->getPluginSettings()->reviewerSurveyHtml()) {
             $this->overriddenTemplates[] = 'lib/pkp/templates/reviewer/review/reviewCompleted.tpl';
         }
+
+        if ($this->pprPlugin->getPluginSettings()->fileUploadTextOverrideEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/controllers/wizard/fileUpload/fileUploadWizard.tpl';
+        }
     }
 
     function register() {

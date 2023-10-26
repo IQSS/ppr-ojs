@@ -170,6 +170,9 @@ msgstr "HTML for the reviewers survey widget"
 msgid "plugins.generic.pprPlugin.settings.scheduledTasksReset.label"
 msgstr "Trigger the execution of notifications from scheduled task"
 
+msgid "plugins.generic.pprPlugin.settings.fileUploadTextOverrideEnabled.label"
+msgstr "Add override for file upload component buttons text"
+
 msgid "plugins.generic.pprPlugin.settings.accessKeyLifeTime.label"
 msgstr "Number of days for the URL access key to be valid"
 
@@ -286,3 +289,12 @@ msgstr "Click here to provide feedback"
 
 msgid "surveys.ppr.author.hideDetails"
 msgstr "Hide feedback form"
+
+msgid "fileUpload.ppr.cancel"
+msgstr "Cancel"
+
+msgid "fileUpload.ppr.continue"
+msgstr "Continue"
+
+msgid "fileUpload.ppr.finish"
+msgstr "Continue"

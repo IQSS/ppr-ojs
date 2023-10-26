@@ -20,6 +20,7 @@
 		<h2>{translate key="plugins.generic.pprPlugin.settings.section.featureFlags"}</h2>
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.core" list="true"}
+			{fbvElement type="checkbox" name="fileUploadTextOverrideEnabled" label="plugins.generic.pprPlugin.settings.fileUploadTextOverrideEnabled.label" id="fileUploadTextOverrideEnabled" checked=$fileUploadTextOverrideEnabled}
 			<div class="subsection">
 				{fbvElement type="text" name="accessKeyLifeTime" label="plugins.generic.pprPlugin.settings.accessKeyLifeTime.label" id="accessKeyLifeTime" value=$accessKeyLifeTime}
 			</div>

@@ -31,7 +31,7 @@ class PPRReviewAcceptedService {
         $userDao = DAORegistry::getDAO('UserDAO');
         $reviewer = $userDao->getById($reviewerId);
         if (!$reviewer) {
-            error_log("PPR[sendReviewAcceptedEmail] review=$reviewId submissionId=$submissionId message=no author found");
+            error_log("PPR[sendReviewAcceptedEmail] review=$reviewId submissionId=$submissionId message=no reviewer found");
             return;
         }
 

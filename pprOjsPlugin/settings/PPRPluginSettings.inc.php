@@ -48,6 +48,7 @@ class PPRPluginSettings {
 
         'reviewerRegistrationEmailDisabled' => ['bool', null],
         'reviewAcceptedEmailEnabled' => ['bool', null],
+        'reviewSubmittedEmailEnabled' => ['bool', null],
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
         'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
         'addReviewerEmailServiceEnabled' => ['bool', null],
@@ -211,6 +212,10 @@ class PPRPluginSettings {
 
     public function reviewAcceptedEmailEnabled() {
         return $this->getValue('reviewAcceptedEmailEnabled');
+    }
+
+    public function reviewSubmittedEmailEnabled() {
+        return $this->getValue('reviewSubmittedEmailEnabled');
     }
 
     public function submissionConfirmationContributorsEmailDisabled() {

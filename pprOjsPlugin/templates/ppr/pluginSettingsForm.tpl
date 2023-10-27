@@ -84,6 +84,7 @@
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.emails" list="true"}
 			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
 			{fbvElement type="checkbox" name="reviewAcceptedEmailEnabled" label="plugins.generic.pprPlugin.settings.reviewAcceptedEmailEnabled.label" id="reviewAcceptedEmailEnabled" checked=$reviewAcceptedEmailEnabled}
+			{fbvElement type="checkbox" name="reviewSubmittedEmailEnabled" label="plugins.generic.pprPlugin.settings.reviewSubmittedEmailEnabled.label" id="reviewSubmittedEmailEnabled" checked=$reviewSubmittedEmailEnabled}
 			{fbvElement type="checkbox" name="reviewReminderEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label" id="reviewReminderEmailOverrideEnabled" checked=$reviewReminderEmailOverrideEnabled}
 			{fbvElement type="checkbox" name="reviewAddEditorToBccEnabled" label="plugins.generic.pprPlugin.settings.reviewAddEditorToBccEnabled.label" id="reviewAddEditorToBccEnabled" checked=$reviewAddEditorToBccEnabled}
 			{fbvElement type="checkbox" name="submissionApprovedEmailEnabled" label="plugins.generic.pprPlugin.settings.submissionApprovedEmailEnabled.label" id="submissionApprovedEmailEnabled" checked=$submissionApprovedEmailEnabled}

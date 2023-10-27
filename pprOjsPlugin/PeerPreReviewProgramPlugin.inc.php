@@ -62,6 +62,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $reviewAcceptedService = new PPRReviewAcceptedService($this);
             $reviewAcceptedService->register();
 
+            $this->import('services.reviewer.PPRReviewSubmittedService');
+            $reviewSubmittedService = new PPRReviewSubmittedService($this);
+            $reviewSubmittedService->register();
+
             $this->import('services.email.PPRDisableEmailService');
             $disableEmailService = new PPRDisableEmailService($this);
             $disableEmailService->register();

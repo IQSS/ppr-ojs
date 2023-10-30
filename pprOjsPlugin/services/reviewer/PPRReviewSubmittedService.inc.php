@@ -39,6 +39,14 @@ class PPRReviewSubmittedService {
         $context = $request->getContext();
         $dateFormatShort = $context->getLocalizedDateFormatShort();
 
+        $editor = $this->pprObjectFactory->submissionUtil()->getSubmissionEditor($submissionId, $context->getId());
+        $editorFullName = 'N/A';
+        $editorFirstName = 'N/A';
+        if($editor) {
+            $editorFullName = htmlspecialchars($editor->getFullName());
+            $editorFirstName = htmlspecialchars($editor->getLocalizedGivenName());
+        }
+
         $email = $this->pprObjectFactory->submissionMailTemplate($submission, 'PPR_REVIEW_SUBMITTED');
         $email->setContext($context);
         $email->setFrom($context->getData('contactEmail'), $context->getData('contactName'));
@@ -48,6 +56,8 @@ class PPRReviewSubmittedService {
             'reviewerFirstName' => htmlspecialchars($reviewer->getLocalizedGivenName()),
             'reviewerUserName' => htmlspecialchars($reviewer->getUsername()),
             'reviewDueDate' => strftime($dateFormatShort, strtotime($review->getDateDue())),
+            'editorFullName' => $editorFullName,
+            'editorFirstName' => $editorFirstName,
         ]);
         $email->send();
     }

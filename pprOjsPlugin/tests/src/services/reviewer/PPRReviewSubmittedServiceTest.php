@@ -53,27 +53,9 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerName);
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerName, 'EditorName');
 
         $target = new PPRReviewSubmittedService($this->defaultPPRPlugin, $objectFactory);
-        $target->sendReviewSubmittedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
-    }
-
-    public function test_sendReviewSubmittedConfirmationEmail_should_send_email_with_no_access_key_when_accessKeyLifeTime_has_not_been_setup() {
-        $reviewerName = 'JohnSmith';
-        $form = $this->createReviewFormWithReviewer($reviewerName);
-
-        $context = $this->createMock(Context::class);
-        $context->method('getData')->withConsecutive(['contactEmail'], ['contactName'])
-            ->willReturnOnConsecutiveCalls('context@email.com', 'ContextName');
-        $context->expects($this->once())->method('getLocalizedDateFormatShort')->willReturn('%Y-%m-%d');
-        $context->method('getId')->willReturn(self::CONTEXT_ID);
-        $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
-
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerName);
-
-        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['accessKeyLifeTime' => 0]);
-        $target = new PPRReviewSubmittedService($pprPluginMock, $objectFactory);
         $target->sendReviewSubmittedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
     }
 
@@ -88,7 +70,7 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerName);
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerName, null);
 
         $target = new PPRReviewSubmittedService($this->defaultPPRPlugin, $objectFactory);
         $target->sendReviewSubmittedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
@@ -129,9 +111,19 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         return $form;
     }
 
-    private function setSendEmailAssertions($context, $submission, $reviewerName) {
+    private function setSendEmailAssertions($context, $submission, $reviewerName, $editorName) {
         $objectFactory = $this->createMock(PPRObjectFactory::class);
-        $objectFactory->expects($this->never())->method('submissionUtil');
+        $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
+
+        $editor = null;
+        if($editorName) {
+            $editor = $this->getTestUtil()->createUser($this->getRandomId(), $editorName, $editorName);
+        } else {
+            // SET THE EXPECTED VALUES WHEN NO EDITOR IS FOUND
+            $editorName = 'N/A';
+        }
+        $submissionUtil->expects($this->once())->method('getSubmissionEditor')->willReturn($editor);
+        $objectFactory->expects($this->once())->method('submissionUtil')->willReturn($submissionUtil);
 
         $submissionTemplate = $this->createMock(SubmissionMailTemplate::class);
         $objectFactory->expects($this->once())->method('submissionMailTemplate')->with($submission, 'PPR_REVIEW_SUBMITTED')->willReturn($submissionTemplate);
@@ -143,6 +135,8 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
             'reviewerFirstName' => $reviewerName,
             'reviewerUserName' => strtolower($reviewerName),
             'reviewDueDate' => '2099-12-31',
+            'editorFullName' => $editorName,
+            'editorFirstName' => $editorName,
         ]);
         $submissionTemplate->expects($this->once())->method('send');
 

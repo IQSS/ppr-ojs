@@ -126,6 +126,54 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
         $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
     }
 
+    public function test_registerReviewDueDateWithFilesReviewerNotification_inserts_the_expected_notification() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION;
+        $reviewerId = 100;
+        $reviewId = 250;
+
+        $this->addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $target->registerReviewDueDateWithFilesReviewerNotification($reviewerId, $reviewId);
+    }
+
+    public function test_getReviewDueDateWithFilesReviewerNotifications_calls_NotificationDAO() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION;
+        $reviewerId = 123;
+        $reviewId = 100;
+        $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $result = $target->getReviewDueDateWithFilesReviewerNotifications($reviewerId, $reviewId);
+        $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
+    }
+
+    public function test_registerReviewPendingWithFilesReviewerNotification_inserts_the_expected_notification() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION;
+        $reviewerId = 100;
+        $reviewId = 250;
+
+        $this->addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $target->registerReviewPendingWithFilesReviewerNotification($reviewerId, $reviewId);
+    }
+
+    public function test_getReviewPendingWithFilesReviewerNotifications_calls_NotificationDAO() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION;
+        $reviewerId = 123;
+        $reviewId = 100;
+        $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $result = $target->getReviewPendingWithFilesReviewerNotifications($reviewerId, $reviewId);
+        $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
+    }
+
     private function addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $userId) {
         $notificationDao = $this->createMock(NotificationDAO::class);
         $notificationDao->expects($this->once())->method('newDataObject')->willReturn(new Notification());

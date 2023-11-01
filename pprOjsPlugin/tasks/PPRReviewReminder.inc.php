@@ -10,8 +10,6 @@ require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
  */
 class PPRReviewReminder extends PPRScheduledTask {
 
-    const EMAIL_TEMPLATE = 'PPR_REVIEW_DUE_DATE_REVIEWER';
-
     function __construct($args) {
         parent::__construct($args);
     }
@@ -23,17 +21,16 @@ class PPRReviewReminder extends PPRScheduledTask {
         return 'PPRReviewDueDateReviewerNotification';
     }
 
-    function sendReminder ($reviewAssignment, $submission, $context) {
+    function sendReminder ($reviewAssignment, $submission, $emailTemplate, $context) {
         $reviewId = $reviewAssignment->getId();
 
         $reviewer = $this->getUser($reviewAssignment->getReviewerId());
         if (!isset($reviewer)) return false;
 
         import('lib.pkp.classes.mail.SubmissionMailTemplate');
-        $emailKey = self::EMAIL_TEMPLATE;
         $reviewerAccessKeysEnabled = $context->getData('reviewerAccessKeysEnabled');
 
-        $email = new SubmissionMailTemplate($submission, $emailKey, $context->getPrimaryLocale(), $context, false);
+        $email = new SubmissionMailTemplate($submission, $emailTemplate, $context->getPrimaryLocale(), $context, false);
         $email->setContext($context);
         $email->setReplyTo(null);
         $email->addRecipient($reviewer->getEmail(), $reviewer->getFullName());
@@ -119,16 +116,23 @@ class PPRReviewReminder extends PPRScheduledTask {
 
         $this->log($context, 'Processing Reviews - $incompleteAssignments=' . count($incompleteAssignments));
 
-        $sentNotifications = 0;
+        $dueWithFilesNotifications = 0;
+        $dueNotifications = 0;
+        $pendingWithFilesNotifications = 0;
+        $reviewAssignmentsAccepted = 0;
         $reviewAssignmentsDue = 0;
         foreach ($incompleteAssignments as $reviewAssignment) {
             // Fetch the submission
-            $submission = $this->getSubmission($reviewAssignment->getSubmissionId());
+            $submissionId = $reviewAssignment->getSubmissionId();
+            $reviewId = $reviewAssignment->getId();
+            $submission = $this->getSubmission($submissionId);
             if (!$submission) continue;
             if ($submission->getStatus() != STATUS_QUEUED) continue;
+            if (!$reviewAssignment->getDateConfirmed()) continue;
 
+            $reviewAssignmentsAccepted++;
             $reviewAssignmentIsDue = false;
-            if ($reviewAssignment->getDateConfirmed() && $reviewAssignment->getDateDue()) {
+            if ($reviewAssignment->getDateDue()) {
                 $checkDate = strtotime($reviewAssignment->getDateDue());
                 if (time() - $checkDate > 60 * 60 * 24 * $reviewReminderReviewerDaysFromDueDate) {
                     $reviewAssignmentIsDue = true;
@@ -136,17 +140,40 @@ class PPRReviewReminder extends PPRScheduledTask {
                 }
             }
 
-            if (!$reviewAssignmentIsDue) continue;
+            // CHECK IF REVIEW HAS FILES
+            $reviewFilesCount = count(iterator_to_array(Services::get('submissionFile')->getMany([
+                    'submissionIds' => [$submissionId],
+                    'assocTypes' => [ASSOC_TYPE_REVIEW_ASSIGNMENT],
+                    'assocIds' => [$reviewId]
+                ])));
 
-            $reviewNotifications = $pprNotificationRegistry->getReviewDueDateReviewerNotifications($reviewAssignment->getReviewerId(), $reviewAssignment->getId());
-            if (empty($reviewNotifications)) {
-                $this->sendReminder($reviewAssignment, $submission, $context);
-                $pprNotificationRegistry->registerReviewDueDateReviewerNotification($reviewAssignment->getReviewerId(), $reviewAssignment->getId());
-                $sentNotifications++;
+            $this->log($context, "Pending Review Files - submission=$submissionId review=$reviewId due=$reviewAssignmentIsDue files=$reviewFilesCount");
+
+            if ($reviewAssignmentIsDue && $reviewFilesCount) {
+                $notifications = $pprNotificationRegistry->getReviewDueDateWithFilesReviewerNotifications($reviewAssignment->getReviewerId(), $reviewId);
+                if (empty($notifications)) {
+                    $this->sendReminder($reviewAssignment, $submission, 'PPR_REVIEW_DUE_DATE_WITH_FILES_REVIEWER', $context);
+                    $pprNotificationRegistry->registerReviewDueDateWithFilesReviewerNotification($reviewAssignment->getReviewerId(), $reviewId);
+                    $dueWithFilesNotifications++;
+                }
+            } elseif ($reviewAssignmentIsDue) {
+                $reviewNotifications = $pprNotificationRegistry->getReviewDueDateReviewerNotifications($reviewAssignment->getReviewerId(), $reviewId);
+                if (empty($reviewNotifications)) {
+                    $this->sendReminder($reviewAssignment, $submission, 'PPR_REVIEW_DUE_DATE_REVIEWER', $context);
+                    $pprNotificationRegistry->registerReviewDueDateReviewerNotification($reviewAssignment->getReviewerId(), $reviewId);
+                    $dueNotifications++;
+                }
+            } elseif ($reviewFilesCount) {
+                $pendingReviewWithFilesNotifications = $pprNotificationRegistry->getReviewPendingWithFilesReviewerNotifications($reviewAssignment->getReviewerId(), $reviewId);
+                if (empty($pendingReviewWithFilesNotifications)) {
+                    $this->sendReminder($reviewAssignment, $submission, 'PPR_REVIEW_PENDING_WITH_FILES_REVIEWER', $context);
+                    $pprNotificationRegistry->registerReviewPendingWithFilesReviewerNotification($reviewAssignment->getReviewerId(), $reviewId);
+                    $pendingWithFilesNotifications++;
+                }
             }
         }
 
-        $this->log($context, "Completed - reviewAssignmentsDue=$reviewAssignmentsDue sentNotifications=$sentNotifications");
+        $this->log($context, "Completed - reviewAssignmentsAccepted=$reviewAssignmentsAccepted reviewAssignmentsDue=$reviewAssignmentsDue dueWithFilesNotifications=$dueWithFilesNotifications dueNotifications=$dueNotifications pendingWithFilesNotifications=$pendingWithFilesNotifications");
     }
 }
 

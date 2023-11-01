@@ -6,6 +6,8 @@ class PPRTaskNotificationRegistry {
     public const REVIEW_RESPONSE_DUE_DATE_EDITOR_NOTIFICATION = 80880100;
     public const REVIEW_DUE_DATE_EDITOR_NOTIFICATION = 80880200;
     public const REVIEW_DUE_DATE_REVIEWER_NOTIFICATION = 80880400;
+    public const REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION = 80880500;
+    public const REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION = 80880600;
 
     private $notificationDao;
     private $contextId;
@@ -30,6 +32,24 @@ class PPRTaskNotificationRegistry {
 
     public function getReviewDueDateReviewerNotifications($reviewerId, $reviewId) {
         $items = $this->getNotifications(self::REVIEW_DUE_DATE_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
+        return $items->toArray();
+    }
+
+    public function registerReviewDueDateWithFilesReviewerNotification($reviewerId, $reviewId) {
+        return $this->saveNotification(self::REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
+    }
+
+    public function getReviewDueDateWithFilesReviewerNotifications($reviewerId, $reviewId) {
+        $items = $this->getNotifications(self::REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
+        return $items->toArray();
+    }
+
+    public function registerReviewPendingWithFilesReviewerNotification($reviewerId, $reviewId) {
+        return $this->saveNotification(self::REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
+    }
+
+    public function getReviewPendingWithFilesReviewerNotifications($reviewerId, $reviewId) {
+        $items = $this->getNotifications(self::REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
         return $items->toArray();
     }
 

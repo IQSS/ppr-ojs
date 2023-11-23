@@ -243,6 +243,21 @@ form#pprPluginSettingsForm div.subsection {
 }
 
 /**
+  SEND TO AUTHOR ATTACHMENTS
+ */
+span.ppr-span-block {
+	display: block;
+}
+
+span.ppr-attachments-new {
+	color: #d00a6c;
+}
+
+span.ppr-attachments-sent {
+	color: black;
+}
+
+/**
  CUSTOMIZATIONS IMPLEMENTED BY PKP
  
  Removes user homepage/orcid id/include in browse list from contributor settings

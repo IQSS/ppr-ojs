@@ -41,6 +41,7 @@ class PPRPluginSettings {
         'reviewReminderEmailOverrideEnabled' => ['bool', null],
         'reviewAddEditorToBccEnabled' => ['bool', null],
         'reviewUploadFileValidationEnabled' => ['bool', null],
+        'reviewAttachmentsOverrideEnabled' => ['bool', null],
 
         'authorSubmissionSurveyHtml' => ['string', null],
         'authorDashboardSurveyHtml' => ['string', null],
@@ -200,6 +201,10 @@ class PPRPluginSettings {
 
     public function reviewUploadFileValidationEnabled() {
         return $this->getValue('reviewUploadFileValidationEnabled');
+    }
+
+    public function reviewAttachmentsOverrideEnabled() {
+        return $this->getValue('reviewAttachmentsOverrideEnabled');
     }
 
     public function fileUploadTextOverrideEnabled() {

@@ -7,18 +7,6 @@ import('lib.pkp.classes.controllers.grid.DataObjectGridCellProvider');
  */
 class PPRAuthorGridCellProvider extends DataObjectGridCellProvider {
 
-    /** @var Publication The publication this author is related to */
-    private $_publication;
-
-    /**
-     * Constructor
-     *
-     * @param Publication $publication
-     */
-    public function __construct($publication) {
-        $this->_publication = $publication;
-    }
-
     //
     // Template methods from GridCellProvider
     //

@@ -1,18 +1,18 @@
 # Peer Pre-Review Program OJS Customizations Plugin
-OJS plugin to implement the customizations for the Harvard Peer Pre-Review Program.
+OJS plugins to implement the customizations for the Harvard Peer Pre-Review Program.
 
 ## Production Release
-In order to deploy into the PKP servers, we need to create ``tar.gz`` file with the plugins and
+In order to deploy into the PKP servers, we need to create ``tar.gz`` file with the plugin folder and
 send it to PKP support: ``support@publicknowledgeproject.org``. They will review the code and deploy into the production servers.
 
 We use the ``./VERSION`` file to generate the release version number.
-This version number is used in the plugin ``<plugin>/version.xml`` file and in the generated ``tar.gz`` artifact name.
+This version number is then used in the plugin ``<plugin>/version.xml`` file and in the generated ``tar.gz`` artifact name.
 
 To create a release, execute the Makefile target:
 ```
 make release
 ```
-This will increase the version number, update the PPR plugins version data, and create the ``tar.gz`` under the project ``releases`` folder. 
+This will increase the version number, update the PPR plugins version data, and create the ``tar.gz`` files under the project ``releases`` folder. 
 
 ## Installation
 Use the OJS ``Upload A New Plugin`` feature in the ``Website > Plugins`` section for the first time deployment.
@@ -69,15 +69,21 @@ Execute the following target to delete all data files:
 ``make clean``
 
 ## Automated testing
+There is a suite of automated tests that run automatically in GitHub when a PR is created or after a commit in the ``main`` branch.
 
+The tests used a custom Docker image to execute the tests: ``hmdc/ppr_ojs_test``. More information of how to build this image in the section below.
+
+These tests can be executed locally with the make target test:  
+``make test``
+``make test_report``
 
 ### Build the PPR test Docker image
-Build test image with the PHP, PHPUnit and the OJS source code.
+Build test image with PHP, PHPUnit and the OJS source code.
 ``make docker-test``
 
 The Docker image is based on the OJS installation images from https://gitlab.com/pkp-org/docker/ojs
 
-The PPR test Docker image is located: ``environment/Dockerfile.test``
+The definition of the PPR test Docker image is located under: ``environment/Dockerfile.test``
 
 # Technical Notes
 ## Plugin Development
@@ -139,3 +145,25 @@ Report plugins are very simple, we just need to create the report in a method ca
 This method will be executed when the report is launched within the user interface.
 
 See the ``pprReportPlugin`` folder for more details on how to create a report plugin.
+
+### Custom Email Templates
+These are the custom email templates created for the PPR program.
+
+ * ``PPR_SUBMISSIONS_REPORT_TASK`` => pprReviewsReportPlugin/taks/PPREditorReportTask.inc.php
+ * ``PPR_REVIEW_DUE_DATE_EDITOR`` => pprOjsPlugin/tasks/PPRReviewDueDateEditorNotification.inc.php
+ * ``PPR_REVIEW_DUE_DATE_REVIEWER`` => pprOjsPlugin/tasks/PPRReviewReminder.inc.php
+ * ``PPR_REVIEW_REQUEST_DUE_DATE_REVIEWER`` => pprOjsPlugin/services/email/PPRReviewReminderEmailService.inc.php
+ * ``PPR_REQUESTED_REVIEWER_UNASSIGN`` => pprOjsPlugin/services/reviewer/PPRUnassignReviewerForm.inc.php
+ * ``PPR_CONFIRMED_REVIEWER_UNASSIGN`` => pprOjsPlugin/services/reviewer/PPRUnassignReviewerForm.inc.php
+ * ``PPR_SUBMISSION_APPROVED`` => pprOjsPlugin/services/submission/PPRSubmissionActionsService.inc.php
+ * ``PPR_REVIEW_ACCEPTED`` => pprOjsPlugin/services/reviewer/PPRReviewAcceptedService.inc.php
+ * ``PPR_REVIEW_SUBMITTED`` => pprOjsPlugin/services/reviewer/PPRReviewSubmittedService.inc.php
+ * ``PPR_REVIEW_DUE_DATE_WITH_FILES_REVIEWER`` => pprOjsPlugin/tasks/PPRReviewReminder.inc.php
+ * ``PPR_REVIEW_PENDING_WITH_FILES_REVIEWER`` => pprOjsPlugin/tasks/PPRReviewReminder.inc.php
+
+
+
+
+
+
+

@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/PPRAuthorGridCellProvider.inc.php');
 class PPRAuthorGridHandler extends AuthorGridHandler {
 
     function initialize($request, $args = null) {
-        $cellProvider = new PPRAuthorGridCellProvider($this->getPublication());
+        $cellProvider = new PPRAuthorGridCellProvider();
         $this->addColumn(new GridColumn('name')); //NEEDED TO KEEP THE ORDER AND MAKE INSTITUTION THE SECOND COLUMN
         $this->addColumn(
             new GridColumn(

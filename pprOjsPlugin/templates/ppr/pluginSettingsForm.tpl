@@ -55,6 +55,7 @@
 			{fbvElement type="checkbox" name="hideReviewFormDefaultEnabled" label="plugins.generic.pprPlugin.settings.hideReviewFormDefault.label" id="hideReviewFormDefaultEnabled" checked=$hideReviewFormDefaultEnabled}
 			{fbvElement type="checkbox" name="hideReviewRecommendationEnabled" label="plugins.generic.pprPlugin.settings.reviewRecommendation.label" id="hideReviewRecommendationEnabled" checked=$hideReviewRecommendationEnabled}
 			{fbvElement type="checkbox" name="reviewUploadFileValidationEnabled" label="plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label" id="reviewUploadFileValidationEnabled" checked=$reviewUploadFileValidationEnabled}
+			{fbvElement type="checkbox" name="reviewAttachmentsOverrideEnabled" label="plugins.generic.pprPlugin.settings.reviewAttachmentsOverrideEnabled.label" id="reviewAttachmentsOverrideEnabled" checked=$reviewAttachmentsOverrideEnabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.submissions" list="true"}

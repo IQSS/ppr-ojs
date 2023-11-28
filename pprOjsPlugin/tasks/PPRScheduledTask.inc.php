@@ -58,11 +58,13 @@ abstract class PPRScheduledTask extends ScheduledTask {
 
     public function getSubmissionEditor($submissionId, $contextId) {
         $submissionEditors = $this->getPPRObjectFactory()->submissionUtil()->getSubmissionEditors($submissionId, $contextId);
+        //GET FIRST EDITOR
         return empty($submissionEditors) ? null : reset($submissionEditors);
     }
 
-    public function getAuthor($submissionId) {
+    public function getSubmissionAuthor($submissionId) {
         $submissionAuthors = $this->getPPRObjectFactory()->submissionUtil()->getSubmissionAuthors($submissionId);
+        //GET FIRST AUTHOR
         return empty($submissionAuthors) ? null : reset($submissionAuthors);
     }
 

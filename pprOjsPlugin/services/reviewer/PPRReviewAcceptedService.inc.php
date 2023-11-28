@@ -41,6 +41,7 @@ class PPRReviewAcceptedService {
         $dateFormatShort = $context->getLocalizedDateFormatShort();
 
         $submissionEditors = $this->pprObjectFactory->submissionUtil()->getSubmissionEditors($submissionId, $context->getId());
+        //GET FIRST EDITOR
         $editor = empty($submissionEditors) ? null : reset($submissionEditors);
         $editorFullName = 'N/A';
         $editorFirstName = 'N/A';

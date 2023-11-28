@@ -21,7 +21,7 @@ class PPRReviewSentAuthorNotification extends PPRScheduledTask {
 
     function sendNotification ($reviewFile, $context) {
         $submission = $this->getSubmission($reviewFile->getData('submissionId'));
-        $author = $this->getAuthor($submission->getId());
+        $author = $this->getSubmissionAuthor($submission->getId());
 
         if (!$author) {
             $this->log($context, sprintf("Send Notification - No author assigned submissionId=%s reviewAssigment=%s", $submission->getId(), $reviewFile->getData('assocId')));

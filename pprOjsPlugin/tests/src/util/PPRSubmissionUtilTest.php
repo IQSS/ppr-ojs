@@ -3,6 +3,8 @@
 import('tests.src.PPRTestCase');
 import('tests.src.mocks.PPRPluginMock');
 
+import('classes.submission.SubmissionDAO');
+
 class PPRSubmissionUtilTest extends PPRTestCase {
 
     const CONTEXT_ID = 998765;
@@ -68,52 +70,126 @@ class PPRSubmissionUtilTest extends PPRTestCase {
         $this->assertNull($result);
     }
 
-    public function test_getSubmissionEditor_returns_null_when_no_editor_group_available() {
+    public function test_getSubmissionEditors_returns_empty_array_when_no_editor_group_available() {
         $submissionId = $this->getRandomId();
         $this->createUserGroups([]);
 
         $target = new PPRSubmissionUtil();
-        $result = $target->getSubmissionEditor($submissionId, self::CONTEXT_ID);
+        $result = $target->getSubmissionEditors($submissionId, self::CONTEXT_ID);
 
-        $this->assertNull($result);
+        $this->assertEmpty($result);
     }
 
-    public function test_getSubmissionEditor_returns_null_when_submission_has_no_editor_assigment() {
+    public function test_getSubmissionEditors_returns_empty_array_when_submission_has_no_editor_assigment() {
         $submissionId = $this->getRandomId();
         $this->createUserGroups([9999 => __('tasks.ppr.editor.groupName')]);
-        $this->createAssignments($submissionId, [1234, 4567]);
+        $this->createAssignments($submissionId, [], 9999);
         $userDao = $this->createMock(UserDAO::class);
         DAORegistry::registerDAO('UserDAO', $userDao);
         $userDao->expects($this->never())->method($this->anything());
 
         $target = new PPRSubmissionUtil();
-        $result = $target->getSubmissionEditor($submissionId, self::CONTEXT_ID);
+        $result = $target->getSubmissionEditors($submissionId, self::CONTEXT_ID);
+
+        $this->assertEmpty($result);
+    }
+
+    public function test_getSubmissionEditors_returns_empty_array_when_submission_editor_assignment_cannot_be_found() {
+        $submissionId = $this->getRandomId();
+        $this->createUserGroups([9999 => __('tasks.ppr.editor.groupName')]);
+        $this->createAssignments($submissionId, [9999], 9999);
+        $this->createUser(9999, null);
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getSubmissionEditors($submissionId, self::CONTEXT_ID);
+
+        $this->assertEmpty($result);
+    }
+
+    public function test_getSubmissionEditors_returns_editor_user_when_editor_group_available_and_submission_has_editor_assignment() {
+        $submissionId = $this->getRandomId();
+        $this->createUserGroups([9999 => __('tasks.ppr.editor.groupName')]);
+        $this->createAssignments($submissionId, [9999], 9999);
+        $expectedUser = $this->createUser(9999, 'EditorName');
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getSubmissionEditors($submissionId, self::CONTEXT_ID);
+
+        $this->assertEquals([$expectedUser], $result);
+    }
+
+    public function test_getSubmissionAuthors_returns_author_user_when_submission_has_author_assignment() {
+        $submissionId = $this->getRandomId();
+        $userId = $this->getRandomId();
+        $this->createAuthorAssignments($submissionId, [$userId]);
+        $expectedUser = $this->createUser($userId, 'AuthorName');
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getSubmissionAuthors($submissionId);
+
+        $this->assertEquals([$expectedUser], $result);
+    }
+
+    public function test_getSubmissionAuthors_returns_empty_array_when_submission_does_not_have_author_assignment() {
+        $submissionId = $this->getRandomId();
+        $this->createAuthorAssignments($submissionId, []);
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getSubmissionAuthors($submissionId);
+
+        $this->assertEmpty($result);
+    }
+
+    public function test_getSubmissionAuthors_returns_empty_array_when_submission_author_assignment_cannot_be_found() {
+        $submissionId = $this->getRandomId();
+        $userId = $this->getRandomId();
+        $this->createAuthorAssignments($submissionId, [$userId]);
+        $this->createUser($userId, null);
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getSubmissionAuthors($submissionId);
+
+        $this->assertEmpty($result);
+    }
+
+    public function test_getUser_returns_user() {
+        $userId = $this->getRandomId();
+        $expectedUser = $this->createUser($userId, 'UserName');
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getUser($userId);
+
+        $this->assertEquals($expectedUser, $result);
+    }
+
+    public function test_getUser_returns_null_when_user_cannot_be_found() {
+        $userId = $this->getRandomId();
+        $this->createUser($userId, null);
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getUser($userId);
 
         $this->assertNull($result);
     }
 
-    public function test_getSubmissionEditor_returns_null_when_submission_editor_assignment_cannot_be_found() {
+    public function test_getSubmission_returns_submission() {
         $submissionId = $this->getRandomId();
-        $this->createUserGroups([9999 => __('tasks.ppr.editor.groupName')]);
-        $this->createAssignments($submissionId, [9999]);
-        $expectedUser = $this->createUser(9999, null);
+        $expectedSubmission = $this->createSubmission($submissionId, 'UserName');
 
         $target = new PPRSubmissionUtil();
-        $result = $target->getSubmissionEditor($submissionId, self::CONTEXT_ID);
+        $result = $target->getSubmission($submissionId);
 
-        $this->assertEquals($expectedUser, $result);
+        $this->assertEquals($expectedSubmission, $result);
     }
 
-    public function test_getSubmissionEditor_returns_editor_user_when_editor_group_available_and_submission_has_editor_assignment() {
+    public function test_getSubmission_returns_null_when_submission_cannot_be_found() {
         $submissionId = $this->getRandomId();
-        $this->createUserGroups([9999 => __('tasks.ppr.editor.groupName')]);
-        $this->createAssignments($submissionId, [9999]);
-        $expectedUser = $this->createUser(9999, 'EditorName');
+        $expectedSubmission = $this->createSubmission($submissionId, null);
 
         $target = new PPRSubmissionUtil();
-        $result = $target->getSubmissionEditor($submissionId, self::CONTEXT_ID);
+        $result = $target->getSubmission($submissionId);
 
-        $this->assertEquals($expectedUser, $result);
+        $this->assertNull($result);
     }
 
     private function createUserGroups($groupNames) {
@@ -131,7 +207,7 @@ class PPRSubmissionUtilTest extends PPRTestCase {
         return $userGroupDao;
     }
 
-    private function createAssignments($submissionId, $userAssignments) {
+    private function createAssignments($submissionId, $userAssignments, $editorGroupId) {
         $assignmentDao = $this->createMock(StageAssignmentDAO::class);
         DAORegistry::registerDAO('StageAssignmentDAO', $assignmentDao);
         $assignments = [];
@@ -141,7 +217,21 @@ class PPRSubmissionUtilTest extends PPRTestCase {
             $assignment->method('getUserId')->willReturn($groupId);
             $assignments[] = $assignment;
         }
-        $assignmentDao->expects($this->once())->method('getBySubmissionAndStageId')->with($submissionId)->willReturn($this->resultFactoryMock($assignments));
+        $assignmentDao->expects($this->once())->method('getBySubmissionAndStageId')->with($submissionId, WORKFLOW_STAGE_ID_SUBMISSION, $editorGroupId)->willReturn($this->resultFactoryMock($assignments));
+        return $assignmentDao;
+    }
+
+    private function createAuthorAssignments($submissionId, $userAssignments) {
+        $assignmentDao = $this->createMock(StageAssignmentDAO::class);
+        DAORegistry::registerDAO('StageAssignmentDAO', $assignmentDao);
+        $assignments = [];
+        foreach ($userAssignments as $groupId) {
+            $assignment = $this->createMock(StageAssignment::class);
+            $assignment->method('getUserGroupId')->willReturn($groupId);
+            $assignment->method('getUserId')->willReturn($groupId);
+            $assignments[] = $assignment;
+        }
+        $assignmentDao->expects($this->once())->method('getBySubmissionAndRoleId')->with($submissionId, ROLE_ID_AUTHOR, WORKFLOW_STAGE_ID_SUBMISSION)->willReturn($this->resultFactoryMock($assignments));
         return $assignmentDao;
     }
 
@@ -154,5 +244,16 @@ class PPRSubmissionUtilTest extends PPRTestCase {
         DAORegistry::registerDAO('UserDAO', $userDao);
         $userDao->expects($this->once())->method('getById')->with($userId)->willReturn($user);
         return $user;
+    }
+
+    private function createSubmission($submissionId, $name) {
+        $submission = null;
+        if ($name) {
+            $submission = $this->getTestUtil()->createSubmission($submissionId);
+        }
+        $submissionDao = $this->createMock(SubmissionDAO::class);
+        DAORegistry::registerDAO('SubmissionDAO', $submissionDao);
+        $submissionDao->expects($this->once())->method('getById')->with($submissionId)->willReturn($submission);
+        return $submission;
     }
 }

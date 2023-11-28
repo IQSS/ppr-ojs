@@ -124,8 +124,6 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
             return;
         }
 
-        $editorGroupId = $this->findEditorGroupId($context->getId());
-
         $sentNotifications = 0;
         $assignmentsWithNotifications = 0;
         foreach ($assignmentsWithDueReviews as $dueReviewData) {
@@ -134,10 +132,10 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
             if (!$submission) continue;
             if ($submission->getStatus() != STATUS_QUEUED) continue;
 
-            $editors = $this->findAssociateEditors($editorGroupId, $submission->getId());
+            $editors = $this->getPPRObjectFactory()->submissionUtil()->getSubmissionEditors($submission->getId(), $context->getId());
             if (empty($editors)) {
                 // NO EDITOR ASSIGNED TO SUBMISSION
-                $this->log($context, 'Processing reviews - no editors assigned to submission: ' . $submission->getId());
+                $this->log($context, sprintf("Processing reviews - no editors assigned. submission=%s reviewAssigment=%s", $submission->getId(), $dueReviewData->getReviewId()));
                 continue;
             }
 
@@ -171,32 +169,6 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
         }
 
         return null;
-    }
-
-    private function findEditorGroupId($contextId) {
-        $ASSOCIATE_EDITOR_GROUP_NAME = __('tasks.ppr.editor.groupName');
-        $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-        $userGroups = $userGroupDao->getByContextId($contextId)->toArray();
-        foreach ($userGroups as $userGroup) {
-            if (0 === strcasecmp($userGroup->getLocalizedName(), $ASSOCIATE_EDITOR_GROUP_NAME)) {
-                return $userGroup->getId();
-            }
-        }
-
-        return null;
-    }
-
-    private function findAssociateEditors($editorGroupId, $submissionId) {
-        $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
-        $stageAssignments = $stageAssignmentDao->getBySubmissionAndStageId($submissionId)->toArray();
-        $editors = [];
-        foreach ($stageAssignments as $stageAssignment) {
-            if ($stageAssignment->getUserGroupId() === $editorGroupId){
-                $editors[$stageAssignment->getUserId()] = $this->getUser($stageAssignment->getUserId());
-            }
-        }
-
-        return array_values($editors);
     }
 }
 

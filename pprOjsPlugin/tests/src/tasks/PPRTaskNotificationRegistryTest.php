@@ -47,7 +47,7 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
     }
 
     private function assert_registerReviewDueDateEditorNotification($reviewDataType, $daysFromDueDateByNotificationType) {
-        $reviewId = 250;
+        $reviewId = $this->getRandomId();
         $dueDate = Core::getCurrentDate();
 
         foreach ($daysFromDueDateByNotificationType as $reviewDueDateNotificationType => $daysFromDueDate){
@@ -87,7 +87,7 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
     }
 
     private function assert_getReviewDueDateEditorNotifications($reviewDataType, $daysFromDueDateByNotificationType) {
-        $reviewId = 100;
+        $reviewId = $this->getRandomId();
         $dueDate = Core::getCurrentDate();
         foreach ($daysFromDueDateByNotificationType as $reviewDueDateNotificationType => $daysFromDueDate){
             $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, null);
@@ -104,9 +104,8 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
 
     public function test_registerReviewDueDateReviewerNotification_inserts_the_expected_notification() {
         $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_DUE_DATE_REVIEWER_NOTIFICATION;
-        $reviewerId = 100;
-        $reviewId = 250;
-
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
         $this->addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
 
         $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
@@ -116,8 +115,8 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
 
     public function test_getReviewDueDateReviewerNotifications_calls_NotificationDAO() {
         $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_DUE_DATE_REVIEWER_NOTIFICATION;
-        $reviewerId = 123;
-        $reviewId = 100;
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
         $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
 
         $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
@@ -128,9 +127,8 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
 
     public function test_registerReviewDueDateWithFilesReviewerNotification_inserts_the_expected_notification() {
         $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION;
-        $reviewerId = 100;
-        $reviewId = 250;
-
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
         $this->addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
 
         $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
@@ -140,8 +138,8 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
 
     public function test_getReviewDueDateWithFilesReviewerNotifications_calls_NotificationDAO() {
         $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION;
-        $reviewerId = 123;
-        $reviewId = 100;
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
         $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
 
         $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
@@ -152,9 +150,8 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
 
     public function test_registerReviewPendingWithFilesReviewerNotification_inserts_the_expected_notification() {
         $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION;
-        $reviewerId = 100;
-        $reviewId = 250;
-
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
         $this->addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
 
         $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
@@ -164,14 +161,48 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
 
     public function test_getReviewPendingWithFilesReviewerNotifications_calls_NotificationDAO() {
         $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION;
-        $reviewerId = 123;
-        $reviewId = 100;
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
         $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
 
         $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
 
         $result = $target->getReviewPendingWithFilesReviewerNotifications($reviewerId, $reviewId);
         $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
+    }
+
+    public function test_registerReviewSentAuthorNotification_inserts_the_expected_notification() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_SENT_AUTHOR_NOTIFICATION;
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
+        $this->addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $target->registerReviewSentAuthorNotification($reviewerId, $reviewId);
+    }
+
+    public function test_getReviewSentAuthorNotifications_calls_NotificationDAO() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::REVIEW_SENT_AUTHOR_NOTIFICATION;
+        $reviewerId = $this->getRandomId();
+        $reviewId = $this->getRandomId();
+        $this->addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $reviewerId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $result = $target->getReviewSentAuthorNotifications($reviewerId, $reviewId);
+        $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
+    }
+
+    public function test_updateDateRead_calls_NotificationDAO() {
+        $notificationId = $this->getRandomId();
+        $notificationDao = $this->createMock(NotificationDAO::class);
+        DAORegistry::registerDAO('NotificationDAO', $notificationDao);
+        $notificationDao->expects($this->once())->method('setDateRead')->with($notificationId, $this->anything());
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $target->updateDateRead($notificationId);
     }
 
     private function addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $userId) {

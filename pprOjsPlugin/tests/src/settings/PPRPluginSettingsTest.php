@@ -39,6 +39,8 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'publicationOverrideEnabled' => [null, null],
             'hideReviewRoundSelectionEnabled' => [null, null],
             'hideSendToReviewersEnabled' => [null, null],
+            'reviewSentAuthorTaskEnabled' => [null, null],
+            'reviewSentAuthorWaitingDays' => [null, 7],
             'reviewReminderEditorTaskEnabled' => [null, true],
             'reviewReminderEditorDaysFromDueDate' => ['getReviewReminderEditorDaysFromDueDate', []],
             'reviewReminderReviewerTaskEnabled' => [null, true],

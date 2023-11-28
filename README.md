@@ -160,6 +160,7 @@ These are the custom email templates created for the PPR program.
  * ``PPR_REVIEW_SUBMITTED`` => pprOjsPlugin/services/reviewer/PPRReviewSubmittedService.inc.php
  * ``PPR_REVIEW_DUE_DATE_WITH_FILES_REVIEWER`` => pprOjsPlugin/tasks/PPRReviewReminder.inc.php
  * ``PPR_REVIEW_PENDING_WITH_FILES_REVIEWER`` => pprOjsPlugin/tasks/PPRReviewReminder.inc.php
+ * ``PPR_REVIEW_SENT_AUTHOR`` => pprOjsPlugin/tasks/PPRReviewSentAuthorNotification.inc.php
 
 
 

@@ -9,10 +9,10 @@ require_once(dirname(__FILE__) . '/PPRDueReviewData.inc.php');
  */
 abstract class PPRScheduledTask extends ScheduledTask {
 
-    private $userCache;
-    private $submissionCache;
+    private $pprObjectFactory;
 
-    function __construct($args) {
+    function __construct($args, $pprObjectFactory = null) {
+        $this->pprObjectFactory = $pprObjectFactory ?: new PPRObjectFactory();
         $this->userCache = [];
         $this->submissionCache = [];
 
@@ -48,22 +48,26 @@ abstract class PPRScheduledTask extends ScheduledTask {
         return true;
     }
 
-    public function getUser($userId) {
-        if(!isset($this->userCache[$userId])) {
-            $userDao = DAORegistry::getDAO('UserDAO');
-            $this->userCache[$userId] = $userDao->getById($userId);
-        }
+    public function getPPRObjectFactory() {
+        return $this->pprObjectFactory;
+    }
 
-        return $this->userCache[$userId];
+    public function getUser($userId) {
+        return $this->getPPRObjectFactory()->submissionUtil()->getUser($userId);
+    }
+
+    public function getSubmissionEditor($submissionId, $contextId) {
+        $submissionEditors = $this->getPPRObjectFactory()->submissionUtil()->getSubmissionEditors($submissionId, $contextId);
+        return empty($submissionEditors) ? null : reset($submissionEditors);
+    }
+
+    public function getAuthor($submissionId) {
+        $submissionAuthors = $this->getPPRObjectFactory()->submissionUtil()->getSubmissionAuthors($submissionId);
+        return empty($submissionAuthors) ? null : reset($submissionAuthors);
     }
 
     public function getSubmission($submissionId) {
-        if(!isset($this->submissionCache[$submissionId])) {
-            $submissionDao = DAORegistry::getDAO('SubmissionDAO');
-            $this->submissionCache[$submissionId] = $submissionDao->getById($submissionId);
-        }
-
-        return $this->submissionCache[$submissionId];
+        return $this->getPPRObjectFactory()->submissionUtil()->getSubmission($submissionId);
     }
 
     public function log($context, $message) {

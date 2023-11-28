@@ -8,6 +8,7 @@ class PPRTaskNotificationRegistry {
     public const REVIEW_DUE_DATE_REVIEWER_NOTIFICATION = 80880400;
     public const REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION = 80880500;
     public const REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION = 80880600;
+    public const REVIEW_SENT_AUTHOR_NOTIFICATION = 80880700;
 
     private $notificationDao;
     private $contextId;
@@ -51,6 +52,19 @@ class PPRTaskNotificationRegistry {
     public function getReviewPendingWithFilesReviewerNotifications($reviewerId, $reviewId) {
         $items = $this->getNotifications(self::REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION, $reviewerId, $reviewId);
         return $items->toArray();
+    }
+
+    public function registerReviewSentAuthorNotification($reviewerId, $reviewId) {
+        return $this->saveNotification(self::REVIEW_SENT_AUTHOR_NOTIFICATION, $reviewerId, $reviewId);
+    }
+
+    public function getReviewSentAuthorNotifications($reviewerId, $reviewId) {
+        $items = $this->getNotifications(self::REVIEW_SENT_AUTHOR_NOTIFICATION, $reviewerId, $reviewId);
+        return $items->toArray();
+    }
+
+    public function updateDateRead($notificationId) {
+        $this->notificationDao->setDateRead($notificationId, Core::getCurrentDate());
     }
 
     private function calculateReviewDueDateEditorType($dueReviewData) {

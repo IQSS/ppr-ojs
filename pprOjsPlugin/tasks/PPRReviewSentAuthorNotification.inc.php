@@ -66,12 +66,13 @@ class PPRReviewSentAuthorNotification extends PPRScheduledTask {
         }
 
         $reviewSentWaitingDays = $pprPlugin->getPluginSettings()->reviewSentAuthorWaitingDays();
+        $reviewSentAuthorEnabledDate = $pprPlugin->getPluginSettings()->reviewSentAuthorEnabledDate();
         $submissionFileService = Services::get('submissionFile');
         $pprNotificationRegistry = new PPRTaskNotificationRegistry($context->getId());
 
         import('lib.pkp.classes.submission.SubmissionFile'); // Bring the file constants.
         $reviewFiles = iterator_to_array($submissionFileService->getMany(['fileStages' => [SUBMISSION_FILE_REVIEW_ATTACHMENT]]));
-        $this->log($context, sprintf("Start - reviewFiles=%s reviewSentWaitingDays=%s", count($reviewFiles), $reviewSentWaitingDays));
+        $this->log($context, sprintf("Start - reviewFiles=%s reviewSentWaitingDays=%s reviewSentAuthorEnabledDate=%s", count($reviewFiles), $reviewSentWaitingDays, $reviewSentAuthorEnabledDate));
 
         $metrics = [
             'sentReviewFiles' => 0,
@@ -80,6 +81,11 @@ class PPRReviewSentAuthorNotification extends PPRScheduledTask {
         ];
         // FIND REVIEW FILES SENT TO SEND NOTIFICATIONS
         foreach ($reviewFiles as $reviewFile) {
+            if (strtotime($reviewFile->getData('createdAt')) < strtotime($reviewSentAuthorEnabledDate)) {
+                //IGNORE FILES THAT HAVE BEEN CREATED BEFORE THIS FEATURE IS ENABLED
+                continue;
+            }
+
             if (!$reviewFile->getViewable()) {
                 //IGNORE FILES THAT HAVE NOT BEEN SENT
                 continue;

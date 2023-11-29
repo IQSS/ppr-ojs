@@ -41,6 +41,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'hideSendToReviewersEnabled' => [null, null],
             'reviewSentAuthorTaskEnabled' => [null, null],
             'reviewSentAuthorWaitingDays' => [null, 7],
+            'reviewSentAuthorEnabledDate' => [null, '2023-11-01'],
             'reviewReminderEditorTaskEnabled' => [null, true],
             'reviewReminderEditorDaysFromDueDate' => ['getReviewReminderEditorDaysFromDueDate', []],
             'reviewReminderReviewerTaskEnabled' => [null, true],

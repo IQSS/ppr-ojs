@@ -34,6 +34,7 @@ class PPRPluginSettings {
         'hideSendToReviewersEnabled' => ['bool', null],
         'reviewSentAuthorTaskEnabled' => ['bool', null],
         'reviewSentAuthorWaitingDays' => ['int', 7],
+        'reviewSentAuthorEnabledDate' => ['string', '2023-11-01'],
         //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
         'reviewReminderEditorTaskEnabled' => ['bool', true],
         'reviewReminderEditorDaysFromDueDate' => ['string', null],
@@ -179,6 +180,10 @@ class PPRPluginSettings {
 
     public function reviewSentAuthorWaitingDays() {
         return $this->getValue('reviewSentAuthorWaitingDays');
+    }
+
+    public function reviewSentAuthorEnabledDate() {
+        return $this->getValue('reviewSentAuthorEnabledDate');
     }
 
     public function reviewReminderEditorTaskEnabled() {

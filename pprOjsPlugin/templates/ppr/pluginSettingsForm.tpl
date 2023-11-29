@@ -109,6 +109,7 @@
 		    <div class="subsection">
 				{fbvElement type="checkbox" name="reviewSentAuthorTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewSentAuthorTaskEnabled.label" id="reviewSentAuthorTaskEnabled" checked=$reviewSentAuthorTaskEnabled}
 				{fbvElement type="text" name="reviewSentAuthorWaitingDays" label="plugins.generic.pprPlugin.settings.reviewSentAuthorWaitingDays.label" id="reviewSentAuthorWaitingDays" value=$reviewSentAuthorWaitingDays}
+				{fbvElement type="text" name="reviewSentAuthorEnabledDate" label="plugins.generic.pprPlugin.settings.reviewSentAuthorEnabledDate.label" id="reviewSentAuthorEnabledDate" value=$reviewSentAuthorEnabledDate class="datepicker"}
 		    </div>
 
 			<div class="subsection">

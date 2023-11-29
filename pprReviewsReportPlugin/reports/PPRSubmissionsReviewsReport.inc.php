@@ -10,10 +10,7 @@ class PPRSubmissionsReviewsReport {
     const PPR_MISSING_DATA = '';
     private $userCache = [];
 
-    function createReport($file) {
-        $request = Application::get()->getRequest();
-        $journal = $request->getJournal();
-
+    function createReport($file, $contextId) {
         $fp = fopen($file, 'wt');
         // Add BOM (byte order mark) to fix UTF-8 in Excel
         fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
@@ -25,9 +22,9 @@ class PPRSubmissionsReviewsReport {
         $editDecisionDao = DAORegistry::getDAO('EditDecisionDAO');
         $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
 
-        [$editorUserGroupId, $authorUserGroupId] = $this->getGroupIds($journal->getId());
+        [$editorUserGroupId, $authorUserGroupId] = $this->getGroupIds($contextId);
 
-        $allSubmissions = $submissionDao->getByContextId($journal->getId());
+        $allSubmissions = $submissionDao->getByContextId($contextId);
         $reportData = [];
         while ($submission = $allSubmissions->next()) {
             $submissionData = [];

@@ -55,7 +55,7 @@ class PPREditorReportTask extends ScheduledTask {
         $attachmentFilename = 'ppr_submissions_report_' . date('Y_m_d') . '.csv';
 
         $reportFactory = new PPRSubmissionsReviewsReport();
-        $reportFactory->createReport($reportFilename);
+        $reportFactory->createReport($reportFilename, $context->getId());
 
         $email = new MailTemplate('PPR_SUBMISSIONS_REPORT_TASK', null, $context);
         $email->setReplyTo(null);

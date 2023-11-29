@@ -81,14 +81,14 @@ class PPRReviewsReportPlugin extends ReportPlugin {
     function display($args, $request) {
         $this->import('reports.PPRSubmissionsReviewsReport');
         $report = new PPRSubmissionsReviewsReport();
-        $journal = $request->getJournal();
-        $acronym = PKPString::regexp_replace("/[^A-Za-z0-9 ]/", '', $journal->getLocalizedAcronym());
+        $context = $request->getContext();
+        $acronym = PKPString::regexp_replace("/[^A-Za-z0-9 ]/", '', $context->getLocalizedAcronym());
 
         // Prepare for UTF8-encoded CSV output.
         header('content-type: text/comma-separated-values');
         header('content-disposition: attachment; filename=ppr-reviews-' . $acronym . '-' . date('Ymd') . '.csv');
 
-        $report->createReport('php://output');
+        $report->createReport('php://output', $context->getId());
     }
 
     public function getPluginSettings() {

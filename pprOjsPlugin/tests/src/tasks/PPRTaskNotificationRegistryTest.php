@@ -194,6 +194,27 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
         $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
     }
 
+    public function test_registerSubmissionSurveyForAuthor_inserts_the_expected_notification() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::SUBMISSION_AUTHOR_SURVEY;
+        $userId = $this->getRandomId();
+        $this->addCreateNotificationMock($reviewDueDateNotificationType, $userId, $userId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $target->registerSubmissionSurveyForAuthor($userId);
+    }
+
+    public function test_getSubmissionSurveyForAuthor_calls_NotificationDAO() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::SUBMISSION_AUTHOR_SURVEY;
+        $userId = $this->getRandomId();
+        $this->addGetNotificationMock($reviewDueDateNotificationType, $userId, $userId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $result = $target->getSubmissionSurveyForAuthor($userId);
+        $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
+    }
+
     public function test_updateDateRead_calls_NotificationDAO() {
         $notificationId = $this->getRandomId();
         $notificationDao = $this->createMock(NotificationDAO::class);
@@ -205,26 +226,26 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
         $target->updateDateRead($notificationId);
     }
 
-    private function addCreateNotificationMock($reviewDueDateNotificationType, $reviewId, $userId) {
+    private function addCreateNotificationMock($reviewDueDateNotificationType, $objectId, $userId) {
         $notificationDao = $this->createMock(NotificationDAO::class);
         $notificationDao->expects($this->once())->method('newDataObject')->willReturn(new Notification());
         $notificationDao->expects($this->once())
             ->method('insertObject')
-            ->with($this->callback(function ($notification) use ($reviewDueDateNotificationType, $reviewId, $userId) {
+            ->with($this->callback(function ($notification) use ($reviewDueDateNotificationType, $objectId, $userId) {
                 return $this->assertNotification($notification,
                     $reviewDueDateNotificationType,
-                    $reviewId,
+                    $objectId,
                     $userId);
             }));
         DAORegistry::registerDAO('NotificationDAO', $notificationDao);
         return $notificationDao;
     }
 
-    private function addGetNotificationMock($reviewDueDateNotificationType, $reviewId, $userId) {
+    private function addGetNotificationMock($reviewDueDateNotificationType, $objectId, $userId) {
         $notificationDao = $this->createMock(NotificationDAO::class);
         $notificationDao->expects($this->once())
             ->method('getByAssoc')
-            ->with($reviewDueDateNotificationType, $reviewId, $userId, self::PPR_NOTIFICATION, self::CONTEXT_ID)
+            ->with($reviewDueDateNotificationType, $objectId, $userId, self::PPR_NOTIFICATION, self::CONTEXT_ID)
             ->willReturn($this->getResultFactoryMock($this->EXPECTED_NOTIFICATION_ARRAY));
 
         DAORegistry::registerDAO('NotificationDAO', $notificationDao);

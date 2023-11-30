@@ -96,15 +96,21 @@
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}
-			{fbvElement type="checkbox" name="reviewReminderEditorTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEditorTaskEnabled.label" id="reviewReminderEditorTaskEnabled" checked=$reviewReminderEditorTaskEnabled}
 			<div class="subsection">
+				{fbvElement type="checkbox" name="reviewReminderEditorTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderEditorTaskEnabled.label" id="reviewReminderEditorTaskEnabled" checked=$reviewReminderEditorTaskEnabled}
 				{fbvElement type="text" name="reviewReminderEditorDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderEditorDaysFromDueDate.label" id="reviewReminderEditorDaysFromDueDate" value=$reviewReminderEditorDaysFromDueDate}
 			</div>
 
-			{fbvElement type="checkbox" name="reviewReminderReviewerTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerTaskEnabled.label" id="reviewReminderReviewerTaskEnabled" checked=$reviewReminderReviewerTaskEnabled}
 			<div class="subsection">
+				{fbvElement type="checkbox" name="reviewReminderReviewerTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerTaskEnabled.label" id="reviewReminderReviewerTaskEnabled" checked=$reviewReminderReviewerTaskEnabled}
 				{fbvElement type="text" name="reviewReminderReviewerDaysFromDueDate" label="plugins.generic.pprPlugin.settings.reviewReminderReviewerDaysFromDueDate.label" id="reviewReminderReviewerDaysFromDueDate" value=$reviewReminderReviewerDaysFromDueDate}
 			</div>
+
+		    <div class="subsection">
+				{fbvElement type="checkbox" name="reviewSentAuthorTaskEnabled" label="plugins.generic.pprPlugin.settings.reviewSentAuthorTaskEnabled.label" id="reviewSentAuthorTaskEnabled" checked=$reviewSentAuthorTaskEnabled}
+				{fbvElement type="text" name="reviewSentAuthorWaitingDays" label="plugins.generic.pprPlugin.settings.reviewSentAuthorWaitingDays.label" id="reviewSentAuthorWaitingDays" value=$reviewSentAuthorWaitingDays}
+				{fbvElement type="text" name="reviewSentAuthorEnabledDate" label="plugins.generic.pprPlugin.settings.reviewSentAuthorEnabledDate.label" id="reviewSentAuthorEnabledDate" value=$reviewSentAuthorEnabledDate class="datepicker"}
+		    </div>
 
 			<div class="subsection">
 				{fbvElement type="checkbox" name="scheduledTasksReset" label="plugins.generic.pprPlugin.settings.scheduledTasksReset.label" id="scheduledTasksReset"}

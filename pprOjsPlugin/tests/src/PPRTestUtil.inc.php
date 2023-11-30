@@ -52,4 +52,10 @@ class PPRTestUtil {
         return $author;
     }
 
+    public function createSubmission($id) {
+        $submission = $this->testCase->createMock(Submission::class);
+        $submission->method('getId')->willReturn($id);
+        return $submission;
+    }
+
 }

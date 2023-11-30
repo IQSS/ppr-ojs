@@ -170,6 +170,15 @@ msgstr "Add automated review due date notification for reviewers"
 msgid "plugins.generic.pprPlugin.settings.reviewReminderReviewerDaysFromDueDate.label"
 msgstr "Number of days before (negative) or after (positive) the due date to send notifications to the reviewer"
 
+msgid "plugins.generic.pprPlugin.settings.reviewSentAuthorTaskEnabled.label"
+msgstr "Add review sent notification to authors"
+
+msgid "plugins.generic.pprPlugin.settings.reviewSentAuthorWaitingDays.label"
+msgstr "Number of days to wait after a review is sent to send notifications to the author"
+
+msgid "plugins.generic.pprPlugin.settings.reviewSentAuthorEnabledDate.label"
+msgstr "Date from which submitted review files will be used to send review sent notifications to authors"
+
 msgid "plugins.generic.pprPlugin.settings.reviewerSurveyHtml.label"
 msgstr "HTML for the reviewers survey widget"
 

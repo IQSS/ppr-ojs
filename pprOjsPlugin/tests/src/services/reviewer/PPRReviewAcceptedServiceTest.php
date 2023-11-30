@@ -142,15 +142,16 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
     private function setSendEmailAssertions($context, $submission, $editorFullName, $editorFirstName) {
         $objectFactory = $this->createMock(PPRObjectFactory::class);
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
-        $editor = null;
+
+        $editors = [];
         if($editorFullName) {
-            $editor = $this->getTestUtil()->createUser($this->getRandomId(), $editorFullName, $editorFirstName);
+            $editors[] = $this->getTestUtil()->createUser($this->getRandomId(), $editorFullName, $editorFirstName);
         } else {
             // SET THE EXPECTED VALUES WHEN NO EDITOR IS FOUND
             $editorFullName = 'N/A';
             $editorFirstName = 'N/A';
         }
-        $submissionUtil->expects($this->once())->method('getSubmissionEditor')->willReturn($editor);
+        $submissionUtil->expects($this->once())->method('getSubmissionEditors')->willReturn($editors);
         $objectFactory->expects($this->once())->method('submissionUtil')->willReturn($submissionUtil);
 
         $submissionTemplate = $this->createMock(SubmissionMailTemplate::class);

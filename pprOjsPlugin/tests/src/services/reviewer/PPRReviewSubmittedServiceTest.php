@@ -115,14 +115,14 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         $objectFactory = $this->createMock(PPRObjectFactory::class);
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
 
-        $editor = null;
+        $editors = [];
         if($editorName) {
-            $editor = $this->getTestUtil()->createUser($this->getRandomId(), $editorName, $editorName);
+            $editors[] = $this->getTestUtil()->createUser($this->getRandomId(), $editorName, $editorName);
         } else {
             // SET THE EXPECTED VALUES WHEN NO EDITOR IS FOUND
             $editorName = 'N/A';
         }
-        $submissionUtil->expects($this->once())->method('getSubmissionEditor')->willReturn($editor);
+        $submissionUtil->expects($this->once())->method('getSubmissionEditors')->willReturn($editors);
         $objectFactory->expects($this->once())->method('submissionUtil')->willReturn($submissionUtil);
 
         $submissionTemplate = $this->createMock(SubmissionMailTemplate::class);

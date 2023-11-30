@@ -5,10 +5,21 @@
  */
 class PPRSubmissionUtil {
 
+    private $groupCache;
+    private $userCache;
+    private $submissionCache;
+
+    public function __construct() {
+        $this->groupCache = [];
+        $this->userCache = [];
+        $this->submissionCache = [];
+    }
+
+
     /**
-     * Returns a user that is assigned to a submission as an Associate Editor
+     * Returns the users that are assigned to a submission as Associate Editor
      */
-    public function getSubmissionEditor($submissionId, $contextId) {
+    public function getSubmissionEditors($submissionId, $contextId) {
         $editorUserGroupId = $this->getEditorGroupId($contextId);
         if (!$editorUserGroupId) {
             //EDITOR GROUP NOT CONFIGURED
@@ -16,23 +27,59 @@ class PPRSubmissionUtil {
         }
 
         $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
-        $assignments = $stageAssignmentDao->getBySubmissionAndStageId($submissionId)->toArray();
-        $editorAssignment = null;
-        foreach ($assignments as $assignment) {
-            if ($assignment->getUserGroupId() === $editorUserGroupId){
-                $editorAssignment = $assignment;
-                break;
-            }
+        $editorAssignments = $stageAssignmentDao->getBySubmissionAndStageId($submissionId, WORKFLOW_STAGE_ID_SUBMISSION, $editorUserGroupId)->toArray();
+        $editors = [];
+        foreach ($editorAssignments as $assignment) {
+            //REMOVE DUPLICATES
+            if(array_key_exists($assignment->getUserId(), $editors)) continue;
+            $editor = $this->getUser($assignment->getUserId());
+            if($editor) $editors[$assignment->getUserId()] = $editor;
         }
 
-        // EDITOR NOT FOUND BY DEFAULT
-        $editor = null;
-        if ($editorAssignment) {
+        return array_values($editors);
+    }
+
+    /**
+     * Returns a user that is assigned to a submission as an Author
+     */
+    public function getSubmissionAuthors($submissionId) {
+        $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
+
+        $assignedAuthors = $stageAssignmentDao->getBySubmissionAndRoleId($submissionId, ROLE_ID_AUTHOR, WORKFLOW_STAGE_ID_SUBMISSION)->toArray();
+        $authors = [];
+        foreach ($assignedAuthors as $assignment) {
+            //REMOVE DUPLICATES
+            if(array_key_exists($assignment->getUserId(), $authors)) continue;
+            $author = $this->getUser($assignment->getUserId());
+            if ($author) $authors[$assignment->getUserId()] = $author;
+        }
+
+        return array_values($authors);
+    }
+
+    /**
+     * Returns the user based on the userId
+     */
+    public function getUser($userId) {
+        if (!array_key_exists($userId, $this->userCache)) {
             $userDao = DAORegistry::getDAO('UserDAO');
-            $editor = $userDao->getById($editorAssignment->getUserId());
+            $user = $userDao->getById($userId);
+            $this->userCache[$userId] = $user;
         }
 
-        return $editor;
+        return $this->userCache[$userId];
+    }
+
+    /**
+     * Returns a submission based on the submissionId
+     */
+    public function getSubmission($submissionId) {
+        if (!array_key_exists($submissionId, $this->submissionCache)) {
+            $submissionDao = DAORegistry::getDAO('SubmissionDAO');
+            $this->submissionCache[$submissionId] = $submissionDao->getById($submissionId);
+        }
+
+        return $this->submissionCache[$submissionId];
     }
 
     /**
@@ -46,13 +93,18 @@ class PPRSubmissionUtil {
      * Returns the groupId based on the group name text.
      */
     public function getGroupId($contextId, $groupName) {
-        $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-        $userGroups = $userGroupDao->getByContextId($contextId)->toArray();
+        if (!array_key_exists($groupName, $this->groupCache)) {
+            $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
+            $userGroups = $userGroupDao->getByContextId($contextId)->toArray();
 
-        $editorGroups = array_filter($userGroups, function($userGroup) use ($groupName) {
-            return (0 === strcasecmp($userGroup->getLocalizedName(), $groupName));
-        });
+            $editorGroups = array_filter($userGroups, function($userGroup) use ($groupName) {
+                return (0 === strcasecmp($userGroup->getLocalizedName(), $groupName));
+            });
 
-        return empty($editorGroups) ? null : reset($editorGroups)->getId();
+            $groupId = empty($editorGroups) ? null : reset($editorGroups)->getId();
+            $this->groupCache[$groupName] = $groupId;
+        }
+
+        return $this->groupCache[$groupName];
     }
 }

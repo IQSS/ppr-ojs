@@ -50,6 +50,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $submissionActionsService = new PPRSubmissionActionsService($this);
             $submissionActionsService->register();
 
+            $this->import('services.submission.PPRAuthorSubmissionSurveyService');
+            $authorSubmissionService = new PPRAuthorSubmissionSurveyService($this);
+            $authorSubmissionService->register();
+
             $this->import('services.publication.PPRPublicationOverrideService');
             $publicationOverrideService = new PPRPublicationOverrideService($this);
             $publicationOverrideService->register();

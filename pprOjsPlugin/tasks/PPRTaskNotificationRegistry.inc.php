@@ -9,6 +9,7 @@ class PPRTaskNotificationRegistry {
     public const REVIEW_DUE_DATE_WITH_FILES_REVIEWER_NOTIFICATION = 80880500;
     public const REVIEW_PENDING_WITH_FILES_REVIEWER_NOTIFICATION = 80880600;
     public const REVIEW_SENT_AUTHOR_NOTIFICATION = 80880700;
+    public const SUBMISSION_AUTHOR_SURVEY = 80880800;
 
     private $notificationDao;
     private $contextId;
@@ -60,6 +61,15 @@ class PPRTaskNotificationRegistry {
 
     public function getReviewSentAuthorNotifications($reviewerId, $reviewId) {
         $items = $this->getNotifications(self::REVIEW_SENT_AUTHOR_NOTIFICATION, $reviewerId, $reviewId);
+        return $items->toArray();
+    }
+
+    public function registerSubmissionSurveyForAuthor($userId) {
+        return $this->saveNotification(self::SUBMISSION_AUTHOR_SURVEY, $userId, $userId);
+    }
+
+    public function getSubmissionSurveyForAuthor($userId) {
+        $items = $this->getNotifications(self::SUBMISSION_AUTHOR_SURVEY, $userId, $userId);
         return $items->toArray();
     }
 

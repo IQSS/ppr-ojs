@@ -13,9 +13,9 @@
 
 <div class="page page_register">
 	{include file="frontend/components/breadcrumbs.tpl" currentTitleKey="user.register"}
-	<h1>
-		{translate key="user.register"}
-	</h1>
+	<!-- PPR CUSTOM REGISTRATION HEADING -->
+	<h1>{translate key="registration.ppr.title"}</h1>
+	<p>{translate key="registration.ppr.description"}</p>
 	<!-- PPR STYLING => ADDED IN TEMPLATE TO SUPPORT ENABLING AND DISABLING THROUGH SETTINGS -->
 	<style>
 		form#register.cmp_form input, form#register.cmp_form select {

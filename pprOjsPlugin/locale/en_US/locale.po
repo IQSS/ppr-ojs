@@ -299,6 +299,13 @@ msgstr "Managing Editor"
 msgid "registration.ppr.eligibility.label"
 msgstr "I have confirmed that I am eligible to participate in this program based on the <a href=\"{$pageUrl}\" target=\"_blank\">requirements</a>."
 
+msgid "registration.ppr.title"
+msgstr "Author Registration"
+
+msgid "registration.ppr.description"
+msgstr "This page is only for authors to register for an account. If you're a reviewer and need assistance logging in, please email <a href=\"mailto:peerprereview@iq.harvard.edu\">peerprereview@iq.harvard.edu</a>."
+
+
 msgid "surveys.ppr.author.showDetails"
 msgstr "Click here to provide feedback"
 

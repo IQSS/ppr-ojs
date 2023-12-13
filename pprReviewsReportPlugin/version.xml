@@ -4,8 +4,8 @@
 <version>
 	<application>pprReviewsReportPlugin</application>
 	<type>plugins.reports</type>
-	<release>1.0.0.71</release>
-	<date>2023-12-12</date>
+	<release>1.0.0.72</release>
+	<date>2023-12-13</date>
 	<lazy-load>1</lazy-load>
 	<class>PPRReviewsReportPlugin</class>
 </version>

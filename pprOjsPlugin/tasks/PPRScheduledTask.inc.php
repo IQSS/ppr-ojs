@@ -3,6 +3,7 @@
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
 require_once(dirname(__FILE__) . '/PPRTaskNotificationRegistry.inc.php');
 require_once(dirname(__FILE__) . '/PPRDueReviewData.inc.php');
+require_once(dirname(__FILE__) . '/../util/PPRObjectFactory.inc.php');
 
 /**
  * Base class for PPR tasks, with utility and common methods.

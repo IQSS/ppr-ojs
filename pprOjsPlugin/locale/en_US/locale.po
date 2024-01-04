@@ -65,6 +65,9 @@ msgstr "Hide the review form dropdown default option \"None/Free Form Review\""
 msgid "plugins.generic.pprPlugin.settings.reviewRecommendation.label"
 msgstr "Hide the review recommendation field and default \"Revisions Required\""
 
+msgid "plugins.generic.pprPlugin.settings.firstNameEmailEnabled.label"
+msgstr "Add author and editor first and full names to email templates"
+
 msgid "plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label"
 msgstr "Disable the create reviewer registration email"
 
@@ -290,6 +293,21 @@ msgstr "Close"
 msgid "review.ppr.reviewer.firstName.label"
 msgstr "Reviewer First Name"
 
+msgid "review.ppr.reviewer.name.label"
+msgstr "Reviewer Name"
+
+msgid "review.ppr.author.firstName.label"
+msgstr "Author First Name"
+
+msgid "review.ppr.author.name.label"
+msgstr "Author Name"
+
+msgid "review.ppr.editor.firstName.label"
+msgstr "Editor First Name"
+
+msgid "review.ppr.editor.name.label"
+msgstr "Editor Name"
+
 msgid "tasks.ppr.editor.groupName"
 msgstr "Associate Editor"
 
@@ -304,7 +322,6 @@ msgstr "Author Registration"
 
 msgid "registration.ppr.description"
 msgstr "This page is only for authors to register for an account. If you're a reviewer and need assistance logging in, please email <a href=\"mailto:peerprereview@iq.harvard.edu\">peerprereview@iq.harvard.edu</a>."
-
 
 msgid "surveys.ppr.author.showDetails"
 msgstr "Click here to provide feedback"

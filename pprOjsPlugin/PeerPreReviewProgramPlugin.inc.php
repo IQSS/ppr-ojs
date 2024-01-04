@@ -74,6 +74,10 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $reviewAttachmentsService = new PPRReviewAttachmentsService($this);
             $reviewAttachmentsService->register();
 
+            $this->import('services.email.PPRFirstNameEmailService');
+            $firstNameEmailService = new PPRFirstNameEmailService($this);
+            $firstNameEmailService->register();
+
             $this->import('services.email.PPRDisableEmailService');
             $disableEmailService = new PPRDisableEmailService($this);
             $disableEmailService->register();

@@ -50,6 +50,7 @@ class PPRPluginSettings {
         'authorDashboardSurveyHtml' => ['string', null],
         'reviewerSurveyHtml' => ['string', null],
 
+        'firstNameEmailEnabled' => ['bool', true],
         'reviewerRegistrationEmailDisabled' => ['bool', null],
         'reviewAcceptedEmailEnabled' => ['bool', null],
         'reviewSubmittedEmailEnabled' => ['bool', null],
@@ -224,6 +225,10 @@ class PPRPluginSettings {
 
     public function fileUploadTextOverrideEnabled() {
         return $this->getValue('fileUploadTextOverrideEnabled');
+    }
+
+    public function firstNameEmailEnabled() {
+        return $this->getValue('firstNameEmailEnabled');
     }
 
     public function reviewerRegistrationEmailDisabled() {

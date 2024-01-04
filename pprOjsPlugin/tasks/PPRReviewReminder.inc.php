@@ -76,6 +76,7 @@ class PPRReviewReminder extends PPRScheduledTask {
         AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON);
         $email->assignParams([
             'reviewerName' => htmlspecialchars($reviewer->getFullName()),
+            'reviewerFirstName' => htmlspecialchars($reviewer->getLocalizedGivenName()),
             'reviewerUserName' => htmlspecialchars($reviewer->getUsername()),
             'reviewDueDate' => $reviewDueDate,
             'responseDueDate' => $responseDueDate,

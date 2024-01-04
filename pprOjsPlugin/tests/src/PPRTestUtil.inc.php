@@ -1,5 +1,7 @@
 <?php
 
+import('util.PPRObjectFactory');
+
 /**
  * Utility functions for tests
  */
@@ -56,6 +58,14 @@ class PPRTestUtil {
         $submission = $this->testCase->createMock(Submission::class);
         $submission->method('getId')->willReturn($id);
         return $submission;
+    }
+
+    public function createObjectFactory() {
+        $objectFactory = $this->testCase->createMock(PPRObjectFactory::class);
+        $submissionUtil = $this->testCase->createMock(PPRSubmissionUtil::class);
+        $objectFactory->method('submissionUtil')->willReturn($submissionUtil);
+
+        return $objectFactory;
     }
 
 }

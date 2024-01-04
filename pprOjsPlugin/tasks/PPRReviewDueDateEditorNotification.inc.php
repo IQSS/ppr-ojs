@@ -45,11 +45,14 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
 
         $assignedAuthors = $stageAssignmentDao->getBySubmissionAndRoleId($reviewDueData->getSubmissionId(), ROLE_ID_AUTHOR, WORKFLOW_STAGE_ID_SUBMISSION)->toArray();
         $authorNames = [];
+        $authorFirstNames = [];
         foreach ($assignedAuthors as $assignedAuthor) {
             $author = $userDao->getById($assignedAuthor->getUserId());
             $authorNames[] = htmlspecialchars($author->getFullName());
+            $authorFirstNames[] = htmlspecialchars($author->getLocalizedGivenName());
         }
-        $authorsString = empty($authorNames) ? 'N/A' : implode(', ', $authorNames);
+        $authorNamesString = empty($authorNames) ? 'N/A' : implode(', ', $authorNames);
+        $authorFirstNamesString = empty($authorFirstNames) ? 'N/A' : implode(', ', $authorFirstNames);
 
         $reviewDueDate = strtotime($reviewDueData->getDueDate());
         $dateFormatShort = $context->getLocalizedDateFormatShort();
@@ -62,9 +65,12 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
 
         $email->assignParams([
             'reviewDueDate' => $reviewDueDate,
-            'authorName' => $authorsString,
+            'authorName' => $authorNamesString,
+            'authorFirstName' => $authorFirstNamesString,
             'reviewerName' => htmlspecialchars($reviewer->getFullName()),
+            'reviewerFirstName' => htmlspecialchars($reviewer->getLocalizedGivenName()),
             'editorName' => htmlspecialchars($editor->getFullName()),
+            'editorFirstName' => htmlspecialchars($editor->getLocalizedGivenName()),
             'editorialContactSignature' => htmlspecialchars($context->getData('contactName') . "\n" . $context->getLocalizedName()),
             'submissionReviewUrl' => $submissionReviewUrl,
         ]);
@@ -126,11 +132,14 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
 
         $sentNotifications = 0;
         $assignmentsWithNotifications = 0;
+        $assignmentsAlreadySent = 0;
         foreach ($assignmentsWithDueReviews as $dueReviewData) {
             // Fetch the submission
             $submission = $this->getSubmission($dueReviewData->getSubmissionId());
-            if (!$submission) continue;
-            if ($submission->getStatus() != STATUS_QUEUED) continue;
+            if (!$submission || $submission->getStatus() != STATUS_QUEUED) {
+                $this->log($context, sprintf("Processing reviews - invalid submission submission=%s reviewAssigment=%s", $dueReviewData->getSubmissionId(), $dueReviewData->getReviewId()));
+                continue;
+            }
 
             $editors = $this->getPPRObjectFactory()->submissionUtil()->getSubmissionEditors($submission->getId(), $context->getId());
             if (empty($editors)) {
@@ -148,10 +157,12 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
                 }
                 $pprNotificationRegistry->registerReviewDueDateEditorNotification($dueReviewData);
                 $assignmentsWithNotifications++;
+            } else {
+                $assignmentsAlreadySent++;
             }
         }
 
-        $this->log($context, "Completed - assignmentsWithNotifications=$assignmentsWithNotifications sentNotifications=$sentNotifications");
+        $this->log($context, "Completed - assignmentsAlreadySent=$assignmentsAlreadySent assignmentsWithNotifications=$assignmentsWithNotifications sentNotifications=$sentNotifications");
     }
 
     private function checkDate($type, $reviewAssignment, $reviewReminderEditorDaysFromDueDate, $reviewAssigmentDate) {

@@ -83,6 +83,7 @@
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.emails" list="true"}
+			{fbvElement type="checkbox" name="firstNameEmailEnabled" label="plugins.generic.pprPlugin.settings.firstNameEmailEnabled.label" id="firstNameEmailEnabled" checked=$firstNameEmailEnabled}
 			{fbvElement type="checkbox" name="reviewerRegistrationEmailDisabled" label="plugins.generic.pprPlugin.settings.reviewerRegistrationEmailDisabled.label" id="reviewerRegistrationEmailDisabled" checked=$reviewerRegistrationEmailDisabled}
 			{fbvElement type="checkbox" name="reviewAcceptedEmailEnabled" label="plugins.generic.pprPlugin.settings.reviewAcceptedEmailEnabled.label" id="reviewAcceptedEmailEnabled" checked=$reviewAcceptedEmailEnabled}
 			{fbvElement type="checkbox" name="reviewSubmittedEmailEnabled" label="plugins.generic.pprPlugin.settings.reviewSubmittedEmailEnabled.label" id="reviewSubmittedEmailEnabled" checked=$reviewSubmittedEmailEnabled}

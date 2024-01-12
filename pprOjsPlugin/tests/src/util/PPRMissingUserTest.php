@@ -9,6 +9,7 @@ class PPRMissingUserTest extends PPRTestCase {
 
         $this->assertEquals('', $target->getFullName());
         $this->assertEquals('', $target->getLocalizedGivenName());
+        $this->assertEquals('', $target->getUsername());
     }
 
     public function test_User_overridden_value() {
@@ -16,5 +17,6 @@ class PPRMissingUserTest extends PPRTestCase {
 
         $this->assertEquals('valueToReturn', $target->getFullName());
         $this->assertEquals('valueToReturn', $target->getLocalizedGivenName());
+        $this->assertEquals('valueToReturn', $target->getUsername());
     }
 }

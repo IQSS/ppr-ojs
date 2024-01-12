@@ -93,16 +93,19 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
     }
 
     public function test_sendSubmissionApprovedEmail_should_send_email() {
-        $form = $this->createExternalReviewFormWithSubmission('Santana');
+        $form = $this->createExternalReviewFormWithSubmission();
         $this->getDispatcherMock()->expects($this->once())->method('url')->willReturn('http://submission/url');
 
-        $objectFactory = $this->createMock(PPRObjectFactory::class);
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $authors = [$this->getTestUtil()->createUser($this->getRandomId(), 'Santana', 'Antonio')];
+        $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionAuthors')->with($form->getSubmission()->getId())->willReturn($authors);
+
         $submissionTemplate = $this->createMock(SubmissionMailTemplate::class);
         $objectFactory->expects($this->once())->method('submissionMailTemplate')->with($form->getSubmission(), 'PPR_SUBMISSION_APPROVED')->willReturn($submissionTemplate);
         $submissionTemplate->expects($this->once())->method('addRecipient')->with('Santana@email.com', 'Santana');
         $submissionTemplate->expects($this->once())->method('assignParams')->with([
+            'authorFirstName' => 'Antonio',
             'authorFullName' => 'Santana',
-            'authorFirstName' => 'Santana',
             'submissionUrl' => 'http://submission/url',
             ]);
         $submissionTemplate->expects($this->once())->method('send');
@@ -112,9 +115,10 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
     }
 
     public function test_sendSubmissionApprovedEmail_should_not_send_email_if_no_authors() {
-        $form = $this->createExternalReviewFormWithSubmission(null);
+        $form = $this->createExternalReviewFormWithSubmission();
 
-        $objectFactory = $this->createMock(PPRObjectFactory::class);
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionAuthors')->with($form->getSubmission()->getId())->willReturn(null);
         $objectFactory->expects($this->never())->method('submissionMailTemplate');
 
 
@@ -137,8 +141,8 @@ class PPRSubmissionActionsServiceTest extends PPRTestCase {
         $this->assertEquals(__("submission.$expectedActionType.button.title"), $templateManager->getTemplateVars('pprAction')->getTitle());
     }
 
-    private function createExternalReviewFormWithSubmission($primaryAuthorName) {
-        $submission = $this->getTestUtil()->createSubmissionWithAuthors($primaryAuthorName);
+    private function createExternalReviewFormWithSubmission() {
+        $submission = $this->getTestUtil()->createSubmission($this->getRandomId());
 
         $form = $this->createMock(InitiateExternalReviewForm::class);
         $form->method('getSubmission')->willReturn($submission);

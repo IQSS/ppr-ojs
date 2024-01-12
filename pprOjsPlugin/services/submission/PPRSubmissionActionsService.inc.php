@@ -111,7 +111,7 @@ class PPRSubmissionActionsService {
         $form = $args[0];
         $submission = $form->getSubmission();
         $submissionId = $submission->getId();
-        $author = $this->getAuthor($submission);
+        $author = $this->getSubmissionAuthor($submissionId);
         if (!$author) {
             error_log("PPR[sendSubmissionApprovedEmail] submissionId=$submissionId message=no author found");
             return;
@@ -122,6 +122,7 @@ class PPRSubmissionActionsService {
         $email = $this->pprObjectFactory->submissionMailTemplate($submission, 'PPR_SUBMISSION_APPROVED');
         $email->setContext(Application::get()->getRequest()->getContext());
         $email->addRecipient($author->getEmail(), $author->getFullName());
+        // EDITOR NAME WILL BE ADDED BY email/PPRFirstNameEmailService
         $email->assignParams([
             'authorFullName' => htmlspecialchars($author->getFullName()),
             'authorFirstName' => htmlspecialchars($author->getLocalizedGivenName()),
@@ -130,14 +131,9 @@ class PPRSubmissionActionsService {
         $email->send();
     }
 
-    private function getAuthor($submission) {
-        $author = $submission->getPrimaryAuthor();
-        $contributors = $submission->getAuthors();
-        if (!isset($author) && !empty($contributors)) {
-            $author = $contributors[0];
-        }
-
-        return $author;
+    private function getSubmissionAuthor($submissionId) {
+        $submissionAuthors = $this->pprObjectFactory->submissionUtil()->getSubmissionAuthors($submissionId);
+        //GET FIRST AUTHOR OR NULL
+        return empty($submissionAuthors) ? null : reset($submissionAuthors);
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Service to send an email when a reviewer submits a review
+ * Service to send an email to the reviewer when a review is submitted
  */
 class PPRReviewSubmittedService {
 
@@ -28,8 +28,7 @@ class PPRReviewSubmittedService {
         $reviewId = $review->getId();
 
         $reviewerId = $review->getReviewerId();
-        $userDao = DAORegistry::getDAO('UserDAO');
-        $reviewer = $userDao->getById($reviewerId);
+        $reviewer = $this->pprObjectFactory->submissionUtil()->getUser($reviewerId);
         if (!$reviewer) {
             error_log("PPR[sendReviewSubmittedEmail] review=$reviewId submissionId=$submissionId message=no reviewer found");
             return;
@@ -39,27 +38,16 @@ class PPRReviewSubmittedService {
         $context = $request->getContext();
         $dateFormatShort = $context->getLocalizedDateFormatShort();
 
-        $submissionEditors = $this->pprObjectFactory->submissionUtil()->getSubmissionEditors($submissionId, $context->getId());
-        //GET FIRST EDITOR
-        $editor = empty($submissionEditors) ? null : reset($submissionEditors);
-        $editorFullName = 'N/A';
-        $editorFirstName = 'N/A';
-        if($editor) {
-            $editorFullName = htmlspecialchars($editor->getFullName());
-            $editorFirstName = htmlspecialchars($editor->getLocalizedGivenName());
-        }
-
         $email = $this->pprObjectFactory->submissionMailTemplate($submission, 'PPR_REVIEW_SUBMITTED');
         $email->setContext($context);
         $email->setFrom($context->getData('contactEmail'), $context->getData('contactName'));
         $email->addRecipient($reviewer->getEmail(), $reviewer->getFullName());
+        // EDITOR NAME WILL BE ADDED BY email/PPRFirstNameEmailService
         $email->assignParams([
             'reviewerFullName' => htmlspecialchars($reviewer->getFullName()),
             'reviewerFirstName' => htmlspecialchars($reviewer->getLocalizedGivenName()),
             'reviewerUserName' => htmlspecialchars($reviewer->getUsername()),
             'reviewDueDate' => strftime($dateFormatShort, strtotime($review->getDateDue())),
-            'editorFullName' => $editorFullName,
-            'editorFirstName' => $editorFirstName,
         ]);
         $email->send();
     }

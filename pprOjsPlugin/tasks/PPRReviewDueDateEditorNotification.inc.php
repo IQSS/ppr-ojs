@@ -11,8 +11,8 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
 
     const EMAIL_TEMPLATE = 'PPR_REVIEW_DUE_DATE_EDITOR';
 
-    function __construct($args) {
-        parent::__construct($args);
+    function __construct($args, $pprObjectFactory = null) {
+        parent::__construct($args, $pprObjectFactory);
     }
 
     function getName() {
@@ -37,23 +37,6 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
         AppLocale::requireComponents(LOCALE_COMPONENT_PKP_REVIEWER);
         AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON);
 
-        $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
-        $userDao = DAORegistry::getDAO('UserDAO');
-
-        $reviewer = $userDao->getById($reviewDueData->getReviewerId());
-        if (!isset($reviewer)) return false;
-
-        $assignedAuthors = $stageAssignmentDao->getBySubmissionAndRoleId($reviewDueData->getSubmissionId(), ROLE_ID_AUTHOR, WORKFLOW_STAGE_ID_SUBMISSION)->toArray();
-        $authorNames = [];
-        $authorFirstNames = [];
-        foreach ($assignedAuthors as $assignedAuthor) {
-            $author = $userDao->getById($assignedAuthor->getUserId());
-            $authorNames[] = htmlspecialchars($author->getFullName());
-            $authorFirstNames[] = htmlspecialchars($author->getLocalizedGivenName());
-        }
-        $authorNamesString = empty($authorNames) ? 'N/A' : implode(', ', $authorNames);
-        $authorFirstNamesString = empty($authorFirstNames) ? 'N/A' : implode(', ', $authorFirstNames);
-
         $reviewDueDate = strtotime($reviewDueData->getDueDate());
         $dateFormatShort = $context->getLocalizedDateFormatShort();
         if ($reviewDueDate === -1 || $reviewDueDate === false) {
@@ -63,12 +46,10 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
             $reviewDueDate = strftime($dateFormatShort, $reviewDueDate);
         }
 
+        // AUTHOR AND REVIEWER NAMES WILL BE ADDED BY services/email/PPRFirstNameEmailService
+        $email->setData('reviewerId', $reviewDueData->getReviewerId());
         $email->assignParams([
             'reviewDueDate' => $reviewDueDate,
-            'authorName' => $authorNamesString,
-            'authorFirstName' => $authorFirstNamesString,
-            'reviewerName' => htmlspecialchars($reviewer->getFullName()),
-            'reviewerFirstName' => htmlspecialchars($reviewer->getLocalizedGivenName()),
             'editorName' => htmlspecialchars($editor->getFullName()),
             'editorFirstName' => htmlspecialchars($editor->getLocalizedGivenName()),
             'editorialContactSignature' => htmlspecialchars($context->getData('contactName') . "\n" . $context->getLocalizedName()),

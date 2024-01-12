@@ -42,31 +42,55 @@ class PPRUnassignReviewerFormTest extends PPRTestCase {
         $this->assertEquals('PPR_CONFIRMED_REVIEWER_UNASSIGN', $target->getEmailKey());
     }
 
-    public function test_initData_should_replace_reviewerFirstName_in_the_email_template() {
+    public function test_initData_should_add_reviewer_editor_and_author_names_to_email_template() {
+        $this->assert_initData(
+            'email template body: Reviewer({$reviewerFirstName}, {$reviewerName}) - Editor({$editorFirstName}, {$editorName}) - Author({$authorFirstName}, {$authorName})',
+            'email template body: Reviewer(reviewerFirstName, reviewerFullName) - Editor(editorFirstName, editorFullName) - Author(authorFirstName, authorFullName)',
+            true);
+    }
+
+    public function test_initData_should_add_handle_missing_editor_and_author() {
+        $missingName = __('ppr.user.missing.name');
+        $this->assert_initData(
+            'email template body: Reviewer({$reviewerFirstName}, {$reviewerName}) - Editor({$editorFirstName}, {$editorName}) - Author({$authorFirstName}, {$authorName})',
+            "email template body: Reviewer(reviewerFirstName, reviewerFullName) - Editor($missingName, $missingName) - Author($missingName, $missingName)",
+        false);
+    }
+
+    public function assert_initData($emailBody, $expectedText, $addAuthorAndEditor) {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
         $reviewAssignment = $this->createMock(ReviewAssignment::class);
         $reviewRound = $this->createMock(ReviewRound::class);
         $submission = $this->createMock(Submission::class);
         $reviewerId = $this->getRandomId();
         $reviewAssignment->method('getReviewerId')->willReturn($reviewerId);
 
-        $userDao = $this->createMock(UserDAO::class);
-        $reviewer = $this->createMock(User::class);
-        $reviewer->expects($this->once())->method('getLocalizedGivenName')->willReturn('firstName');
-        $userDao->method('getById')->with($reviewerId)->willReturn($reviewer);
-        DAORegistry::registerDAO('UserDAO', $userDao);
+        $this->addUsers($objectFactory, $reviewerId, $addAuthorAndEditor);
 
         $emailServiceMock = $this->createMock(PKPEmailTemplateService::class);
         $emailTemplate = new EmailTemplate();
-        $emailTemplate->setData('body', 'email template body: {$reviewerFirstName}', 'en_US');
+        $emailTemplate->setData('body', $emailBody, 'en_US');
         $emailServiceMock->expects($this->once())->method('getByKey')->with($this->anything())->willReturn($emailTemplate);
 
         $this->servicesRegister(['emailTemplate' => $emailServiceMock]);
 
-
-        $target = new PPRUnassignReviewerForm($reviewAssignment, $reviewRound, $submission);
+        $target = new PPRUnassignReviewerForm($reviewAssignment, $reviewRound, $submission, $objectFactory);
         $target->initData();
 
-        $this->assertEquals('email template body: firstName', $target->getData('personalMessage'));
+        $this->assertEquals($expectedText, $target->getData('personalMessage'));
+    }
+
+    private function addUsers($objectFactory, $reviewerId, $addAuthorAndEditor = true) {
+        $userDao = $this->createMock(UserDAO::class);
+        $reviewer = $this->getTestUtil()->createUser($this->getRandomId(), 'reviewerFullName', 'reviewerFirstName');
+        $userDao->method('getById')->with($reviewerId)->willReturn($reviewer);
+        DAORegistry::registerDAO('UserDAO', $userDao);
+
+        $editors = $addAuthorAndEditor ? [$this->getTestUtil()->createUser($this->getRandomId(), 'editorFullName', 'editorFirstName')] : [];
+        $authors = $addAuthorAndEditor ? [$this->getTestUtil()->createUser($this->getRandomId(), 'authorFullName', 'authorFirstName')] : [];
+
+        $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionEditors')->willReturn($editors);
+        $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionAuthors')->willReturn($authors);
     }
 
 }

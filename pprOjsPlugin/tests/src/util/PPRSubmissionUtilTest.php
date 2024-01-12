@@ -152,6 +152,40 @@ class PPRSubmissionUtilTest extends PPRTestCase {
         $this->assertEmpty($result);
     }
 
+    public function test_getReviewer_returns_reviewAssignment_reviewer() {
+        $reviewAssignmentId = $this->getRandomId();
+        $reviewerId = $this->getRandomId();
+        $this->createReviewAssignment($reviewAssignmentId, $reviewerId);
+        $expectedUser = $this->createUser($reviewerId, 'Reviewer');
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getReviewer($reviewAssignmentId);
+
+        $this->assertEquals($expectedUser, $result);
+    }
+
+    public function test_getReviewer_returns_null_when_reviewAssignment_cannot_be_found() {
+        $reviewAssignmentId = $this->getRandomId();
+        $this->createReviewAssignment($reviewAssignmentId, null);
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getReviewer($reviewAssignmentId);
+
+        $this->assertNull($result);
+    }
+
+    public function test_getReviewer_returns_null_when_reviewAssignment_reviewer_cannot_be_found() {
+        $reviewAssignmentId = $this->getRandomId();
+        $reviewerId = $this->getRandomId();
+        $this->createReviewAssignment($reviewAssignmentId, $reviewerId);
+        $this->createUser($reviewerId, null);
+
+        $target = new PPRSubmissionUtil();
+        $result = $target->getReviewer($reviewAssignmentId);
+
+        $this->assertNull($result);
+    }
+
     public function test_getUser_returns_user() {
         $userId = $this->getRandomId();
         $expectedUser = $this->createUser($userId, 'UserName');
@@ -233,6 +267,18 @@ class PPRSubmissionUtilTest extends PPRTestCase {
         }
         $assignmentDao->expects($this->once())->method('getBySubmissionAndRoleId')->with($submissionId, ROLE_ID_AUTHOR, WORKFLOW_STAGE_ID_SUBMISSION)->willReturn($this->resultFactoryMock($assignments));
         return $assignmentDao;
+    }
+
+    private function createReviewAssignment($reviewAssignmentId, $reviewerId) {
+        $reviewAssignmentDao = $this->createMock(ReviewAssignmentDAO::class);
+        DAORegistry::registerDAO('ReviewAssignmentDAO', $reviewAssignmentDao);
+        $assignment = null;
+        if ($reviewerId) {
+            $assignment = $this->createMock(ReviewAssignment::class);
+            $assignment->method('getReviewerId')->willReturn($reviewerId);
+        }
+        $reviewAssignmentDao->expects($this->once())->method('getById')->with($reviewAssignmentId)->willReturn($assignment);
+        return $reviewAssignmentDao;
     }
 
     private function createUser($userId, $name) {

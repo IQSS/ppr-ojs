@@ -18,6 +18,7 @@ class PPRFirstNameEmailService {
             'PPR_REVIEW_ACCEPTED',
             'PPR_REVIEW_SUBMITTED',
             'PPR_SUBMISSION_APPROVED',
+            'PPR_REVIEW_SENT_AUTHOR',
         ];
 
     private $pprPlugin;

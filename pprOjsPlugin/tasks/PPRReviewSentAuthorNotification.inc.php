@@ -45,13 +45,10 @@ class PPRReviewSentAuthorNotification extends PPRScheduledTask {
         AppLocale::requireComponents(LOCALE_COMPONENT_PKP_REVIEWER);
         AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON);
 
-        $editor = $this->getSubmissionEditor($submission->getId(), $context->getId()) ?? PPRMissingUser::defaultMissingUser();
-
+        // EDITOR NAMES WILL BE ADDED BY services/email/PPRFirstNameEmailService
         $email->assignParams([
             'authorFirstName' => htmlspecialchars($author->getLocalizedGivenName()),
             'authorName' => htmlspecialchars($author->getFullName()),
-            'editorFirstName' => htmlspecialchars($editor->getLocalizedGivenName()),
-            'editorName' => htmlspecialchars($editor->getFullName()),
             'editorialContactSignature' => htmlspecialchars($context->getData('contactName') . "\n" . $context->getLocalizedName()),
             'submissionUrl' => $submissionUrl,
         ]);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Service to send an email to the reviewer a review is submitted
+ * Service to send an email to the reviewer when a review is submitted
  */
 class PPRReviewSubmittedService {
 

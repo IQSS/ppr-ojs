@@ -43,8 +43,9 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
     }
 
     public function test_sendReviewSubmittedConfirmationEmail_should_send_email() {
+        $reviewerId = $this->getRandomId();
         $reviewerName = 'Sebastian';
-        $form = $this->createReviewFormWithReviewer($reviewerName);
+        $form = $this->createReviewFormWithReviewer($reviewerId);
 
         $context = $this->createMock(Context::class);
         $context->method('getData')->withConsecutive(['contactEmail'], ['contactName'])
@@ -53,15 +54,16 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerName, 'EditorName');
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerId, $reviewerName);
 
         $target = new PPRReviewSubmittedService($this->defaultPPRPlugin, $objectFactory);
         $target->sendReviewSubmittedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
     }
 
     public function test_sendReviewSubmittedConfirmationEmail_should_send_email_with_no_editor_information_when_no_editor() {
+        $reviewerId = $this->getRandomId();
         $reviewerName = 'Santana';
-        $form = $this->createReviewFormWithReviewer($reviewerName);
+        $form = $this->createReviewFormWithReviewer($reviewerId);
 
         $context = $this->createMock(Context::class);
         $context->method('getData')->withConsecutive(['contactEmail'], ['contactName'])
@@ -70,16 +72,20 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerName, null);
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerId, $reviewerName);
 
         $target = new PPRReviewSubmittedService($this->defaultPPRPlugin, $objectFactory);
         $target->sendReviewSubmittedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
     }
 
     public function test_sendReviewSubmittedConfirmationEmail_should_not_send_email_if_reviewer_cannot_be_found() {
-        $form = $this->createReviewFormWithReviewer(null);
+        $reviewerId = $this->getRandomId();
+        $form = $this->createReviewFormWithReviewer($reviewerId);
 
         $objectFactory = $this->createMock(PPRObjectFactory::class);
+        $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
+        $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn(null);
+        $objectFactory->expects($this->once())->method('submissionUtil')->willReturn($submissionUtil);
         $objectFactory->expects($this->never())->method('submissionMailTemplate');
         $objectFactory->expects($this->never())->method('accessKeyManager');
 
@@ -87,22 +93,12 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         $target->sendReviewSubmittedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
     }
 
-    private function createReviewFormWithReviewer($reviewerName) {
+    private function createReviewFormWithReviewer($reviewerId) {
         $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorName');
         $review = $this->createMock(ReviewAssignment::class);
         $review->method('getId')->willReturn($this->getRandomId());
-        $reviewerId = $this->getRandomId();
         $review->method('getReviewerId')->willReturn($reviewerId);
         $review->method('getDateDue')->willReturn('2099-12-31 00:00:00');
-
-        $reviewer = null;
-        if($reviewerName) {
-            $reviewer = $this->getTestUtil()->createUser($reviewerId, $reviewerName, $reviewerName);
-        }
-
-        $userDao = $this->createMock(UserDAO::class);
-        $userDao->expects($this->once())->method('getById')->with($reviewerId)->willReturn($reviewer);
-        DAORegistry::registerDAO('UserDAO', $userDao);
 
 
         $form = $this->createMock(ReviewerReviewStep3Form::class);
@@ -111,18 +107,16 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
         return $form;
     }
 
-    private function setSendEmailAssertions($context, $submission, $reviewerName, $editorName) {
+    private function setSendEmailAssertions($context, $submission, $reviewerId, $reviewerName) {
         $objectFactory = $this->createMock(PPRObjectFactory::class);
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
 
-        $editors = [];
-        if($editorName) {
-            $editors[] = $this->getTestUtil()->createUser($this->getRandomId(), $editorName, $editorName);
-        } else {
-            // SET THE EXPECTED VALUES WHEN NO EDITOR IS FOUND
-            $editorName = 'N/A';
+        $reviewer = null;
+        if($reviewerId) {
+            $reviewer = $this->getTestUtil()->createUser($reviewerId, $reviewerName, $reviewerName);
         }
-        $submissionUtil->expects($this->once())->method('getSubmissionEditors')->willReturn($editors);
+
+        $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn($reviewer);
         $objectFactory->expects($this->once())->method('submissionUtil')->willReturn($submissionUtil);
 
         $submissionTemplate = $this->createMock(SubmissionMailTemplate::class);
@@ -135,8 +129,6 @@ class PPRReviewSubmittedServiceTest extends PPRTestCase {
             'reviewerFirstName' => $reviewerName,
             'reviewerUserName' => strtolower($reviewerName),
             'reviewDueDate' => '2099-12-31',
-            'editorFullName' => $editorName,
-            'editorFirstName' => $editorName,
         ]);
         $submissionTemplate->expects($this->once())->method('send');
 

@@ -28,8 +28,7 @@ class PPRReviewAcceptedService {
         $reviewId = $review->getId();
 
         $reviewerId = $review->getReviewerId();
-        $userDao = DAORegistry::getDAO('UserDAO');
-        $reviewer = $userDao->getById($reviewerId);
+        $reviewer = $this->pprObjectFactory->submissionUtil()->getUser($reviewerId);
         if (!$reviewer) {
             error_log("PPR[sendReviewAcceptedEmail] review=$reviewId submissionId=$submissionId message=no reviewer found");
             return;
@@ -39,16 +38,6 @@ class PPRReviewAcceptedService {
         $dispatcher = $request->getDispatcher();
         $context = $request->getContext();
         $dateFormatShort = $context->getLocalizedDateFormatShort();
-
-        $submissionEditors = $this->pprObjectFactory->submissionUtil()->getSubmissionEditors($submissionId, $context->getId());
-        //GET FIRST EDITOR
-        $editor = empty($submissionEditors) ? null : reset($submissionEditors);
-        $editorFullName = 'N/A';
-        $editorFirstName = 'N/A';
-        if($editor) {
-            $editorFullName = htmlspecialchars($editor->getFullName());
-            $editorFirstName = htmlspecialchars($editor->getLocalizedGivenName());
-        }
 
         $reviewUrlArgs = array('submissionId' => $review->getSubmissionId());
         $accessKeyLifeTime = $this->pprPlugin->getPluginSettings()->accessKeyLifeTime();
@@ -64,13 +53,12 @@ class PPRReviewAcceptedService {
         $email->setContext($context);
         $email->setFrom($context->getData('contactEmail'), $context->getData('contactName'));
         $email->addRecipient($reviewer->getEmail(), $reviewer->getFullName());
+        // EDITOR NAME WILL BE ADDED BY email/PPRFirstNameEmailService
         $email->assignParams([
             'reviewerFullName' => htmlspecialchars($reviewer->getFullName()),
             'reviewerFirstName' => htmlspecialchars($reviewer->getLocalizedGivenName()),
             'reviewerUserName' => htmlspecialchars($reviewer->getUsername()),
             'reviewDueDate' => strftime($dateFormatShort, strtotime($review->getDateDue())),
-            'editorFullName' => $editorFullName,
-            'editorFirstName' => $editorFirstName,
             'passwordResetUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'login', 'lostPassword'),
             'submissionReviewUrl' => $dispatcher->url($request, ROUTE_PAGE, null, 'reviewer', 'submission', null, $reviewUrlArgs)
         ]);

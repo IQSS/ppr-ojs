@@ -5,14 +5,24 @@
  */
 class PPRSubmissionUtil {
 
+    private static $instance;
     private $groupCache;
     private $userCache;
     private $submissionCache;
+
+    public static function getInstance() {
+        if (!isset(self::$instance)) {
+            self::$instance = new PPRSubmissionUtil();
+        }
+
+        return self::$instance;
+    }
 
     public function __construct() {
         $this->groupCache = [];
         $this->userCache = [];
         $this->submissionCache = [];
+        error_log("PPR[PPRSubmissionUtil] created");
     }
 
 
@@ -55,6 +65,16 @@ class PPRSubmissionUtil {
         }
 
         return array_values($authors);
+    }
+
+    public function getReviewer($reviewAssignmentId) {
+        $reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO');
+        $reviewAssignment = $reviewAssignmentDao->getById($reviewAssignmentId);
+        if(!$reviewAssignment) {
+            return null;
+        }
+
+        return $this->getUser($reviewAssignment->getReviewerId());
     }
 
     /**

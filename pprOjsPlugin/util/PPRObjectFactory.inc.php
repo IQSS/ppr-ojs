@@ -20,7 +20,7 @@ class PPRObjectFactory {
     }
 
     public function submissionUtil() {
-        return new PPRSubmissionUtil();
+        return PPRSubmissionUtil::getInstance();
     }
 
     public function pprTaskNotificationRegistry($contextId) {

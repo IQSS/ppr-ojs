@@ -6,6 +6,7 @@
 class PPRFirstNameEmailService {
     const SUPPORTED_TEMPLATES =
         [
+            //BATCH 1
             'REVIEW_REMIND',
             'REVIEW_REMIND_ONECLICK',
             'PPR_REVIEW_REQUEST_DUE_DATE_REVIEWER',
@@ -13,6 +14,10 @@ class PPRFirstNameEmailService {
             'PPR_REVIEW_DUE_DATE_WITH_FILES_REVIEWER'.
             'PPR_REVIEW_DUE_DATE_REVIEWER',
             'PPR_REVIEW_PENDING_WITH_FILES_REVIEWER',
+            //BATCH 2
+            'PPR_REVIEW_ACCEPTED',
+            'PPR_REVIEW_SUBMITTED',
+            'PPR_SUBMISSION_APPROVED',
         ];
 
     private $pprPlugin;
@@ -43,12 +48,19 @@ class PPRFirstNameEmailService {
             // AT THIS POINT REGULAR PARAMETERS HAVE ALREADY BEEN REPLACED
             $submissionAuthor = $this->getSubmissionAuthor($submission->getId());
             $emailTemplate->addPrivateParam('{$authorName}', htmlspecialchars($submissionAuthor->getFullName()));
+            $emailTemplate->addPrivateParam('{$authorFullName}', htmlspecialchars($submissionAuthor->getFullName()));
             $emailTemplate->addPrivateParam('{$authorFirstName}', htmlspecialchars($submissionAuthor->getLocalizedGivenName()));
 
             $contextId = $submission->getContextId();
             $submissionEditor = $this->getSubmissionEditor($submission->getId(), $contextId);
             $emailTemplate->addPrivateParam('{$editorName}', htmlspecialchars($submissionEditor->getFullName()));
+            $emailTemplate->addPrivateParam('{$editorFullName}', htmlspecialchars($submissionEditor->getFullName()));
             $emailTemplate->addPrivateParam('{$editorFirstName}', htmlspecialchars($submissionEditor->getLocalizedGivenName()));
+
+            $requestReviewer = $this->getReviewer($emailTemplate);
+            $emailTemplate->addPrivateParam('{$reviewerName}', htmlspecialchars($requestReviewer->getFullName()));
+            $emailTemplate->addPrivateParam('{$reviewerFullName}', htmlspecialchars($requestReviewer->getFullName()));
+            $emailTemplate->addPrivateParam('{$reviewerFirstName}', htmlspecialchars($requestReviewer->getLocalizedGivenName()));
         }
 
         return false;
@@ -58,15 +70,33 @@ class PPRFirstNameEmailService {
         return $emailTemplate instanceof SubmissionMailTemplate && in_array($emailTemplate->emailKey,self::SUPPORTED_TEMPLATES);
     }
 
+    public function getReviewer($emailTemplate) {
+        // CHECK THE REVIEWER ID MARKER IN TEMPLATE
+        $reviewerId = $emailTemplate->getData('reviewerId');
+        $reviewer = null;
+        if($reviewerId) {
+            $reviewer = $this->pprObjectFactory->submissionUtil()->getUser($reviewerId);
+        } else {
+            // TRY THE REQUEST PARAMETER
+            $request = Application::get()->getRequest();
+            $reviewId = $request->getUserVar('reviewAssignmentId');
+            if ($reviewId) {
+                $reviewer = $this->pprObjectFactory->submissionUtil()->getReviewer($reviewId);
+            }
+        }
+
+        return $reviewer ?? PPRMissingUser::defaultMissingUser();
+    }
+
     private function getSubmissionEditor($submissionId, $contextId) {
         $submissionEditors = $this->pprObjectFactory->submissionUtil()->getSubmissionEditors($submissionId, $contextId);
         //GET FIRST EDITOR
-        return empty($submissionEditors) ? new PPRMissingUser('N/A') : reset($submissionEditors);
+        return empty($submissionEditors) ? PPRMissingUser::defaultMissingUser() : reset($submissionEditors);
     }
 
     private function getSubmissionAuthor($submissionId) {
         $submissionAuthors = $this->pprObjectFactory->submissionUtil()->getSubmissionAuthors($submissionId);
         //GET FIRST AUTHOR
-        return empty($submissionAuthors) ? new PPRMissingUser('N/A') : reset($submissionAuthors);
+        return empty($submissionAuthors) ? PPRMissingUser::defaultMissingUser() : reset($submissionAuthors);
     }
 }

@@ -10,8 +10,8 @@ require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
  */
 class PPRReviewReminder extends PPRScheduledTask {
 
-    function __construct($args) {
-        parent::__construct($args);
+    function __construct($args, $pprObjectFactory = null) {
+        parent::__construct($args, $pprObjectFactory);
     }
 
     /**
@@ -23,9 +23,11 @@ class PPRReviewReminder extends PPRScheduledTask {
 
     function sendReminder ($reviewAssignment, $submission, $emailTemplate, $context) {
         $reviewId = $reviewAssignment->getId();
-
         $reviewer = $this->getUser($reviewAssignment->getReviewerId());
-        if (!isset($reviewer)) return false;
+        if (!$reviewer) {
+            $this->log($context, sprintf("Send Notification - No reviewer found submissionId=%s reviewAssigment=%s reviewerId=%s", $submission->getId(), $reviewId, $reviewAssignment->getReviewerId()));
+            return false;
+        }
 
         import('lib.pkp.classes.mail.SubmissionMailTemplate');
         $reviewerAccessKeysEnabled = $context->getData('reviewerAccessKeysEnabled');

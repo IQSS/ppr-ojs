@@ -42,51 +42,88 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         }
     }
 
+    public function test_getReviewer_should_use_template_reviewerId_if_set() {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey);
+        $reviewerId = $this->getRandomId();
+        $mailTemplate->method('getData')->with('reviewerId')->willReturn($reviewerId);
+        $reviewer = $this->addReviewer($objectFactory, $reviewerId);
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
+        $result = $target->getReviewer($mailTemplate);
+        $this->assertEquals($reviewer, $result);
+    }
+
+    public function test_getReviewer_should_use_request_reviewAssignmentId_when_template_reviewerId_not_set() {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey);
+        $mailTemplate->method('getData')->with('reviewerId')->willReturn(null);
+
+        $reviewAssignmentId = $this->getRandomId();
+        $this->getRequestMock()->expects($this->once())->method('getUserVar')->with('reviewAssignmentId')->willReturn($reviewAssignmentId);
+        $reviewer =$this->getTestUtil()->createUser($this->getRandomId(), 'Reviewer');
+        $objectFactory->submissionUtil()->expects($this->once())->method('getReviewer')->with($reviewAssignmentId)->willReturn($reviewer);
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
+        $result = $target->getReviewer($mailTemplate);
+        $this->assertEquals($reviewer, $result);
+    }
+
     public function test_addFirstName_should_not_update_mail_template_when_not_supported_template() {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
-        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $mailTemplate = $this->createSubmissionEmailTemplate('not_supported');
 
         $mailTemplate->expects($this->never())->method('addPrivateParam');
         $objectFactory->expects($this->never())->method('submissionUtil');
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $target->addFirstName('Mail::send', [$mailTemplate]);
     }
 
     public function test_addFirstName_should_not_update_mail_template_when_no_submission_provided() {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
-        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey, false);
 
         $mailTemplate->expects($this->never())->method('addPrivateParam');
         $objectFactory->expects($this->never())->method('submissionUtil');
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $target->addFirstName('Mail::send', [$mailTemplate]);
     }
 
     public function test_addFirstName_should_add_author_and_editor_names() {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
-        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey);
-        $this->addUsers($objectFactory);
+        $this->addEditorAndAuthor($objectFactory);
+        $reviewerId = $this->getRandomId();
+        $mailTemplate->method('getData')->with('reviewerId')->willReturn($reviewerId);
+        $this->addReviewer($objectFactory, $reviewerId);
 
-        $mailTemplate->expects($this->exactly(4))->method('addPrivateParam')
+        $mailTemplate->expects($this->exactly(9))->method('addPrivateParam')
             ->withConsecutive(
-                ['{$authorName}', 'authorFullName'], ['{$authorFirstName}', 'authorFirstName'],
-                ['{$editorName}', 'editorFullName'], ['{$editorFirstName}', 'editorFirstName']);
+                ['{$authorName}', 'authorFullName'], ['{$authorFullName}', 'authorFullName'], ['{$authorFirstName}', 'authorFirstName'],
+                ['{$editorName}', 'editorFullName'], ['{$editorFullName}', 'editorFullName'], ['{$editorFirstName}', 'editorFirstName'],
+                ['{$reviewerName}', 'reviewerFullName'], ['{$reviewerFullName}', 'reviewerFullName'], ['{$reviewerFirstName}', 'reviewerFirstName']);
         $objectFactory->expects($this->atLeastOnce())->method('submissionUtil');
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $target->addFirstName('Mail::send', [$mailTemplate]);
     }
 
-    public function test_addFirstName_should_handle_missing_author_and_editor() {
+    public function test_addFirstName_should_handle_missing_author_editor_and_reviewer() {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
-        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $mailTemplate = $this->createSubmissionEmailTemplate($this->dafaultEmailKey);
-        $this->addUsers($objectFactory, true);
+        $this->addEditorAndAuthor($objectFactory, true);
 
-        $mailTemplate->expects($this->exactly(4))->method('addPrivateParam')
+        $missingName = __('ppr.user.missing.name');
+        $mailTemplate->expects($this->exactly(9))->method('addPrivateParam')
             ->withConsecutive(
-                ['{$authorName}', 'N/A'], ['{$authorFirstName}', 'N/A'],
-                ['{$editorName}', 'N/A'], ['{$editorFirstName}', 'N/A']);
+                ['{$authorName}', $missingName], ['{$authorFullName}', $missingName], ['{$authorFirstName}', $missingName],
+                ['{$editorName}', $missingName], ['{$editorFullName}', $missingName], ['{$editorFirstName}', $missingName],
+                ['{$reviewerName}', $missingName], ['{$reviewerFullName}', $missingName], ['{$reviewerFirstName}', $missingName]);
         $objectFactory->expects($this->atLeastOnce())->method('submissionUtil');
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $target->addFirstName('Mail::send', [$mailTemplate]);
     }
 
@@ -100,11 +137,17 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         return $submissionMailTemplate;
     }
 
-    private function addUsers($objectFactory, $emptyUsers = false) {
+    private function addEditorAndAuthor($objectFactory, $emptyUsers = false) {
         $editors = $emptyUsers ? [] : [$this->getTestUtil()->createUser($this->getRandomId(), 'editorFullName', 'editorFirstName')];
         $authors = $emptyUsers ? [] : [$this->getTestUtil()->createUser($this->getRandomId(), 'authorFullName', 'authorFirstName')];
 
         $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionEditors')->willReturn($editors);
         $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionAuthors')->willReturn($authors);
+    }
+
+    private function addReviewer($objectFactory, $reviewerId) {
+        $reviewer =$this->getTestUtil()->createUser($this->getRandomId(), 'reviewerFullName', 'reviewerFirstName');
+        $objectFactory->submissionUtil()->expects($this->once())->method('getUser')->with($reviewerId)->willReturn($reviewer);
+        return $reviewer;
     }
 }

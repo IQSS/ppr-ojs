@@ -43,7 +43,8 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
     }
 
     public function test_sendReviewAcceptedConfirmationEmail_should_send_email() {
-        $form = $this->createReviewFormWithReviewer('Santana');
+        $reviewerId = $this->getRandomId();
+        $form = $this->createReviewFormWithReviewer($reviewerId);
 
         $this->getDispatcherMock()->method('url')->willReturnOnConsecutiveCalls('http://password/reset', 'http://submission/url');
 
@@ -54,7 +55,7 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), 'EditorFull', 'EditorFirst');
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerId);
         $accessKeyManager = $this->createMock(AccessKeyManager::class);
         $accessKeyManager->expects($this->once())->method('createKey');
         $objectFactory->expects($this->once())->method('accessKeyManager')->willReturn($accessKeyManager);
@@ -64,7 +65,8 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
     }
 
     public function test_sendReviewAcceptedConfirmationEmail_should_send_email_with_no_access_key_when_accessKeyLifeTime_has_not_been_setup() {
-        $form = $this->createReviewFormWithReviewer('Santana');
+        $reviewerId = $this->getRandomId();
+        $form = $this->createReviewFormWithReviewer($reviewerId);
 
         $this->getDispatcherMock()->method('url')->willReturnOnConsecutiveCalls('http://password/reset', 'http://submission/url');
 
@@ -75,7 +77,7 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), 'EditorFull', 'EditorFirst');
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerId);
         $objectFactory->expects($this->never())->method('accessKeyManager');
 
         $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['accessKeyLifeTime' => 0]);
@@ -84,7 +86,8 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
     }
 
     public function test_sendReviewAcceptedConfirmationEmail_should_send_email_with_no_editor_information_when_no_editor() {
-        $form = $this->createReviewFormWithReviewer('Santana');
+        $reviewerId = $this->getRandomId();
+        $form = $this->createReviewFormWithReviewer($reviewerId);
 
         $this->getDispatcherMock()->method('url')->willReturnOnConsecutiveCalls('http://password/reset', 'http://submission/url');
 
@@ -95,7 +98,7 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         $context->method('getId')->willReturn(self::CONTEXT_ID);
         $this->getRequestMock()->expects($this->once())->method('getContext')->willReturn($context);
 
-        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), null, null);
+        $objectFactory = $this->setSendEmailAssertions($context, $form->getReviewerSubmission(), $reviewerId);
         $accessKeyManager = $this->createMock(AccessKeyManager::class);
         $accessKeyManager->expects($this->once())->method('createKey');
         $objectFactory->expects($this->once())->method('accessKeyManager')->willReturn($accessKeyManager);
@@ -105,9 +108,13 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
     }
 
     public function test_sendReviewAcceptedConfirmationEmail_should_not_send_email_if_reviewer_cannot_be_found() {
-        $form = $this->createReviewFormWithReviewer(null);
+        $reviewerId = $this->getRandomId();
+        $form = $this->createReviewFormWithReviewer($reviewerId);
 
         $objectFactory = $this->createMock(PPRObjectFactory::class);
+        $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
+        $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn(null);
+        $objectFactory->expects($this->once())->method('submissionUtil')->willReturn($submissionUtil);
         $objectFactory->expects($this->never())->method('submissionMailTemplate');
         $objectFactory->expects($this->never())->method('accessKeyManager');
 
@@ -115,22 +122,12 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         $target->sendReviewAcceptedConfirmationEmail('pkpreviewerreviewstep1form::execute', [$form]);
     }
 
-    private function createReviewFormWithReviewer($reviewerName) {
+    private function createReviewFormWithReviewer($reviewerId) {
         $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorName');
         $review = $this->createMock(ReviewAssignment::class);
         $review->method('getId')->willReturn($this->getRandomId());
-        $reviewerId = $this->getRandomId();
         $review->method('getReviewerId')->willReturn($reviewerId);
         $review->method('getDateDue')->willReturn('2099-12-31 00:00:00');
-
-        $reviewer = null;
-        if($reviewerName) {
-            $reviewer = $this->getTestUtil()->createUser($reviewerId, $reviewerName, $reviewerName);
-        }
-
-        $userDao = $this->createMock(UserDAO::class);
-        $userDao->expects($this->once())->method('getById')->with($reviewerId)->willReturn($reviewer);
-        DAORegistry::registerDAO('UserDAO', $userDao);
 
 
         $form = $this->createMock(PKPReviewerReviewStep1Form::class);
@@ -139,19 +136,16 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         return $form;
     }
 
-    private function setSendEmailAssertions($context, $submission, $editorFullName, $editorFirstName) {
+    private function setSendEmailAssertions($context, $submission, $reviewerId) {
         $objectFactory = $this->createMock(PPRObjectFactory::class);
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
 
-        $editors = [];
-        if($editorFullName) {
-            $editors[] = $this->getTestUtil()->createUser($this->getRandomId(), $editorFullName, $editorFirstName);
-        } else {
-            // SET THE EXPECTED VALUES WHEN NO EDITOR IS FOUND
-            $editorFullName = 'N/A';
-            $editorFirstName = 'N/A';
+        $reviewer = null;
+        if($reviewerId) {
+            $reviewer = $this->getTestUtil()->createUser($reviewerId, 'Santana', 'Antonio');
         }
-        $submissionUtil->expects($this->once())->method('getSubmissionEditors')->willReturn($editors);
+
+        $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn($reviewer);
         $objectFactory->expects($this->once())->method('submissionUtil')->willReturn($submissionUtil);
 
         $submissionTemplate = $this->createMock(SubmissionMailTemplate::class);
@@ -161,11 +155,9 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
         $submissionTemplate->expects($this->once())->method('addRecipient')->with('Santana@email.com', 'Santana');
         $submissionTemplate->expects($this->once())->method('assignParams')->with([
             'reviewerFullName' => 'Santana',
-            'reviewerFirstName' => 'Santana',
+            'reviewerFirstName' => 'Antonio',
             'reviewerUserName' => 'santana',
             'reviewDueDate' => '2099-12-31',
-            'editorFullName' => $editorFullName,
-            'editorFirstName' => $editorFirstName,
             'passwordResetUrl' => 'http://password/reset',
             'submissionReviewUrl' => 'http://submission/url',
         ]);

@@ -352,3 +352,6 @@ msgstr "Unknown"
 
 msgid "review.ppr.files.type.submission"
 msgstr "Submission"
+
+msgid "ppr.user.missing.name"
+msgstr "N/A"

@@ -83,14 +83,14 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         $this->assertEquals(false, $result);
     }
 
-    public function test_addFirstNameLabelsToForm_should_delegate_to_pprFirstNamesManagementService() {
+    public function test_addFirstNameLabelsToAdvancedSearchReviewerForm_should_delegate_to_pprFirstNamesManagementService() {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
 
         $objectFactory->expects($this->atLeastOnce())->method('firstNamesManagementService');
         $objectFactory->firstNamesManagementService()->expects($this->once())->method('addFirstNameLabelsToTemplate');
 
         $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
-        $result = $target->addFirstNameLabelsToForm('advancedsearchreviewerform::display', [null]);
+        $result = $target->addFirstNameLabelsToAdvancedSearchReviewerForm('advancedsearchreviewerform::display', [null]);
         $this->assertEquals(false, $result);
     }
 

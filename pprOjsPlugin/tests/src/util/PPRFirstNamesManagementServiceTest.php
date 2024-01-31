@@ -54,7 +54,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $this->assertEquals($reviewer, $result);
     }
 
-    public function test_addFirstNameLabelsToTemplate_should_update_template_maanger_with_first_name_labeld() {
+    public function test_addFirstNameLabelsToTemplate_should_update_template_manager_with_first_name_labels() {
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
         TemplateManager::getManager()->setData([
             'templateVariableName' => ['existingKey' => 'existingValue']

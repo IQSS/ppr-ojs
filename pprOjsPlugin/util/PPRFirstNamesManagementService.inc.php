@@ -13,7 +13,7 @@ class PPRFirstNamesManagementService {
         $this->pprSubmissionUtil = $pprSubmissionUtil;
     }
 
-    function addFirstNameLabelsToTemplate($templateVariableName = 'emailVariables') {
+    function addFirstNameLabelsToTemplate($templateVariableName) {
         // ADD FIRST NAME LABELS FOR REVIEWER, AUTHOR, AND EDITOR IN THE EMAIL BODY EDITOR IN THE FORM
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
         $emailVariables = $templateMgr->getTemplateVars($templateVariableName) ?? [];

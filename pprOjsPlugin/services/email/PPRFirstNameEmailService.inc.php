@@ -51,7 +51,7 @@ class PPRFirstNameEmailService {
             HookRegistry::register('thankreviewerform::display', array($this, 'addFirstNamesToThankReviewerForm'));
             HookRegistry::register('TemplateManager::fetch', array($this, 'replaceFirstNameInTemplateText'));
 
-            HookRegistry::register('advancedsearchreviewerform::display', array($this, 'addFirstNameLabelsToForm'));
+            HookRegistry::register('advancedsearchreviewerform::display', array($this, 'addFirstNameLabelsToAdvancedSearchReviewerForm'));
         }
     }
 
@@ -64,8 +64,8 @@ class PPRFirstNameEmailService {
         return false;
     }
 
-    function addFirstNameLabelsToForm($hookName, $arguments) {
-        $this->pprObjectFactory->firstNamesManagementService()->addFirstNameLabelsToTemplate();
+    function addFirstNameLabelsToAdvancedSearchReviewerForm($hookName, $arguments) {
+        $this->pprObjectFactory->firstNamesManagementService()->addFirstNameLabelsToTemplate('emailVariables');
 
         return false;
     }
@@ -78,6 +78,7 @@ class PPRFirstNameEmailService {
         $emailBodyText = $thankReviewerForm->getData('message');
         $emailBodyTextUpdated = $this->pprObjectFactory->firstNamesManagementService()->replaceFirstNames($emailBodyText, $submission, $reviewerId);
         $thankReviewerForm->setData('message',  $emailBodyTextUpdated);
+
         return false;
     }
 
@@ -89,6 +90,7 @@ class PPRFirstNameEmailService {
         $emailBodyText = $reviewReminderForm->getData('message');
         $emailBodyTextUpdated = $this->pprObjectFactory->firstNamesManagementService()->replaceFirstNames($emailBodyText, $submission, $reviewerId);
         $reviewReminderForm->setData('message',  $emailBodyTextUpdated);
+        
         return false;
     }
 

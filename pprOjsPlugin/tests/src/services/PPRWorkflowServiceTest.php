@@ -161,7 +161,7 @@ class PPRWorkflowServiceTest extends PPRTestCase {
         $smarty = $this->createSmartyMock($pluginResourcePath, 'survey_contents');
         $this->AddSmartyData($smarty, 'authorDashboard');
 
-        $review = $this->createMock(ReviewAssignment::class);
+        $review = $this->getTestUtil()->createReview();
         $review->expects($this->once())->method('getDateCompleted')->willReturn(Core::getCurrentDate());
         $reviewsDao = $this->createMock(ReviewAssignmentDAO::class);
         $reviewsDao->expects($this->once())->method('getBySubmissionId')->willReturn([$review]);
@@ -197,7 +197,7 @@ class PPRWorkflowServiceTest extends PPRTestCase {
         $smarty = $this->createSmartyMock($pluginResourcePath, null);
         $this->AddSmartyData($smarty, 'authorDashboard');
 
-        $review = $this->createMock(ReviewAssignment::class);
+        $review = $this->getTestUtil()->createReview();
         $review->expects($this->once())->method('getDateCompleted')->willReturn(null);
         $reviewsDao = $this->createMock(ReviewAssignmentDAO::class);
         $reviewsDao->expects($this->once())->method('getBySubmissionId')->willReturn([$review]);

@@ -6,7 +6,9 @@ import('tests.src.PPRTestUtil');
 
 import('classes.core.Request');
 import('classes.core.Application');
+import('lib.pkp.classes.core.PKPRouter');
 import('lib.pkp.classes.core.Dispatcher');
+import('lib.pkp.classes.handler.PKPHandler');
 
 import('lib.pkp.classes.site.Site');
 import('lib.pkp.classes.user.User');
@@ -28,11 +30,14 @@ class PPRTestCase extends TestCase {
         $requestUser = new User();
         $requestUser->_data = ['givenName' => ['en_US' => 'Request'], 'familyName' => ['en_US' => 'User']];
         $this->requestMock->method('getUser')->willReturn($requestUser);
-
         $this->requestMock->method('getSite')->willReturn(new Site());
 
         $this->dispatcherMock = $this->createMock(Dispatcher::class);
         $this->requestMock->method('getDispatcher')->willReturn($this->dispatcherMock);
+
+        $router = $this->createMock(PKPRouter::class);
+        $router->method('getHandler')->willReturn($this->createMock(PKPHandler::class));
+        $this->requestMock->method('getRouter')->willReturn($router);
 
         Registry::set('request', $this->requestMock);
         AppLocale::initialize($this->requestMock);

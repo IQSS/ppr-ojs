@@ -124,9 +124,7 @@ class PPRReviewAcceptedServiceTest extends PPRTestCase {
 
     private function createReviewFormWithReviewer($reviewerId) {
         $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorName');
-        $review = $this->createMock(ReviewAssignment::class);
-        $review->method('getId')->willReturn($this->getRandomId());
-        $review->method('getReviewerId')->willReturn($reviewerId);
+        $review = $this->getTestUtil()->createReview($reviewerId);
         $review->method('getDateDue')->willReturn('2099-12-31 00:00:00');
 
 

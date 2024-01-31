@@ -274,8 +274,7 @@ class PPRSubmissionUtilTest extends PPRTestCase {
         DAORegistry::registerDAO('ReviewAssignmentDAO', $reviewAssignmentDao);
         $assignment = null;
         if ($reviewerId) {
-            $assignment = $this->createMock(ReviewAssignment::class);
-            $assignment->method('getReviewerId')->willReturn($reviewerId);
+            $assignment = $this->getTestUtil()->createReview($reviewerId);
         }
         $reviewAssignmentDao->expects($this->once())->method('getById')->with($reviewAssignmentId)->willReturn($assignment);
         return $reviewAssignmentDao;

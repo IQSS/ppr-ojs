@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . '/PPRSubmissionUtil.inc.php');
-require_once(dirname(__FILE__) . '/PPRSubmissionUtil.inc.php');
+require_once(dirname(__FILE__) . '/PPRFirstNamesManagementService.inc.php');
 require_once(dirname(__FILE__) . '/../tasks/PPRTaskNotificationRegistry.inc.php');
 /**
  * Service inject internal and OJS classes into PPR services
@@ -26,4 +26,10 @@ class PPRObjectFactory {
     public function pprTaskNotificationRegistry($contextId) {
         return new PPRTaskNotificationRegistry($contextId);
     }
+
+    public function firstNamesManagementService() {
+        return new PPRFirstNamesManagementService($this->submissionUtil());
+    }
+
+
 }

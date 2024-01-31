@@ -19,7 +19,7 @@ class PPRUnassignReviewerFormTest extends PPRTestCase {
     }
 
     public function test_getEmailKey_should_select_PPR_REQUESTED_REVIEWER_UNASSIGN_email_template_when_dateConfirmed_is_null() {
-        $reviewAssignment = $this->createMock(ReviewAssignment::class);
+        $reviewAssignment = $this->getTestUtil()->createReview();
         $reviewRound = $this->createMock(ReviewRound::class);
         $submission = $this->createMock(Submission::class);
         $reviewAssignment->expects($this->once())->method('getDateConfirmed')->willReturn(null);
@@ -31,7 +31,7 @@ class PPRUnassignReviewerFormTest extends PPRTestCase {
     }
 
     public function test_getEmailKey_should_select_PPR_CONFIRMED_REVIEWER_UNASSIGN_email_template_when_dateConfirmed_is_set() {
-        $reviewAssignment = $this->createMock(ReviewAssignment::class);
+        $reviewAssignment = $this->getTestUtil()->createReview();
         $reviewRound = $this->createMock(ReviewRound::class);
         $submission = $this->createMock(Submission::class);
         $reviewAssignment->expects($this->once())->method('getDateConfirmed')->willReturn(Core::getCurrentDate());
@@ -59,11 +59,10 @@ class PPRUnassignReviewerFormTest extends PPRTestCase {
 
     public function assert_initData($emailBody, $expectedText, $addAuthorAndEditor) {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
-        $reviewAssignment = $this->createMock(ReviewAssignment::class);
+        $reviewerId = $this->getRandomId();
+        $reviewAssignment = $this->getTestUtil()->createReview($reviewerId);
         $reviewRound = $this->createMock(ReviewRound::class);
         $submission = $this->createMock(Submission::class);
-        $reviewerId = $this->getRandomId();
-        $reviewAssignment->method('getReviewerId')->willReturn($reviewerId);
 
         $this->addUsers($objectFactory, $reviewerId, $addAuthorAndEditor);
 

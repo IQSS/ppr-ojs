@@ -4,7 +4,7 @@
  * Service to add author and editor first name to all SubmissionMailTemplates
  */
 class PPRFirstNameEmailService {
-    const SUPPORTED_TEMPLATES =
+    const SUPPORTED_EMAILS =
         [
             //BATCH 1
             'REVIEW_REMIND',
@@ -19,6 +19,20 @@ class PPRFirstNameEmailService {
             'PPR_REVIEW_SUBMITTED',
             'PPR_SUBMISSION_APPROVED',
             'PPR_REVIEW_SENT_AUTHOR',
+            //BATCH 3
+            'REVIEW_REQUEST' ,
+            'REVIEW_REQUEST_SUBSEQUENT',
+            'REVIEW_REQUEST_ONECLICK',
+            'REVIEW_REQUEST_ONECLICK_SUBSEQUENT',
+            'REVIEW_CONFIRM',
+            'REVIEW_CANCEL',
+            'REVIEW_DECLINE',
+            'REVIEW_ACK',
+        ];
+
+    const SUPPORTED_TEMPLATES =
+        [
+            'reviewer/review/modal/regretMessage.tpl' => 'declineMessageBody',
         ];
 
     private $pprPlugin;
@@ -32,72 +46,73 @@ class PPRFirstNameEmailService {
 
     function register() {
         if ($this->pprPlugin->getPluginSettings()->firstNameEmailEnabled()) {
-            HookRegistry::register('Mail::send', array($this, 'addFirstName'));
+            HookRegistry::register('Mail::send', array($this, 'addFirstNamesToEmailTemplate'));
+            HookRegistry::register('reviewreminderform::display', array($this, 'addFirstNamesToReviewReminderForm'));
+            HookRegistry::register('thankreviewerform::display', array($this, 'addFirstNamesToThankReviewerForm'));
+            HookRegistry::register('TemplateManager::fetch', array($this, 'replaceFirstNameInTemplateText'));
+
+            HookRegistry::register('advancedsearchreviewerform::display', array($this, 'addFirstNameLabelsToAdvancedSearchReviewerForm'));
         }
     }
 
-    function addFirstName($hookName, $arguments) {
+    function addFirstNamesToEmailTemplate($hookName, $arguments) {
         $emailTemplate = $arguments[0];
-        if ($this->isTemplateSupported($emailTemplate)) {
-            $submission = $emailTemplate->submission;
-            if (!$submission) {
-                error_log("PPR[PPRFirstNameEmailService] submission is null - skip");
-                return false;
-            }
-
-            // SETTING PRIVATE PARAMS IN THE EMAIL TEMPLATE WILL GET REPLACED IN THE BODY AFTER THIS HOOK COMPLETES
-            // AT THIS POINT REGULAR PARAMETERS HAVE ALREADY BEEN REPLACED
-            $submissionAuthor = $this->getSubmissionAuthor($submission->getId());
-            $emailTemplate->addPrivateParam('{$authorName}', htmlspecialchars($submissionAuthor->getFullName()));
-            $emailTemplate->addPrivateParam('{$authorFullName}', htmlspecialchars($submissionAuthor->getFullName()));
-            $emailTemplate->addPrivateParam('{$authorFirstName}', htmlspecialchars($submissionAuthor->getLocalizedGivenName()));
-
-            $contextId = $submission->getContextId();
-            $submissionEditor = $this->getSubmissionEditor($submission->getId(), $contextId);
-            $emailTemplate->addPrivateParam('{$editorName}', htmlspecialchars($submissionEditor->getFullName()));
-            $emailTemplate->addPrivateParam('{$editorFullName}', htmlspecialchars($submissionEditor->getFullName()));
-            $emailTemplate->addPrivateParam('{$editorFirstName}', htmlspecialchars($submissionEditor->getLocalizedGivenName()));
-
-            $requestReviewer = $this->getReviewer($emailTemplate);
-            $emailTemplate->addPrivateParam('{$reviewerName}', htmlspecialchars($requestReviewer->getFullName()));
-            $emailTemplate->addPrivateParam('{$reviewerFullName}', htmlspecialchars($requestReviewer->getFullName()));
-            $emailTemplate->addPrivateParam('{$reviewerFirstName}', htmlspecialchars($requestReviewer->getLocalizedGivenName()));
+        if ($this->isEmailSupported($emailTemplate)) {
+            $this->pprObjectFactory->firstNamesManagementService()->addFirstNamesToEmailTemplate($emailTemplate);
         }
 
         return false;
     }
 
-    public function isTemplateSupported($emailTemplate) {
-        return $emailTemplate instanceof SubmissionMailTemplate && in_array($emailTemplate->emailKey,self::SUPPORTED_TEMPLATES);
+    function addFirstNameLabelsToAdvancedSearchReviewerForm($hookName, $arguments) {
+        $this->pprObjectFactory->firstNamesManagementService()->addFirstNameLabelsToTemplate('emailVariables');
+
+        return false;
     }
 
-    public function getReviewer($emailTemplate) {
-        // CHECK THE REVIEWER ID MARKER IN TEMPLATE
-        $reviewerId = $emailTemplate->getData('reviewerId');
-        $reviewer = null;
-        if($reviewerId) {
-            $reviewer = $this->pprObjectFactory->submissionUtil()->getUser($reviewerId);
-        } else {
-            // TRY THE REQUEST PARAMETER
-            $request = Application::get()->getRequest();
-            $reviewId = $request->getUserVar('reviewAssignmentId');
-            if ($reviewId) {
-                $reviewer = $this->pprObjectFactory->submissionUtil()->getReviewer($reviewId);
-            }
+    function addFirstNamesToThankReviewerForm($hookName, $arguments) {
+        $thankReviewerForm = $arguments[0];
+        $review = $thankReviewerForm->getReviewAssignment();
+        $reviewerId = $thankReviewerForm->getReviewAssignment()->getReviewerId();
+        $submission = $this->pprObjectFactory->submissionUtil()->getSubmission($review->getSubmissionId());
+        $emailBodyText = $thankReviewerForm->getData('message');
+        $emailBodyTextUpdated = $this->pprObjectFactory->firstNamesManagementService()->replaceFirstNames($emailBodyText, $submission, $reviewerId);
+        $thankReviewerForm->setData('message',  $emailBodyTextUpdated);
+
+        return false;
+    }
+
+    function addFirstNamesToReviewReminderForm($hookName, $arguments) {
+        $reviewReminderForm = $arguments[0];
+        $review = $reviewReminderForm->getReviewAssignment();
+        $reviewerId = $reviewReminderForm->getReviewAssignment()->getReviewerId();
+        $submission = $this->pprObjectFactory->submissionUtil()->getSubmission($review->getSubmissionId());
+        $emailBodyText = $reviewReminderForm->getData('message');
+        $emailBodyTextUpdated = $this->pprObjectFactory->firstNamesManagementService()->replaceFirstNames($emailBodyText, $submission, $reviewerId);
+        $reviewReminderForm->setData('message',  $emailBodyTextUpdated);
+        
+        return false;
+    }
+
+    function replaceFirstNameInTemplateText($hookName, $arguments) {
+        $templateName = $arguments[1];
+        if ($this->isTemplateSupported($templateName)) {
+            $templateMgr = $arguments[0];
+            $emailBodyVariableName = self::SUPPORTED_TEMPLATES[$templateName];
+            $emailBodyText = $templateMgr->getTemplateVars($emailBodyVariableName);
+            $submission = Application::get()->getRequest()->getRouter()->getHandler()->getAuthorizedContextObject(ASSOC_TYPE_SUBMISSION);
+            $emailBodyTextUpdated = $this->pprObjectFactory->firstNamesManagementService()->replaceFirstNames($emailBodyText, $submission);
+            $templateMgr->assign($emailBodyVariableName, $emailBodyTextUpdated);
         }
 
-        return $reviewer ?? PPRMissingUser::defaultMissingUser();
+        return false;
     }
 
-    private function getSubmissionEditor($submissionId, $contextId) {
-        $submissionEditors = $this->pprObjectFactory->submissionUtil()->getSubmissionEditors($submissionId, $contextId);
-        //GET FIRST EDITOR
-        return empty($submissionEditors) ? PPRMissingUser::defaultMissingUser() : reset($submissionEditors);
+    public function isEmailSupported($email) {
+        return $email instanceof SubmissionMailTemplate && in_array($email->emailKey,self::SUPPORTED_EMAILS);
     }
 
-    private function getSubmissionAuthor($submissionId) {
-        $submissionAuthors = $this->pprObjectFactory->submissionUtil()->getSubmissionAuthors($submissionId);
-        //GET FIRST AUTHOR
-        return empty($submissionAuthors) ? PPRMissingUser::defaultMissingUser() : reset($submissionAuthors);
+    public function isTemplateSupported($template) {
+        return in_array($template, array_keys(self::SUPPORTED_TEMPLATES));
     }
 }

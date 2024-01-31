@@ -54,16 +54,28 @@ class PPRTestUtil {
         return $author;
     }
 
-    public function createSubmission($id) {
+    public function createSubmission($submissionId = null) {
+        $submissionId ??= $this->testCase->getRandomId();
         $submission = $this->testCase->createMock(Submission::class);
-        $submission->method('getId')->willReturn($id);
+        $submission->method('getId')->willReturn($submissionId);
+        $submission->method('getContextId')->willReturn($this->testCase->getRandomId());
         return $submission;
+    }
+
+    public function createReview($reviewerId = null) {
+        $reviewerId = $reviewerId ?? $this->testCase->getRandomId();
+        $review = $this->testCase->createMock(ReviewAssignment::class);
+        $review->method('getId')->willReturn($this->testCase->getRandomId());
+        $review->method('getReviewerId')->willReturn($reviewerId);
+        return $review;
     }
 
     public function createObjectFactory() {
         $objectFactory = $this->testCase->createMock(PPRObjectFactory::class);
         $submissionUtil = $this->testCase->createMock(PPRSubmissionUtil::class);
+        $firstNamesService = $this->testCase->createMock(PPRFirstNamesManagementService::class);
         $objectFactory->method('submissionUtil')->willReturn($submissionUtil);
+        $objectFactory->method('firstNamesManagementService')->willReturn($firstNamesService);
 
         return $objectFactory;
     }

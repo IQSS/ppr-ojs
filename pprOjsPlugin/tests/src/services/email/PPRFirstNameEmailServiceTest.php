@@ -166,6 +166,20 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         $this->assertEquals(false, $result);
     }
 
+    public function test_addFirstNamesToSendReviewsForm_should_update_form_message_variable_with_firstNamesManagementService_result() {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $form = $this->createMock(SendReviewsForm::class);
+        $submission = $this->getTestUtil()->createSubmission();
+        $form->method('getSubmission')->willReturn($submission);
+        $form->expects($this->once())->method('getData')->with('personalMessage')->willReturn('message');
+        $objectFactory->firstNamesManagementService()->expects($this->once())->method('replaceFirstNames')->with('message', $submission)->willReturn('updatedMessage');
+        $form->expects($this->once())->method('setData')->with('personalMessage', 'updatedMessage');
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
+        $result = $target->addFirstNamesToSendReviewsForm('sendreviewsform::display', [$form]);
+        $this->assertEquals(false, $result);
+    }
+
     public function test_replaceFirstNameInTemplateText_should_update_template_email_variable_with_firstNamesManagementService_result() {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
         $submission = $this->getTestUtil()->createSubmission($this->getRandomId());

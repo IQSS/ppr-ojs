@@ -9,7 +9,10 @@ import('lib.pkp.controllers.grid.users.reviewer.form.ReviewReminderForm');
 
 class PPRFirstNameEmailServiceTest extends PPRTestCase {
 
-    const CONTEXT_ID = 991234;
+    const CONTEXT_ID = 99887766;
+
+    const SUPPORTED_COMPONENT_NAME = 'grid.users.stageParticipant.StageParticipantGridHandler';
+    const SUPPORTED_METHOD_NAME = 'fetchTemplateBody';
 
     private $defaultPPRPlugin;
     private $defaultEmailKey;
@@ -33,19 +36,20 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         $target = new PPRFirstNameEmailService($pprPluginMock);
         $target->register();
 
-        $this->assertEquals(5, $this->countHooks());
+        $this->assertEquals(7, $this->countHooks());
         $this->assertEquals(1, count($this->getHooks('Mail::send')));
         $this->assertEquals(1, count($this->getHooks('reviewreminderform::display')));
         $this->assertEquals(1, count($this->getHooks('thankreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('sendreviewsform::display')));
         $this->assertEquals(1, count($this->getHooks('TemplateManager::fetch')));
         $this->assertEquals(1, count($this->getHooks('advancedsearchreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('LoadComponentHandler')));
     }
 
     public function test_isEmailSupported_returns_true_for_expected_emails() {
         $target = new PPRFirstNameEmailService($this->defaultPPRPlugin);
         foreach (PPRFirstNameEmailService::SUPPORTED_EMAILS as $emailTemplateName) {
-            $mailTemplate = $this->createSubmissionEmailTemplate($emailTemplateName);
-            $this->assertTrue($target->isEmailSupported($mailTemplate));
+            $this->assertTrue($target->isEmailSupported($emailTemplateName));
         }
     }
 
@@ -55,6 +59,54 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
             $this->assertTrue($target->isTemplateSupported($supportedTemplateName));
             $this->assertNotNull($emailBodyVariableName);
         }
+    }
+
+    public function test_addPPRStageParticipantGridHandler_should_not_update_component_name_when_component_is_not_supported() {
+        // SET VALUES TO TRIGGER FEATURE
+        $componentName = 'grid.users.otherComponent';
+        $methodName = self::SUPPORTED_METHOD_NAME;
+        $this->getRequestMock()->method('getUserVar')->with('template')->willReturn($this->defaultEmailKey);
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $this->getTestUtil()->createObjectFactory());
+        $result = $target->addPPRStageParticipantGridHandler('LoadComponentHandler', [&$componentName, &$methodName]);
+        $this->assertEquals(false, $result);
+        $this->assertEquals('grid.users.otherComponent', $componentName);
+    }
+
+    public function test_addPPRStageParticipantGridHandler_should_not_update_component_name_when_method_is_not_supported() {
+        // SET VALUES TO TRIGGER FEATURE
+        $componentName = self::SUPPORTED_COMPONENT_NAME;
+        $methodName = 'otherMethod';
+        $this->getRequestMock()->method('getUserVar')->with('template')->willReturn($this->defaultEmailKey);
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $this->getTestUtil()->createObjectFactory());
+        $result = $target->addPPRStageParticipantGridHandler('LoadComponentHandler', [&$componentName, &$methodName]);
+        $this->assertEquals(false, $result);
+        $this->assertEquals(self::SUPPORTED_COMPONENT_NAME, $componentName);
+    }
+
+    public function test_addPPRStageParticipantGridHandler_should_not_update_component_name_when_template_is_not_supported() {
+        // SET VALUES TO TRIGGER FEATURE
+        $componentName = self::SUPPORTED_COMPONENT_NAME;
+        $methodName = self::SUPPORTED_METHOD_NAME;
+        $this->getRequestMock()->method('getUserVar')->with('template')->willReturn('other_template');
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $this->getTestUtil()->createObjectFactory());
+        $result = $target->addPPRStageParticipantGridHandler('LoadComponentHandler', [&$componentName, &$methodName]);
+        $this->assertEquals(false, $result);
+        $this->assertEquals(self::SUPPORTED_COMPONENT_NAME, $componentName);
+    }
+
+    public function test_addPPRStageParticipantGridHandler_should_update_component_name_when_is_expected_component_with_method_and_template_is_supported() {
+        // SET VALUES TO TRIGGER FEATURE
+        $componentName = self::SUPPORTED_COMPONENT_NAME;
+        $methodName = self::SUPPORTED_METHOD_NAME;
+        $this->getRequestMock()->method('getUserVar')->with('template')->willReturn($this->defaultEmailKey);
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $this->getTestUtil()->createObjectFactory());
+        $result = $target->addPPRStageParticipantGridHandler('LoadComponentHandler', [&$componentName, &$methodName]);
+        $this->assertEquals(true, $result);
+        $this->assertEquals('plugins.generic.pprOjsPlugin.services.email.PPRStageParticipantGridHandler', $componentName);
     }
 
     public function test_addFirstNamesToEmailTemplate_should_not_update_mail_template_when_not_supported_template() {

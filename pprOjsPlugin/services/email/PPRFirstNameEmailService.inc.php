@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Service to add author and editor first name to all SubmissionMailTemplates
+ * Service to add author and editor first name to all SubmissionMailTemplates and forms
  */
 class PPRFirstNameEmailService {
     const SUPPORTED_EMAILS =
@@ -28,6 +28,16 @@ class PPRFirstNameEmailService {
             'REVIEW_CANCEL',
             'REVIEW_DECLINE',
             'REVIEW_ACK',
+            //BATCH 4
+            'SUBMISSION_ACK',
+            'SUBMISSION_ACK_NOT_USER',
+            'EDITOR_DECISION_ACCEPT',
+            'EDITOR_DECISION_REVISIONS',
+            'EDITOR_DECISION_INITIAL_DECLINE',
+            'EDITOR_DECISION_DECLINE',
+            'EDITOR_ASSIGN',
+            'EDITOR_DECISION_SEND_TO_EXTERNAL',
+            'EDITOR_DECISION_RESUBMIT',
         ];
 
     const SUPPORTED_TEMPLATES =
@@ -49,15 +59,37 @@ class PPRFirstNameEmailService {
             HookRegistry::register('Mail::send', array($this, 'addFirstNamesToEmailTemplate'));
             HookRegistry::register('reviewreminderform::display', array($this, 'addFirstNamesToReviewReminderForm'));
             HookRegistry::register('thankreviewerform::display', array($this, 'addFirstNamesToThankReviewerForm'));
+            HookRegistry::register('sendreviewsform::display', array($this, 'addFirstNamesToSendReviewsForm'));
             HookRegistry::register('TemplateManager::fetch', array($this, 'replaceFirstNameInTemplateText'));
 
             HookRegistry::register('advancedsearchreviewerform::display', array($this, 'addFirstNameLabelsToAdvancedSearchReviewerForm'));
+
+            HookRegistry::register('LoadComponentHandler', array($this, 'addPPRStageParticipantGridHandler'));
         }
+    }
+
+    /**
+     * This new handler will replace the author, editor first names in the email body of the form
+     * when using the assign participant feature in a submission.
+     */
+    function addPPRStageParticipantGridHandler($hookName, $hookArgs) {
+        $component =& $hookArgs[0];
+        $method = $hookArgs[1];
+        if ($component === 'grid.users.stageParticipant.StageParticipantGridHandler' && $method === 'fetchTemplateBody') {
+            $emailTemplate = Application::get()->getRequest()->getUserVar('template');
+            if ($this->isEmailSupported($emailTemplate)) {
+                // LOAD THE PPR STAGE PARTICIPANTS HANDLER FROM THE PLUGIN REPO
+                $component =str_replace('/', '.', $this->pprPlugin->getPluginPath()) . '.services.email.PPRStageParticipantGridHandler';
+                return true;
+            }
+        }
+
+        return false;
     }
 
     function addFirstNamesToEmailTemplate($hookName, $arguments) {
         $emailTemplate = $arguments[0];
-        if ($this->isEmailSupported($emailTemplate)) {
+        if ($emailTemplate instanceof SubmissionMailTemplate && $this->isEmailSupported($emailTemplate->emailKey)) {
             $this->pprObjectFactory->firstNamesManagementService()->addFirstNamesToEmailTemplate($emailTemplate);
         }
 
@@ -94,6 +126,19 @@ class PPRFirstNameEmailService {
         return false;
     }
 
+    /**
+     * Add first names to the email text in the form for request revisions and decline submission actions
+     */
+    function addFirstNamesToSendReviewsForm($hookName, $arguments) {
+        $sendReviewForm = $arguments[0];
+        $submission = $sendReviewForm->getSubmission();
+        $emailBodyText = $sendReviewForm->getData('personalMessage');
+        $emailBodyTextUpdated = $this->pprObjectFactory->firstNamesManagementService()->replaceFirstNames($emailBodyText, $submission);
+        $sendReviewForm->setData('personalMessage',  $emailBodyTextUpdated);
+
+        return false;
+    }
+
     function replaceFirstNameInTemplateText($hookName, $arguments) {
         $templateName = $arguments[1];
         if ($this->isTemplateSupported($templateName)) {
@@ -108,8 +153,8 @@ class PPRFirstNameEmailService {
         return false;
     }
 
-    public function isEmailSupported($email) {
-        return $email instanceof SubmissionMailTemplate && in_array($email->emailKey,self::SUPPORTED_EMAILS);
+    public function isEmailSupported($emailTemplateName) {
+        return in_array($emailTemplateName,self::SUPPORTED_EMAILS);
     }
 
     public function isTemplateSupported($template) {

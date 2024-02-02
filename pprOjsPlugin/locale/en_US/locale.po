@@ -89,9 +89,6 @@ msgstr "Disable the submission confirmation contributors email"
 msgid "plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label"
 msgstr "Remove contributors from editorial decisions emails"
 
-msgid "plugins.generic.pprPlugin.settings.addReviewerEmailServiceEnabled.label"
-msgstr "Add reviewer first name to assign reviewer email"
-
 msgid "plugins.generic.pprPlugin.settings.unassignReviewerEmailOverrideEnabled.label"
 msgstr "Override unassign reviewer confirmation email based on assignment status"
 

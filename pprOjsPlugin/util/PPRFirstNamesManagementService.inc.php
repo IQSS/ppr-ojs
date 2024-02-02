@@ -20,6 +20,8 @@ class PPRFirstNamesManagementService {
         $emailVariables['reviewerName'] = __('review.ppr.reviewer.name.label');
         $emailVariables['reviewerFullName'] = __('review.ppr.reviewer.name.label');
         $emailVariables['reviewerFirstName'] = __('review.ppr.reviewer.firstName.label');
+        // firstNameOnly (REVIEWER) IS DEPRECATED. ADDED HERE FOR BACKWARDS COMPATIBILITY FOR advancedsearchreviewerform
+        $emailVariables['firstNameOnly'] = __('review.ppr.reviewer.firstName.label');
         $emailVariables['authorName'] = __('review.ppr.author.name.label');
         $emailVariables['authorFullName'] = __('review.ppr.author.name.label');
         $emailVariables['authorFirstName'] = __('review.ppr.author.firstName.label');
@@ -55,6 +57,8 @@ class PPRFirstNamesManagementService {
         $emailTemplate->addPrivateParam('{$reviewerName}', htmlspecialchars($requestReviewer->getFullName()));
         $emailTemplate->addPrivateParam('{$reviewerFullName}', htmlspecialchars($requestReviewer->getFullName()));
         $emailTemplate->addPrivateParam('{$reviewerFirstName}', htmlspecialchars($requestReviewer->getLocalizedGivenName()));
+        // firstNameOnly (REVIEWER) IS DEPRECATED. ADDED HERE FOR BACKWARDS COMPATIBILITY FOR advancedsearchreviewerform
+        $emailTemplate->addPrivateParam('{$firstNameOnly}', htmlspecialchars($requestReviewer->getLocalizedGivenName()));
     }
 
     /**
@@ -72,6 +76,8 @@ class PPRFirstNamesManagementService {
             'reviewerName' =>  htmlspecialchars($reviewer->getFullName()),
             'reviewerFullName' =>  htmlspecialchars($reviewer->getFullName()),
             'reviewerFirstName' =>  htmlspecialchars($reviewer->getLocalizedGivenName()),
+            // firstNameOnly (REVIEWER) IS DEPRECATED. ADDED HERE FOR BACKWARDS COMPATIBILITY FOR advancedsearchreviewerform
+            'firstNameOnly' =>  htmlspecialchars($reviewer->getLocalizedGivenName()),
             'editorName' => htmlspecialchars($editor->getFullName()),
             'editorFullName' => htmlspecialchars($editor->getFullName()),
             'editorFirstName' => htmlspecialchars($editor->getLocalizedGivenName()),

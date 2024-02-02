@@ -82,6 +82,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $expectedLabels['reviewerName'] = __('review.ppr.reviewer.name.label');
         $expectedLabels['reviewerFullName'] = __('review.ppr.reviewer.name.label');
         $expectedLabels['reviewerFirstName'] = __('review.ppr.reviewer.firstName.label');
+        $expectedLabels['firstNameOnly'] = __('review.ppr.reviewer.firstName.label');
         $expectedLabels['authorName'] = __('review.ppr.author.name.label');
         $expectedLabels['authorFullName'] = __('review.ppr.author.name.label');
         $expectedLabels['authorFirstName'] = __('review.ppr.author.firstName.label');
@@ -109,11 +110,11 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $mailTemplate->method('getData')->with('reviewerId')->willReturn($reviewerId);
         $this->addReviewer($submissionUtil, $reviewerId);
 
-        $mailTemplate->expects($this->exactly(9))->method('addPrivateParam')
+        $mailTemplate->expects($this->exactly(10))->method('addPrivateParam')
             ->withConsecutive(
                 ['{$authorName}', 'authorFullName'], ['{$authorFullName}', 'authorFullName'], ['{$authorFirstName}', 'authorFirstName'],
                 ['{$editorName}', 'editorFullName'], ['{$editorFullName}', 'editorFullName'], ['{$editorFirstName}', 'editorFirstName'],
-                ['{$reviewerName}', 'reviewerFullName'], ['{$reviewerFullName}', 'reviewerFullName'], ['{$reviewerFirstName}', 'reviewerFirstName']);
+                ['{$reviewerName}', 'reviewerFullName'], ['{$reviewerFullName}', 'reviewerFullName'], ['{$reviewerFirstName}', 'reviewerFirstName'], ['{$firstNameOnly}', 'reviewerFirstName']);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $target->addFirstNamesToEmailTemplate($mailTemplate);
@@ -125,11 +126,11 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $this->addEditorAndAuthor($submissionUtil, true);
 
         $missingName = __('ppr.user.missing.name');
-        $mailTemplate->expects($this->exactly(9))->method('addPrivateParam')
+        $mailTemplate->expects($this->exactly(10))->method('addPrivateParam')
             ->withConsecutive(
                 ['{$authorName}', $missingName], ['{$authorFullName}', $missingName], ['{$authorFirstName}', $missingName],
                 ['{$editorName}', $missingName], ['{$editorFullName}', $missingName], ['{$editorFirstName}', $missingName],
-                ['{$reviewerName}', $missingName], ['{$reviewerFullName}', $missingName], ['{$reviewerFirstName}', $missingName]);
+                ['{$reviewerName}', $missingName], ['{$reviewerFullName}', $missingName], ['{$reviewerFirstName}', $missingName], ['{$firstNameOnly}', $missingName]);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $target->addFirstNamesToEmailTemplate($mailTemplate);
@@ -146,7 +147,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $submissionUtil->expects($this->once())->method('getSubmissionEditors')->with($submission->getId(), $submission->getContextId())->willReturn([$editor]);
         $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn($reviewer);
         $textToReplace = $this->createTextToReplace();
-        $expectedText = 'Author: AuthorName - AuthorName - AuthorFirst, Editor: EditorName - EditorName - EditorFirst, Reviewer: ReviewerName - ReviewerName - ReviewerFirst';
+        $expectedText = 'Author: AuthorName - AuthorName - AuthorFirst, Editor: EditorName - EditorName - EditorFirst, Reviewer: ReviewerName - ReviewerName - ReviewerFirst - ReviewerFirst';
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $result = $target->replaceFirstNames($textToReplace, $submission, $reviewerId);
@@ -162,7 +163,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn($reviewer);
         $textToReplace = $this->createTextToReplace();
         $missingName = __('ppr.user.missing.name');
-        $expectedText = sprintf('Author: %s - %s - %s, Editor: %s - %s - %s, Reviewer: ReviewerName - ReviewerName - ReviewerFirst', $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
+        $expectedText = sprintf('Author: %s - %s - %s, Editor: %s - %s - %s, Reviewer: ReviewerName - ReviewerName - ReviewerFirst - ReviewerFirst', $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $result = $target->replaceFirstNames($textToReplace, null, $reviewerId);
@@ -178,7 +179,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn(null);
         $textToReplace = $this->createTextToReplace();
         $missingName = __('ppr.user.missing.name');
-        $expectedText = sprintf('Author: %s - %s - %s, Editor: %s - %s - %s, Reviewer: %s - %s - %s', $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
+        $expectedText = sprintf('Author: %s - %s - %s, Editor: %s - %s - %s, Reviewer: %s - %s - %s - %s', $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $result = $target->replaceFirstNames($textToReplace, $submission, $reviewerId);
@@ -212,7 +213,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $text = [];
         $text[] = 'Author: {$authorName} - {$authorFullName} - {$authorFirstName}';
         $text[] = 'Editor: {$editorName} - {$editorFullName} - {$editorFirstName}';
-        $text[] = 'Reviewer: {$reviewerName} - {$reviewerFullName} - {$reviewerFirstName}';
+        $text[] = 'Reviewer: {$reviewerName} - {$reviewerFullName} - {$reviewerFirstName} - {$firstNameOnly}';
 
         return implode(', ', $text);
     }

@@ -2,6 +2,8 @@
 
 import('util.PPRObjectFactory');
 
+import('lib.pkp.classes.user.UserDAO');
+
 /**
  * Utility functions for tests
  */

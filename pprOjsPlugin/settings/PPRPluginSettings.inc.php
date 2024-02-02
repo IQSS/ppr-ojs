@@ -56,7 +56,6 @@ class PPRPluginSettings {
         'reviewSubmittedEmailEnabled' => ['bool', null],
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
         'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
-        'addReviewerEmailServiceEnabled' => ['bool', null],
         'unassignReviewerEmailOverrideEnabled' => ['bool', null],
 
         'accessKeyLifeTime' => ['int', 30],
@@ -249,10 +248,6 @@ class PPRPluginSettings {
 
     public function editorialDecisionsEmailRemoveContributorsEnabled() {
         return $this->getValue('editorialDecisionsEmailRemoveContributorsEnabled');
-    }
-
-    public function addReviewerEmailServiceEnabled() {
-        return $this->getValue('addReviewerEmailServiceEnabled');
     }
 
     public function unassignReviewerEmailOverrideEnabled() {

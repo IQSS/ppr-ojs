@@ -92,7 +92,6 @@
 			{fbvElement type="checkbox" name="submissionApprovedEmailEnabled" label="plugins.generic.pprPlugin.settings.submissionApprovedEmailEnabled.label" id="submissionApprovedEmailEnabled" checked=$submissionApprovedEmailEnabled}
 			{fbvElement type="checkbox" name="submissionConfirmationContributorsEmailDisabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label" id="submissionConfirmationContributorsEmailDisabled" checked=$submissionConfirmationContributorsEmailDisabled}
 			{fbvElement type="checkbox" name="editorialDecisionsEmailRemoveContributorsEnabled" label="plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label" id="editorialDecisionsEmailRemoveContributorsEnabled" checked=$editorialDecisionsEmailRemoveContributorsEnabled}
-			{fbvElement type="checkbox" name="addReviewerEmailServiceEnabled" label="plugins.generic.pprPlugin.settings.addReviewerEmailServiceEnabled.label" id="addReviewerEmailServiceEnabled" checked=$addReviewerEmailServiceEnabled}
 			{fbvElement type="checkbox" name="unassignReviewerEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.unassignReviewerEmailOverrideEnabled.label" id="unassignReviewerEmailOverrideEnabled" checked=$unassignReviewerEmailOverrideEnabled}
 		{/fbvFormSection}
 

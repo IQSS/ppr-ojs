@@ -1,6 +1,10 @@
 # Peer Pre-Review Program OJS Customizations Plugin
 OJS plugins to implement the customizations for the Harvard Peer Pre-Review Program.
 
+### OJS Documentation
+ - Installation and Admin Guide (V3.3) [https://docs.pkp.sfu.ca/admin-guide/3.3/en/](https://docs.pkp.sfu.ca/admin-guide/3.3/en/)
+ - Development Guide (V3.3) [https://docs.pkp.sfu.ca/dev/documentation/3.3/en/](https://docs.pkp.sfu.ca/dev/documentation/3.3/en/)
+
 ## Production Release
 In order to deploy into the PKP servers, we need to create ``tar.gz`` file with the plugin folder and
 send it to PKP support: ``support@publicknowledgeproject.org``. They will review the code and deploy into the production servers.
@@ -62,6 +66,10 @@ To start the environment for OJS version 3.3, execute:
 To start the environment for OJS version 3.4, execute:
 ``make dev34``
 
+Access the application at http://localhost:8080
+
+Follow the on-screen instruction for the one time installation. More information [https://docs.pkp.sfu.ca/admin-guide/3.3/en/install](https://docs.pkp.sfu.ca/admin-guide/3.3/en/install)
+
 ### Clean the data directories
 To start the OJS application fresh, you will need to clean the DB and OJS files within the data directory.
 
@@ -118,7 +126,7 @@ The ``acron`` plugin does not use the OS crontab functionality to operate. Inste
 
 To configure the PPR plugin scheduled tasks, we need to reload the ``acron`` plugin. This needs to be requested to the PKP team.
 
-The PPR plugin scheduled tasks are configured in the The ``./scheduledTasks.xml`` file.
+The PPR plugin scheduled tasks are configured in the ``./scheduledTasks.xml`` file.
 
 The code for all scheduled tasks are under the ``tasks`` folder.
 

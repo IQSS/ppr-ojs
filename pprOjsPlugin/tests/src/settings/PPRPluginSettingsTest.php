@@ -29,7 +29,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'institutionOptions' => ['getInstitutionOptions', ['Harvard University' => 'Harvard University', 'Washington University in St. Louis' => 'Washington University in St. Louis']],
             'submissionCommentsForReviewerEnabled' => [null, true],
             'submissionResearchTypeEnabled' => [null, null],
-            'researchTypeOptions' => ['getResearchTypeOptions', ['Manuscript Draft' => 'Manuscript Draft', 'Meta-Analysis' => 'Meta-Analysis', 'Paper' => 'Paper', 'Pre-Analysis Plan' => 'Pre-Analysis Plan', 'Grant Proposal' => 'Grant Proposal', 'Book Proposal' => 'Book Proposal', 'Other' => 'Other']],
+            'researchTypeOptions' => ['getResearchTypeOptions', ['Paper' => 'Paper Review', 'Pre-Analysis Plan' => 'Pre-Analysis Plan', 'Grant Proposal' => 'Paper Review', 'Book Proposal' => 'Paper Review', 'Other' => 'Paper Review']],
             'submissionHidePrefixEnabled' => [null, null],
             'submissionCloseEnabled' => [null, null],
             'submissionApprovedEmailEnabled' => [null, null],
@@ -76,6 +76,14 @@ class PPRPluginSettingsTest extends PPRTestCase {
         }
     }
 
+    public function test_getResearchTypes_default_value() {
+        $expectedValue = ['Paper' => 'Paper', 'Pre-Analysis Plan' => 'Pre-Analysis Plan', 'Grant Proposal' => 'Grant Proposal', 'Book Proposal' => 'Book Proposal', 'Other' => 'Other'];
+
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, []);
+        $target = new PPRPluginSettings(self::CONTEXT_ID, $pprPluginMock);
+        $this->assertEquals($expectedValue, $target->getResearchTypes(), "Error for config var: getResearchTypes");
+    }
+
     public function test_getCategoryOptions_splits_comma_separated_string_values_into_map() {
         $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['categoryOptions' => 'first, second, third']);
         $target = new PPRPluginSettings(self::CONTEXT_ID, $pprPluginMock);
@@ -116,6 +124,38 @@ class PPRPluginSettingsTest extends PPRTestCase {
         $target = new PPRPluginSettings(self::CONTEXT_ID, $pprPluginMock);
 
         $this->assertEquals(['first' => 'first', 'second' => 'second'], $target->getInstitutionOptions());
+    }
+
+    public function test_getResearchTypeOptions_getResearchTypes_handles_list_of_research_types_with_reviewer_forms_in_comma_separated_name_equals_value_format() {
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['researchTypeOptions' => ' first = first form, second = second form, third = third form']);
+        $target = new PPRPluginSettings(self::CONTEXT_ID, $pprPluginMock);
+
+        $this->assertEquals(['first' => 'first form', 'second' => 'second form', 'third' => 'third form'], $target->getResearchTypeOptions());
+        $this->assertEquals(['first' => 'first', 'second' => 'second', 'third' => 'third'], $target->getResearchTypes());
+    }
+
+    public function test_getResearchTypeOptions_getResearchTypes_handles_missing_reviewer_forms() {
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['researchTypeOptions' => 'first, second, third = ']);
+        $target = new PPRPluginSettings(self::CONTEXT_ID, $pprPluginMock);
+
+        $this->assertEquals(['first' => null, 'second' => null, 'third' => null], $target->getResearchTypeOptions());
+        $this->assertEquals(['first' => 'first', 'second' => 'second', 'third' => 'third'], $target->getResearchTypes());
+    }
+
+    public function test_getResearchTypeOptions_getResearchTypes_handles_empty_string() {
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['researchTypeOptions' => '']);
+        $target = new PPRPluginSettings(self::CONTEXT_ID, $pprPluginMock);
+
+        $this->assertEquals([], $target->getResearchTypeOptions());
+        $this->assertEquals([], $target->getResearchTypes());
+    }
+
+    public function test_getResearchTypeOptions_getResearchTypes_should_filter_empty_strings() {
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['researchTypeOptions' => 'first = first form, ,second = second form']);
+        $target = new PPRPluginSettings(self::CONTEXT_ID, $pprPluginMock);
+
+        $this->assertEquals(['first' => 'first form', 'second' => 'second form'], $target->getResearchTypeOptions());
+        $this->assertEquals(['first' => 'first', 'second' => 'second'], $target->getResearchTypes());
     }
 
     public function test_getReviewReminderEditorDaysFromDueDate_should_handle_empty_string() {

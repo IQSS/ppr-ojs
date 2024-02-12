@@ -42,17 +42,29 @@ class PPRSubmissionResearchTypeService {
 
         $researchType =  $submissionForm->submission->getData(self::RESEARCH_TYPE_FIELD);
         $templateMgr->assign([self::RESEARCH_TYPE_FIELD => $researchType]);
-        $templateMgr->assign(['researchTypeOptions' => $this->pprPlugin->getPluginSettings()->getResearchTypeOptions()]);
+        $templateMgr->assign(['researchTypes' => $this->pprPlugin->getPluginSettings()->getResearchTypes()]);
 
         return false;
     }
 
     function initReviewerFormData($hookName, $params) {
         $reviewerForm = $params[0];
-        $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
-
         $researchType = $reviewerForm->getSubmission()->getData(self::RESEARCH_TYPE_FIELD);
-        $templateMgr->assign(['submissionResearchType' => $researchType]);
+        $reviewerForm->setData('submissionResearchType', $researchType);
+
+        $researchTypeOptions = $this->pprPlugin->getPluginSettings()->getResearchTypeOptions();
+        $preSelectedReviewerForm =  $researchTypeOptions[$researchType] ?? null;
+        if ($preSelectedReviewerForm) {
+            // OVERRIDE THE SELECTED REVIEWER FORM IN THE TEMPLATE
+            $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+            $reviewForms = $templateMgr->getTemplateVars('reviewForms');
+            foreach ($reviewForms as $formId => $formName) {
+                if(0 === strcasecmp($preSelectedReviewerForm, $formName)) {
+                    $reviewerForm->setData('reviewFormId', $formId);
+                    break;
+                }
+            }
+        }
 
         return false;
     }

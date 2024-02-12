@@ -18,7 +18,7 @@
 {* PPR CUSTOM FIELD researchType AND REMOVE prefix *}
 {if $pprPluginSettings->submissionResearchTypeEnabled()}
 	{fbvFormSection title="submission.research.type"}
-		{fbvElement type="select" name="researchType" id="researchType" label="submission.research.type.description" required=true  disabled=$readOnly defaultLabel="" defaultValue="" from=$researchTypeOptions selected=$researchType translate=false}
+		{fbvElement type="select" name="researchType" id="researchType" label="submission.research.type.description" required=true  disabled=$readOnly defaultLabel="" defaultValue="" from=$researchTypes selected=$researchType translate=false}
 	{/fbvFormSection}
 {/if}
 {* PPR REMOVE prefix *}

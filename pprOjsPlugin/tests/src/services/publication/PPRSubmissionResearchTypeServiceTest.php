@@ -64,7 +64,7 @@ class PPRSubmissionResearchTypeServiceTest extends PPRTestCase {
         $this->assertEquals(false, $result);
         $templateManager = TemplateManager::getManager();
         $this->assertEquals($expectedResearchType, $templateManager->getTemplateVars('researchType'));
-        $this->assertEquals(['paper' => 'paper', 'research' => 'research'], $templateManager->getTemplateVars('researchTypeOptions'));
+        $this->assertEquals(['paper' => 'paper', 'research' => 'research'], $templateManager->getTemplateVars('researchTypes'));
     }
 
     public function test_readResearchTypeVars_should_add_expected_variables_to_the_userVars_list() {
@@ -89,16 +89,56 @@ class PPRSubmissionResearchTypeServiceTest extends PPRTestCase {
         $this->assertEquals(false, $result);
     }
 
-    public function test_initReviewerFormData_should_update_template_manager_with_research_type_value() {
+    public function test_initReviewerFormData_should_update_form_with_research_type_and_form_id() {
         $expectedResearchType = 'research type';
+        $expectedFormId = $this->getRandomId();
         $submissionForm = $this->create_reviewer_form($expectedResearchType);
+        $submissionForm->expects($this->exactly(2))->method('setData')->withConsecutive(
+            ['submissionResearchType', $expectedResearchType],
+            ['reviewFormId', $expectedFormId],
+        );
 
-        $target = new PPRSubmissionResearchTypeService($this->defaultPPRPlugin);
+        TemplateManager::getManager()->setData([
+            'reviewForms' => [$expectedFormId => 'expected form' , 2 => 'other form'],
+        ]);
+
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['researchTypeOptions' => 'research type = expected form, other = other form']);
+        $target = new PPRSubmissionResearchTypeService($pprPluginMock);
 
         $result = $target->initReviewerFormData('advancedsearchreviewerform::display', [$submissionForm]);
         $this->assertEquals(false, $result);
-        $templateManager = TemplateManager::getManager();
-        $this->assertEquals($expectedResearchType, $templateManager->getTemplateVars('submissionResearchType'));
+    }
+
+    public function test_initReviewerFormData_should_not_update_form_id_when_research_type_form_does_not_match_the_list_in_template() {
+        $invalidResearchType = 'invalid';
+        $submissionForm = $this->create_reviewer_form($invalidResearchType);
+        $submissionForm->expects($this->once())->method('setData')->with('submissionResearchType', $invalidResearchType);
+
+        TemplateManager::getManager()->setData([
+            'reviewForms' => [1 => 'expected form' , 2 => 'other form'],
+        ]);
+
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['researchTypeOptions' => 'research type = no match form, other = other form']);
+        $target = new PPRSubmissionResearchTypeService($pprPluginMock);
+
+        $result = $target->initReviewerFormData('advancedsearchreviewerform::display', [$submissionForm]);
+        $this->assertEquals(false, $result);
+    }
+
+    public function test_initReviewerFormData_should_not_update_form_id_when_research_type_not_available_in_research_options() {
+        $expectedResearchType = 'research type';
+        $submissionForm = $this->create_reviewer_form($expectedResearchType);
+        $submissionForm->expects($this->once())->method('setData')->with('submissionResearchType', $expectedResearchType);
+
+        TemplateManager::getManager()->setData([
+            'reviewForms' => [1 => 'expected form' , 2 => 'other form'],
+        ]);
+
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['researchTypeOptions' => 'type1 = expected form, type2 = other form']);
+        $target = new PPRSubmissionResearchTypeService($pprPluginMock);
+
+        $result = $target->initReviewerFormData('advancedsearchreviewerform::display', [$submissionForm]);
+        $this->assertEquals(false, $result);
     }
 
     private function create_submission_form($submissionResearchType, $formResearchType) {

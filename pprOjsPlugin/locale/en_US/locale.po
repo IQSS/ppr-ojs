@@ -123,7 +123,7 @@ msgid "plugins.generic.pprPlugin.settings.submissionResearchTypeEnabled.label"
 msgstr "Add research type to author submission form and pre-select the review form based on the value"
 
 msgid "plugins.generic.pprPlugin.settings.researchTypeOptions.label"
-msgstr "Research type dropdown options. Comma separated list of values"
+msgstr "Research type options with pre-selected reviewer forms. Comma separated list of \"Research Type=Review Form\" values. Reviewer form is optional"
 
 msgid "plugins.generic.pprPlugin.settings.submissionHidePrefixEnabled.label"
 msgstr "Hide the prefix field in the submit an article metadata section"

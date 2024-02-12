@@ -22,7 +22,7 @@ class PPRPluginSettings {
         //DEFAULT TO TRUE AS NAME HAS CHANGED. TODO: RESET IN NEXT RELEASE
         'submissionCommentsForReviewerEnabled' => ['bool', true],
         'submissionResearchTypeEnabled' => ['bool', null],
-        'researchTypeOptions' => ['string', 'Manuscript Draft, Meta-Analysis, Paper, Pre-Analysis Plan, Grant Proposal, Book Proposal, Other'],
+        'researchTypeOptions' => ['string', 'Paper=Paper Review, Pre-Analysis Plan=Pre-Analysis Plan, Grant Proposal=Paper Review, Book Proposal=Paper Review, Other=Paper Review'],
         'submissionHidePrefixEnabled' => ['bool', null],
         'submissionCloseEnabled' => ['bool', null],
         'submissionApprovedEmailEnabled' => ['bool', null],
@@ -143,7 +143,17 @@ class PPRPluginSettings {
     public function getResearchTypeOptions() {
         $researchTypeString =  $this->getValue('researchTypeOptions');
         $researchTypeOptions = array_filter(array_map('trim', explode(',', $researchTypeString)));
-        return array_combine($researchTypeOptions, $researchTypeOptions);
+        $researchTypes = [];
+        foreach ($researchTypeOptions as $item) {
+            $items = array_map('trim', explode("=", $item, 2));
+            $researchTypes[$items[0]] = $items[1] ?? null;
+        }
+        return $researchTypes;
+    }
+
+    public function getResearchTypes() {
+        $researchTypeOptions = $this->getResearchTypeOptions();
+        return array_combine(array_keys($researchTypeOptions), array_keys($researchTypeOptions));
     }
 
     public function submissionHidePrefixEnabled() {

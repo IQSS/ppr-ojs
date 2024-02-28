@@ -86,9 +86,6 @@ msgstr "Add Managing Editor as BCC to thank reviewer email"
 msgid "plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label"
 msgstr "Disable the submission confirmation contributors email"
 
-msgid "plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label"
-msgstr "Remove contributors from editorial decisions emails"
-
 msgid "plugins.generic.pprPlugin.settings.unassignReviewerEmailOverrideEnabled.label"
 msgstr "Override unassign reviewer confirmation email based on assignment status"
 
@@ -179,6 +176,9 @@ msgstr "Number of days to wait after a review is sent to send notifications to t
 msgid "plugins.generic.pprPlugin.settings.reviewSentAuthorEnabledDate.label"
 msgstr "Date from which submitted review files will be used to send review sent notifications to authors"
 
+msgid "plugins.generic.pprPlugin.settings.emailContributorsEnabled.label"
+msgstr "Add checkbox to allow authors to choose if contributors should be notified"
+
 msgid "plugins.generic.pprPlugin.settings.reviewerSurveyHtml.label"
 msgstr "HTML for the reviewers survey widget"
 
@@ -232,6 +232,12 @@ msgstr "Research Document Type"
 
 msgid "submission.research.type.description"
 msgstr "Please select from the dropdown your research document type. (e.g. Paper, Pre-Analysis, etc.)"
+
+msgid "submission.email.contributors.title"
+msgstr "Send email communications to contributors"
+
+msgid "submission.email.contributors.label"
+msgstr "Check this to send email notifications to all users in the the list of contributors as well as the author"
 
 msgid "submission.close.button.title"
 msgstr "Close Submission"
@@ -298,6 +304,9 @@ msgstr "Author First Name"
 
 msgid "review.ppr.author.name.label"
 msgstr "Author Name"
+
+msgid "review.ppr.author.contributorsNames.label"
+msgstr "Contributors Names"
 
 msgid "review.ppr.editor.firstName.label"
 msgstr "Editor First Name"

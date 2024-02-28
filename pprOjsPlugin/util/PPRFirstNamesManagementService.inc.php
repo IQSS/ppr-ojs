@@ -25,6 +25,7 @@ class PPRFirstNamesManagementService {
         $emailVariables['authorName'] = __('review.ppr.author.name.label');
         $emailVariables['authorFullName'] = __('review.ppr.author.name.label');
         $emailVariables['authorFirstName'] = __('review.ppr.author.firstName.label');
+        $emailVariables['contributorsNames'] = __('review.ppr.author.contributorsNames.label');
         $emailVariables['editorName'] = __('review.ppr.editor.name.label');
         $emailVariables['editorFullName'] = __('review.ppr.editor.name.label');
         $emailVariables['editorFirstName'] = __('review.ppr.editor.firstName.label');
@@ -41,9 +42,11 @@ class PPRFirstNamesManagementService {
         // SETTING PRIVATE PARAMS IN THE EMAIL TEMPLATE WILL GET REPLACED IN THE BODY AFTER THIS HOOK COMPLETES
         // AT THIS POINT REGULAR PARAMETERS HAVE ALREADY BEEN REPLACED
         $submissionAuthor = $this->getSubmissionAuthor($submission->getId());
+        $contributorsNames = $this->getContributorsNames($submission, $submissionAuthor);
         $emailTemplate->addPrivateParam('{$authorName}', htmlspecialchars($submissionAuthor->getFullName()));
         $emailTemplate->addPrivateParam('{$authorFullName}', htmlspecialchars($submissionAuthor->getFullName()));
         $emailTemplate->addPrivateParam('{$authorFirstName}', htmlspecialchars($submissionAuthor->getLocalizedGivenName()));
+        $emailTemplate->addPrivateParam('{$contributorsNames}', htmlspecialchars($contributorsNames));
 
         $contextId = $submission->getContextId();
         $submissionEditor = $this->getSubmissionEditor($submission->getId(), $contextId);
@@ -68,6 +71,7 @@ class PPRFirstNamesManagementService {
         $reviewer = $this->getReviewer($reviewerId);
         $editor = $submission ? $this->getSubmissionEditor($submission->getId(), $submission->getContextId()) : PPRMissingUser::defaultMissingUser();
         $author = $submission ? $this->getSubmissionAuthor($submission->getId()) : PPRMissingUser::defaultMissingUser();
+        $contributorsNames = $submission ? $this->getContributorsNames($submission, $author) : PPRMissingUser::defaultMissingUser()->getLocalizedGivenName();
 
         // WE NEED ANY EMAIL TEMPLATE TO OVERRIDE THE BODY AND USE THE replaceParams METHOD
         $mailTemplate = new MailTemplate();
@@ -84,6 +88,7 @@ class PPRFirstNamesManagementService {
             'authorName' => htmlspecialchars($author->getFullName()),
             'authorFullName' => htmlspecialchars($author->getFullName()),
             'authorFirstName' => htmlspecialchars($author->getLocalizedGivenName()),
+            'contributorsNames' => htmlspecialchars($contributorsNames),
         ]);
         $mailTemplate->replaceParams();
         return $mailTemplate->getBody();
@@ -106,6 +111,25 @@ class PPRFirstNamesManagementService {
         }
 
         return $reviewer ?? PPRMissingUser::defaultMissingUser();
+    }
+
+    public function getContributorsNames($submission, $author) {
+        // USE ALL CONTRIBUTORS OR JUST THE AUTHOR.
+        // THIS IS DRIVEN FROM THE SUBMISSION CUSTOM FIELD emailContributors
+        // THAT THE AUTHOR POPULATES WHEN A SUBMISSION IS CREATED
+        $emailContributors = $submission->getData('emailContributors');
+        $contributorsNames = [$author->getLocalizedGivenName()];
+        if ($emailContributors) {
+            foreach ($submission->getAuthors() as $contributor) {
+                if(0 === strcasecmp($author->getEmail(), $contributor->getEmail())) {
+                    // AUTHOR ALREADY ADDED => SKIP
+                    continue;
+                }
+
+                $contributorsNames[] = $contributor->getLocalizedGivenName();
+            }
+        }
+        return implode(", ", $contributorsNames);
     }
 
     private function getSubmissionEditor($submissionId, $contextId) {

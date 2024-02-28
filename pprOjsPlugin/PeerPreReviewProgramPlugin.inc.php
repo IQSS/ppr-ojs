@@ -86,9 +86,13 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             $reviewReminderService = new PPRReviewReminderEmailService($this);
             $reviewReminderService->register();
 
-            $this->import('services.email.PPREditorialDecisionsEmailService');
-            $editorialDecisionsEmailService = new PPREditorialDecisionsEmailService($this);
-            $editorialDecisionsEmailService->register();
+            $this->import('services.submission.PPRSubmissionEmailContributorsService');
+            $submissionContributorsService = new PPRSubmissionEmailContributorsService($this);
+            $submissionContributorsService->register();
+
+            $this->import('services.email.PPREmailContributorsService');
+            $emailContributorsService = new PPREmailContributorsService($this);
+            $emailContributorsService->register();
 
             $this->import('services.email.PPRReviewAddEditorEmailService');
             $addEditorEmailService = new PPRReviewAddEditorEmailService($this);

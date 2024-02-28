@@ -17,12 +17,13 @@ class PPRTestUtil {
 
     public function createSubmissionWithAuthors($primaryAuthorName, $contributorsNames = []) {
         $primaryAuthor = null;
+        $contributors = [];
 
         if ($primaryAuthorName) {
             $primaryAuthor = $this->createAuthor($this->testCase->getRandomId(), $primaryAuthorName, $primaryAuthorName);
+            $contributors[] = $primaryAuthor;
         }
 
-        $contributors = [];
         foreach ($contributorsNames as $name) {
             $contributor = $this->createAuthor($this->testCase->getRandomId(), $name, $name);
             $contributors[] = $contributor;

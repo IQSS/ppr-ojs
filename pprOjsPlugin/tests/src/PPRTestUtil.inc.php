@@ -29,10 +29,12 @@ class PPRTestUtil {
             $contributors[] = $contributor;
         }
 
+        $contributorsNames = array_map(function($contributor){return $contributor->getFullName();}, $contributors);
         $submission = $this->testCase->createMock(Submission::class);
         $submission->method('getId')->willReturn($this->testCase->getRandomId());
         $submission->method('getPrimaryAuthor')->willReturn($primaryAuthor);
         $submission->method('getAuthors')->willReturn($contributors);
+        $submission->method('getAuthorString')->willReturn(implode(", ", $contributorsNames));
         return $submission;
     }
 

@@ -76,6 +76,50 @@ class PPREmailContributorsServiceTest extends PPRTestCase {
         $target->sendReviewsFormDisplay('sendreviewsform::display', [$sendReviewForm]);
     }
 
+    public function test_sendReviewsFormDisplay_should_set_authorName_with_author_full_name_when_emailContributors_is_false() {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorPrimaryName', ['ContributorName']);
+        $submission->method('getData')->with('emailContributors')->willReturn(false);
+        $author =  $this->getTestUtil()->createUser($this->getRandomId(), 'AuthorFullName');
+        $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionAuthors')->willReturn([$author]);
+
+        $sendReviewForm = $this->createMock(SendReviewsForm::class);
+        $sendReviewForm->method('getSubmission')->willReturn($submission);
+
+        $sendReviewForm->expects($this->exactly(4))
+            ->method('setData')->withConsecutive(
+                ['authorName', 'AuthorFullName'],
+                ['personalMessage', null],
+                ['revisionsEmail', null],
+                ['resubmitEmail', null],
+            );
+
+        $target = new PPREmailContributorsService($this->defaultPPRPlugin, $objectFactory);
+        $target->sendReviewsFormDisplay('sendreviewsform::display', [$sendReviewForm]);
+    }
+
+    public function test_sendReviewsFormDisplay_should_set_authorName_with_contributors_names_when_emailContributors_is_true() {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorPrimaryName', ['ContributorName']);
+        $submission->method('getData')->with('emailContributors')->willReturn(true);
+        $author =  $this->getTestUtil()->createUser($this->getRandomId(), 'AuthorFullName');
+        $objectFactory->submissionUtil()->expects($this->once())->method('getSubmissionAuthors')->willReturn([$author]);
+
+        $sendReviewForm = $this->createMock(SendReviewsForm::class);
+        $sendReviewForm->method('getSubmission')->willReturn($submission);
+
+        $sendReviewForm->expects($this->exactly(4))
+            ->method('setData')->withConsecutive(
+                ['authorName', 'AuthorPrimaryName, ContributorName'],
+                ['personalMessage', null],
+                ['revisionsEmail', null],
+                ['resubmitEmail', null],
+            );
+
+        $target = new PPREmailContributorsService($this->defaultPPRPlugin, $objectFactory);
+        $target->sendReviewsFormDisplay('sendreviewsform::display', [$sendReviewForm]);
+    }
+
     public function test_sendReviewsFormDisplay_should_not_set_template_data_when_author_is_null() {
         $objectFactory = $this->getTestUtil()->createObjectFactory();
         $sendReviewForm = $this->createMock(SendReviewsForm::class);

@@ -32,7 +32,7 @@ class PPREmailContributorsService {
     }
 
     /**
-     * Adds author, editor, and reviewer names to the email body displayed in the SendReviewsForm.
+     * Adds author, contributors, editor, and reviewer names to the email body displayed in the SendReviewsForm.
      */
     function sendReviewsFormDisplay($hookName, $arguments) {
         $sendReviewForm = $arguments[0];
@@ -41,12 +41,8 @@ class PPREmailContributorsService {
         if (isset($author)) {
             $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
             $emailContributors =  $submission->getData('emailContributors');
-            if (!$emailContributors) {
-                // OVERRIDE TEMPLATE WITH JUST THE AUTHOR NAME
-                // SendReviewsForm SETS THE STRING WITH ALL CONTRIBUTORS
-                $authorFullName =  htmlspecialchars($author->getFullName());
-                $sendReviewForm->setData('authorName', $authorFullName);
-            }
+            $authorNames = $emailContributors ? $submission->getAuthorString() : $author->getFullName();
+            $sendReviewForm->setData('authorName', htmlspecialchars($authorNames));
 
             $personalMessage = $sendReviewForm->getData('personalMessage');
             $personalMessage = $this->pprObjectFactory->firstNamesManagementService()->replaceFirstNames($personalMessage, $submission);

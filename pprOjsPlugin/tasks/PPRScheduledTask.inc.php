@@ -35,14 +35,19 @@ abstract class PPRScheduledTask extends ScheduledTask {
         // PROCESS REVIEW REMINDERS FOR ALL OJS CONTEXTS
         $ojsEnabledContexts = $contextDao->getAll(true)->toArray();
         foreach ($ojsEnabledContexts as $context) {
-            $pprPlugin = PluginRegistry::loadPlugin('generic', 'pprOjsPlugin', $context->getId());
+            $pprPlugin = PluginRegistry::getPlugin('generic', 'peerprereviewprogramplugin');
+            if (!$pprPlugin) {
+                $this->log($context, 'peerprereviewprogramplugin is null');
+                continue;
+            }
+
             if (!$pprPlugin->getEnabled($context->getId())) {
                 // PLUGIN NOT ENABLED FOR CURRENT CONTEXT
                 $this->log($context, 'PPRPluginEnabled=false');
                 continue;
             }
-
-            $this->executeForContext($context, $pprPlugin);
+            $pprPluginSettings = $pprPlugin->createPluginSettings($context->getId());
+            $this->executeForContext($context, $pprPluginSettings);
         }
 
         //RETURN SUCCESS TO THE SCHEDULE TASKS MANAGER

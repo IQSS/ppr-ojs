@@ -59,8 +59,8 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
         $email->send();
     }
 
-    function executeForContext($context, $pprPlugin) {
-        if (!$pprPlugin->getPluginSettings()->reviewReminderEditorTaskEnabled()) {
+    function executeForContext($context, $pprPluginSettings) {
+        if (!$pprPluginSettings->reviewReminderEditorTaskEnabled()) {
             // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
             $this->log($context, 'reviewReminderEditorEnabled=false');
             return;
@@ -83,7 +83,7 @@ class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
         }
 
         $pprNotificationRegistry = new PPRTaskNotificationRegistry($context->getId());
-        $reviewReminderEditorDaysFromDueDate = $pprPlugin->getPluginSettings()->getReviewReminderEditorDaysFromDueDate();
+        $reviewReminderEditorDaysFromDueDate = $pprPluginSettings->getReviewReminderEditorDaysFromDueDate();
         $this->log($context, 'Processing reviews - $reviewReminderEditorDaysFromDueDate=' . implode(", ", $reviewReminderEditorDaysFromDueDate));
         if (empty($reviewReminderEditorDaysFromDueDate)) {
             // NO CONFIGURED FROM DUE DATES

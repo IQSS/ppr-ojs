@@ -13,8 +13,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
     function register($category, $path, $mainContextId = null) {
         $success = parent::register($category, $path, $mainContextId);
         $currentContextId = ($mainContextId === null) ? $this->getCurrentContextId() : $mainContextId;
-        $this->import('settings.PPRPluginSettings');
-        $this->pprPluginSettings = new PPRPluginSettings($currentContextId, $this);
+        $this->pprPluginSettings = $this->createPluginSettings($currentContextId);
         $this->import('settings.PPRPluginSettingsHandler');
         $this->pprPluginSettingsHandler = new PPRPluginSettingsHandler($this);
 
@@ -192,6 +191,11 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
 
     public function getPluginSettings() {
         return $this->pprPluginSettings;
+    }
+
+    public function createPluginSettings($contextId) {
+        $this->import('settings.PPRPluginSettings');
+        return new PPRPluginSettings($contextId, $this);
     }
 
 }

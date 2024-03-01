@@ -92,14 +92,14 @@ class PPRReviewReminder extends PPRScheduledTask {
         $email->send();
     }
 
-    function executeForContext($context, $pprPlugin) {
-        if (!$pprPlugin->getPluginSettings()->reviewReminderReviewerTaskEnabled()) {
+    function executeForContext($context, $pprPluginSettings) {
+        if (!$pprPluginSettings->reviewReminderReviewerTaskEnabled()) {
             // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
             $this->log($context, 'reviewReminderReviewerEnabled=false');
             return;
         }
 
-        $reviewReminderReviewerDaysFromDueDate = $pprPlugin->getPluginSettings()->reviewReminderReviewerDaysFromDueDate();
+        $reviewReminderReviewerDaysFromDueDate = $pprPluginSettings->reviewReminderReviewerDaysFromDueDate();
         $this->log($context, 'Start - $reviewReminderReviewerDaysFromDueDate=' . $reviewReminderReviewerDaysFromDueDate);
         if ($reviewReminderReviewerDaysFromDueDate === null) {
             return;

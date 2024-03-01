@@ -19,14 +19,20 @@ class PPREditorReportTask extends ScheduledTask {
         // PROCESS REVIEW REMINDERS FOR ALL OJS CONTEXTS
         $ojsEnabledContexts = $contextDao->getAll(true)->toArray();
         foreach ($ojsEnabledContexts as $context) {
-            $pprReportPlugin = PluginRegistry::loadPlugin('reports', 'pprReviewsReportPlugin', $context->getId());
+            $pprReportPlugin = PluginRegistry::getPlugin('reports', 'PPRReviewsReportPlugin');
+            if (!$pprReportPlugin) {
+                $this->log($context, 'PPRReviewsReportPlugin is null');
+                continue;
+            }
+
             if (!$pprReportPlugin->getEnabled($context->getId())) {
                 // PLUGIN NOT ENABLED FOR CURRENT CONTEXT
                 $this->log($context, 'PPRReportPluginEnabled=false');
                 continue;
             }
 
-            $this->executeForContext($context, $pprReportPlugin);
+            $pprReportPluginSettings = $pprReportPlugin->createPluginSettings($context->getId());
+            $this->executeForContext($context, $pprReportPluginSettings);
         }
 
         //RETURN SUCCESS TO THE SCHEDULE TASKS MANAGER
@@ -34,14 +40,14 @@ class PPREditorReportTask extends ScheduledTask {
     }
 
 
-    public function executeForContext($context, $pprReportPlugin) {
-        if (!$pprReportPlugin->getPluginSettings()->submissionsReviewsReportEnabled()) {
+    public function executeForContext($context, $pprReportPluginSettings) {
+        if (!$pprReportPluginSettings->submissionsReviewsReportEnabled()) {
             // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
             $this->log($context, 'submissionsReviewsEditorReportEnabled=false');
             return;
         }
 
-        $recipients = $pprReportPlugin->getPluginSettings()->submissionsReviewsReportRecipients();
+        $recipients = $pprReportPluginSettings->submissionsReviewsReportRecipients();
         if (empty($recipients)) {
             $this->log($context, 'recipients=empty');
             return;

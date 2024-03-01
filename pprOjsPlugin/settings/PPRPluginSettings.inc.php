@@ -55,8 +55,8 @@ class PPRPluginSettings {
         'reviewAcceptedEmailEnabled' => ['bool', null],
         'reviewSubmittedEmailEnabled' => ['bool', null],
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
-        'editorialDecisionsEmailRemoveContributorsEnabled' => ['bool', null],
         'unassignReviewerEmailOverrideEnabled' => ['bool', null],
+        'emailContributorsEnabled' => ['bool', true],
 
         'accessKeyLifeTime' => ['int', 30],
         'fileUploadTextOverrideEnabled' => ['bool', null],
@@ -256,12 +256,12 @@ class PPRPluginSettings {
         return $this->getValue('submissionConfirmationContributorsEmailDisabled');
     }
 
-    public function editorialDecisionsEmailRemoveContributorsEnabled() {
-        return $this->getValue('editorialDecisionsEmailRemoveContributorsEnabled');
-    }
-
     public function unassignReviewerEmailOverrideEnabled() {
         return $this->getValue('unassignReviewerEmailOverrideEnabled');
+    }
+
+    public function emailContributorsEnabled() {
+        return $this->getValue('emailContributorsEnabled');
     }
 
     public function authorSubmissionSurveyHtml() {

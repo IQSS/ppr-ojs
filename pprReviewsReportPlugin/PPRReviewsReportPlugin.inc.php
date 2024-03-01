@@ -17,8 +17,7 @@ class PPRReviewsReportPlugin extends ReportPlugin {
         $success = parent::register($category, $path, $mainContextId);
         $currentContextId = ($mainContextId === null) ? $this->getCurrentContextId() : $mainContextId;
 
-        $this->import('settings.PPRReportPluginSettings');
-        $this->pprPluginSettings = new PPRReportPluginSettings($currentContextId, $this);
+        $this->pprPluginSettings = $this->createPluginSettings($currentContextId);
         $this->import('settings.PPRReportPluginSettingsHandler');
         $this->pprPluginSettingsHandler = new PPRReportPluginSettingsHandler($this);
 
@@ -93,6 +92,11 @@ class PPRReviewsReportPlugin extends ReportPlugin {
 
     public function getPluginSettings() {
         return $this->pprPluginSettings;
+    }
+
+    public function createPluginSettings($contextId) {
+        $this->import('settings.PPRReportPluginSettings');
+        return new PPRReportPluginSettings($contextId, $this);
     }
 
     public function getPluginSettingsHandler() {

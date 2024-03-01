@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Service to add the submission research type custom field to the create submission > metadata form
+ * Service to add the submission researchType custom field to the create submission > metadata form
  *
  * This services adds the custom field to the add reviewer form
  */

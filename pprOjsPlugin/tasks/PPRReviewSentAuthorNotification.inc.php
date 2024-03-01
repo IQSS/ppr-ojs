@@ -56,15 +56,15 @@ class PPRReviewSentAuthorNotification extends PPRScheduledTask {
         $email->send();
     }
 
-    function executeForContext($context, $pprPlugin) {
-        if (!$pprPlugin->getPluginSettings()->reviewSentAuthorTaskEnabled()) {
+    function executeForContext($context, $pprPluginSettings) {
+        if (!$pprPluginSettings->reviewSentAuthorTaskEnabled()) {
             // THIS IS REQUIRED HERE AS THE CONFIGURED SCHEDULED TASKS ARE LOADED BY THE acron PLUGIN WHEN IT IS RELOADED
             $this->log($context, 'reviewSentAuthorTaskEnabled=false');
             return;
         }
 
-        $reviewSentWaitingDays = $pprPlugin->getPluginSettings()->reviewSentAuthorWaitingDays();
-        $reviewSentAuthorEnabledDate = $pprPlugin->getPluginSettings()->reviewSentAuthorEnabledDate();
+        $reviewSentWaitingDays = $pprPluginSettings->reviewSentAuthorWaitingDays();
+        $reviewSentAuthorEnabledDate = $pprPluginSettings->reviewSentAuthorEnabledDate();
         $submissionFileService = Services::get('submissionFile');
         $pprNotificationRegistry = new PPRTaskNotificationRegistry($context->getId());
 

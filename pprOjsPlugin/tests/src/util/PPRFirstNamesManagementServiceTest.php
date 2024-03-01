@@ -54,6 +54,61 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $this->assertEquals($reviewer, $result);
     }
 
+    public function test_getContributorsNames_should_return_author_first_name_when_emailContributors_is_null() {
+        $author = $this->getTestUtil()->createAuthor($this->getRandomId(), 'AuthorName', 'AuthorName');
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors('PrimaryAuthorName', ['PrimaryAuthorName', 'ContributorName']);
+        $submission->expects($this->once())->method('getData')->with('emailContributors')->willReturn(null);
+
+
+        $target = new PPRFirstNamesManagementService($this->createMock(PPRSubmissionUtil::class));
+        $result = $target->getContributorsNames($submission, $author);
+        $this->assertEquals('AuthorName', $result);
+    }
+
+    public function test_getContributorsNames_should_return_author_first_name_when_emailContributors_is_false() {
+        $author = $this->getTestUtil()->createAuthor($this->getRandomId(), 'AuthorName', 'AuthorName');
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors('PrimaryAuthorName', ['PrimaryAuthorName', 'ContributorName']);
+        $submission->expects($this->once())->method('getData')->with('emailContributors')->willReturn(false);
+
+
+        $target = new PPRFirstNamesManagementService($this->createMock(PPRSubmissionUtil::class));
+        $result = $target->getContributorsNames($submission, $author);
+        $this->assertEquals('AuthorName', $result);
+    }
+
+    public function test_getContributorsNames_should_return_author_and_contributors_first_names_when_emailContributors_is_true() {
+        $author = $this->getTestUtil()->createAuthor($this->getRandomId(), 'AuthorName', 'AuthorName');
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors('PrimaryAuthorName', ['ContributorName']);
+        $submission->expects($this->once())->method('getData')->with('emailContributors')->willReturn(true);
+
+
+        $target = new PPRFirstNamesManagementService($this->createMock(PPRSubmissionUtil::class));
+        $result = $target->getContributorsNames($submission, $author);
+        $this->assertEquals('AuthorName, PrimaryAuthorName, ContributorName', $result);
+    }
+
+    public function test_getContributorsNames_should_handle_empty_contributors_list_when_emailContributors_is_true() {
+        $author = $this->getTestUtil()->createAuthor($this->getRandomId(), 'AuthorName', 'AuthorName');
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors(null, []);
+        $submission->expects($this->once())->method('getData')->with('emailContributors')->willReturn(true);
+
+
+        $target = new PPRFirstNamesManagementService($this->createMock(PPRSubmissionUtil::class));
+        $result = $target->getContributorsNames($submission, $author);
+        $this->assertEquals('AuthorName', $result);
+    }
+
+    public function test_getContributorsNames_should_not_duplicate_author_when_author_in_the_list_of_contributors_when_emailContributors_is_true() {
+        $author = $this->getTestUtil()->createAuthor($this->getRandomId(), 'AuthorName', 'AuthorName');
+        $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorName', ['ContributorName']);
+        $submission->expects($this->once())->method('getData')->with('emailContributors')->willReturn(true);
+
+
+        $target = new PPRFirstNamesManagementService($this->createMock(PPRSubmissionUtil::class));
+        $result = $target->getContributorsNames($submission, $author);
+        $this->assertEquals('AuthorName, ContributorName', $result);
+    }
+
     public function test_addFirstNameLabelsToTemplate_should_update_template_manager_with_first_name_labels() {
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
         TemplateManager::getManager()->setData([
@@ -86,6 +141,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $expectedLabels['authorName'] = __('review.ppr.author.name.label');
         $expectedLabels['authorFullName'] = __('review.ppr.author.name.label');
         $expectedLabels['authorFirstName'] = __('review.ppr.author.firstName.label');
+        $expectedLabels['contributorsNames'] = __('review.ppr.author.contributorsNames.label');
         $expectedLabels['editorName'] = __('review.ppr.editor.name.label');
         $expectedLabels['editorFullName'] = __('review.ppr.editor.name.label');
         $expectedLabels['editorFirstName'] = __('review.ppr.editor.firstName.label');
@@ -110,9 +166,9 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $mailTemplate->method('getData')->with('reviewerId')->willReturn($reviewerId);
         $this->addReviewer($submissionUtil, $reviewerId);
 
-        $mailTemplate->expects($this->exactly(10))->method('addPrivateParam')
+        $mailTemplate->expects($this->exactly(11))->method('addPrivateParam')
             ->withConsecutive(
-                ['{$authorName}', 'authorFullName'], ['{$authorFullName}', 'authorFullName'], ['{$authorFirstName}', 'authorFirstName'],
+                ['{$authorName}', 'authorFullName'], ['{$authorFullName}', 'authorFullName'], ['{$authorFirstName}', 'authorFirstName'], ['{$contributorsNames}', 'authorFirstName'],
                 ['{$editorName}', 'editorFullName'], ['{$editorFullName}', 'editorFullName'], ['{$editorFirstName}', 'editorFirstName'],
                 ['{$reviewerName}', 'reviewerFullName'], ['{$reviewerFullName}', 'reviewerFullName'], ['{$reviewerFirstName}', 'reviewerFirstName'], ['{$firstNameOnly}', 'reviewerFirstName']);
 
@@ -126,9 +182,9 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $this->addEditorAndAuthor($submissionUtil, true);
 
         $missingName = __('ppr.user.missing.name');
-        $mailTemplate->expects($this->exactly(10))->method('addPrivateParam')
+        $mailTemplate->expects($this->exactly(11))->method('addPrivateParam')
             ->withConsecutive(
-                ['{$authorName}', $missingName], ['{$authorFullName}', $missingName], ['{$authorFirstName}', $missingName],
+                ['{$authorName}', $missingName], ['{$authorFullName}', $missingName], ['{$authorFirstName}', $missingName], ['{$contributorsNames}', $missingName],
                 ['{$editorName}', $missingName], ['{$editorFullName}', $missingName], ['{$editorFirstName}', $missingName],
                 ['{$reviewerName}', $missingName], ['{$reviewerFullName}', $missingName], ['{$reviewerFirstName}', $missingName], ['{$firstNameOnly}', $missingName]);
 
@@ -147,7 +203,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $submissionUtil->expects($this->once())->method('getSubmissionEditors')->with($submission->getId(), $submission->getContextId())->willReturn([$editor]);
         $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn($reviewer);
         $textToReplace = $this->createTextToReplace();
-        $expectedText = 'Author: AuthorName - AuthorName - AuthorFirst, Editor: EditorName - EditorName - EditorFirst, Reviewer: ReviewerName - ReviewerName - ReviewerFirst - ReviewerFirst';
+        $expectedText = 'Author: AuthorName - AuthorName - AuthorFirst - AuthorFirst, Editor: EditorName - EditorName - EditorFirst, Reviewer: ReviewerName - ReviewerName - ReviewerFirst - ReviewerFirst';
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $result = $target->replaceFirstNames($textToReplace, $submission, $reviewerId);
@@ -163,7 +219,8 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn($reviewer);
         $textToReplace = $this->createTextToReplace();
         $missingName = __('ppr.user.missing.name');
-        $expectedText = sprintf('Author: %s - %s - %s, Editor: %s - %s - %s, Reviewer: ReviewerName - ReviewerName - ReviewerFirst - ReviewerFirst', $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
+        $expectedText = sprintf('Author: %s - %s - %s - %s, Editor: %s - %s - %s, Reviewer: ReviewerName - ReviewerName - ReviewerFirst - ReviewerFirst',
+            $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $result = $target->replaceFirstNames($textToReplace, null, $reviewerId);
@@ -179,7 +236,8 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $submissionUtil->expects($this->once())->method('getUser')->with($reviewerId)->willReturn(null);
         $textToReplace = $this->createTextToReplace();
         $missingName = __('ppr.user.missing.name');
-        $expectedText = sprintf('Author: %s - %s - %s, Editor: %s - %s - %s, Reviewer: %s - %s - %s - %s', $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
+        $expectedText = sprintf('Author: %s - %s - %s - %s, Editor: %s - %s - %s, Reviewer: %s - %s - %s - %s',
+            $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $result = $target->replaceFirstNames($textToReplace, $submission, $reviewerId);
@@ -189,7 +247,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
     private function createSubmissionEmailTemplate($createSubmission = true) {
         $submissionMailTemplate = $this->createMock(SubmissionMailTemplate::class);
         if ($createSubmission) {
-            $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorName');
+            $submission = $this->getTestUtil()->createSubmissionWithAuthors('AuthorName', ['AuthorName', 'ContributorName']);
             $submissionMailTemplate->submission = $submission;
         }
         return $submissionMailTemplate;
@@ -211,7 +269,7 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
 
     private function createTextToReplace() {
         $text = [];
-        $text[] = 'Author: {$authorName} - {$authorFullName} - {$authorFirstName}';
+        $text[] = 'Author: {$authorName} - {$authorFullName} - {$authorFirstName} - {$contributorsNames}';
         $text[] = 'Editor: {$editorName} - {$editorFullName} - {$editorFirstName}';
         $text[] = 'Reviewer: {$reviewerName} - {$reviewerFullName} - {$reviewerFirstName} - {$firstNameOnly}';
 

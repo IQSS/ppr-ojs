@@ -91,8 +91,8 @@
 			{fbvElement type="checkbox" name="reviewAddEditorToBccEnabled" label="plugins.generic.pprPlugin.settings.reviewAddEditorToBccEnabled.label" id="reviewAddEditorToBccEnabled" checked=$reviewAddEditorToBccEnabled}
 			{fbvElement type="checkbox" name="submissionApprovedEmailEnabled" label="plugins.generic.pprPlugin.settings.submissionApprovedEmailEnabled.label" id="submissionApprovedEmailEnabled" checked=$submissionApprovedEmailEnabled}
 			{fbvElement type="checkbox" name="submissionConfirmationContributorsEmailDisabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label" id="submissionConfirmationContributorsEmailDisabled" checked=$submissionConfirmationContributorsEmailDisabled}
-			{fbvElement type="checkbox" name="editorialDecisionsEmailRemoveContributorsEnabled" label="plugins.generic.pprPlugin.settings.editorialDecisionsEmailRemoveContributorsEnabled.label" id="editorialDecisionsEmailRemoveContributorsEnabled" checked=$editorialDecisionsEmailRemoveContributorsEnabled}
 			{fbvElement type="checkbox" name="unassignReviewerEmailOverrideEnabled" label="plugins.generic.pprPlugin.settings.unassignReviewerEmailOverrideEnabled.label" id="unassignReviewerEmailOverrideEnabled" checked=$unassignReviewerEmailOverrideEnabled}
+			{fbvElement type="checkbox" name="emailContributorsEnabled" label="plugins.generic.pprPlugin.settings.emailContributorsEnabled.label" id="emailContributorsEnabled" checked=$emailContributorsEnabled}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}

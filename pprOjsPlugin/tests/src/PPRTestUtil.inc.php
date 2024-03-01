@@ -17,21 +17,24 @@ class PPRTestUtil {
 
     public function createSubmissionWithAuthors($primaryAuthorName, $contributorsNames = []) {
         $primaryAuthor = null;
+        $contributors = [];
 
         if ($primaryAuthorName) {
             $primaryAuthor = $this->createAuthor($this->testCase->getRandomId(), $primaryAuthorName, $primaryAuthorName);
+            $contributors[] = $primaryAuthor;
         }
 
-        $contributors = [];
         foreach ($contributorsNames as $name) {
             $contributor = $this->createAuthor($this->testCase->getRandomId(), $name, $name);
             $contributors[] = $contributor;
         }
 
+        $contributorsNames = array_map(function($contributor){return $contributor->getFullName();}, $contributors);
         $submission = $this->testCase->createMock(Submission::class);
         $submission->method('getId')->willReturn($this->testCase->getRandomId());
         $submission->method('getPrimaryAuthor')->willReturn($primaryAuthor);
         $submission->method('getAuthors')->willReturn($contributors);
+        $submission->method('getAuthorString')->willReturn(implode(", ", $contributorsNames));
         return $submission;
     }
 

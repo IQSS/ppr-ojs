@@ -2,8 +2,7 @@
 
 /**
  * Service to add the submission emailContributors custom field to the create submission > metadata form
- *
- * This services adds the research type custom field to the add reviewer form
+ * 
  */
 class PPRSubmissionEmailContributorsService {
     const EMAIL_CONTRIBUTORS_FIELD = 'emailContributors';

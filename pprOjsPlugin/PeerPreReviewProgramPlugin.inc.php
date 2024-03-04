@@ -101,6 +101,7 @@ class PeerPreReviewProgramPlugin extends GenericPlugin {
             HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'addScheduledTasks'));
         }
 
+        error_log("PPR[PeerPreReviewProgramPlugin] register completed currentContextId={$currentContextId} success={$success}");
         return $success;
     }
 

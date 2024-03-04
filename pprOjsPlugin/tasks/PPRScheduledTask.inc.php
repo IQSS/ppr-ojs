@@ -37,8 +37,8 @@ abstract class PPRScheduledTask extends ScheduledTask {
         foreach ($ojsEnabledContexts as $context) {
             $pprPlugin = PluginRegistry::getPlugin('generic', 'peerprereviewprogramplugin');
             if (!$pprPlugin) {
-                $this->log($context, 'peerprereviewprogramplugin is null');
-                continue;
+                $this->log($context, 'peerprereviewprogramplugin is null - loading new instance');
+                $pprPlugin = PluginRegistry::loadPlugin('generic', 'pprOjsPlugin', $context->getId());
             }
 
             if (!$pprPlugin->getEnabled($context->getId())) {

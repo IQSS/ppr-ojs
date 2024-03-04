@@ -28,6 +28,7 @@ class PPRReviewsReportPlugin extends ReportPlugin {
             HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'addScheduledTasks'));
         }
 
+        error_log("PPR[PPRReviewsReportPlugin] register completed currentContextId={$currentContextId} success={$success}");
         return $success;
     }
 

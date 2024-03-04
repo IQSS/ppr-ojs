@@ -21,8 +21,8 @@ class PPREditorReportTask extends ScheduledTask {
         foreach ($ojsEnabledContexts as $context) {
             $pprReportPlugin = PluginRegistry::getPlugin('reports', 'PPRReviewsReportPlugin');
             if (!$pprReportPlugin) {
-                $this->log($context, 'PPRReviewsReportPlugin is null');
-                continue;
+                $this->log($context, 'PPRReviewsReportPlugin is null - loading new instance');
+                $pprReportPlugin = PluginRegistry::loadPlugin('reports', 'pprReviewsReportPlugin', $context->getId());
             }
 
             if (!$pprReportPlugin->getEnabled($context->getId())) {

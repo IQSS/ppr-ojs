@@ -237,7 +237,7 @@ msgid "submission.email.contributors.title"
 msgstr "Send email communications to contributors"
 
 msgid "submission.email.contributors.label"
-msgstr "Check this to send email notifications to all users in the the list of contributors as well as the author"
+msgstr "If you want other contributors to get the email notifications, please check here."
 
 msgid "submission.close.button.title"
 msgstr "Close Submission"

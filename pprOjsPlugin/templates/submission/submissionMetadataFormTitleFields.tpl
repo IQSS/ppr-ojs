@@ -55,7 +55,8 @@
 {/if}
 {* PPR CUSTOM FIELD emailCoauthors *}
 {if $pprPluginSettings->emailContributorsEnabled()}
-	{fbvFormSection title="submission.email.contributors.title" list="true"}
+	{fbvFormSection list="true"}
+		<h2>{translate key="submission.email.contributors.title"}</h2>
 		{capture assign="emailContributorsLabel"}{translate key="submission.email.contributors.label"}{/capture}
 		{fbvElement type="checkbox" id="emailContributors" value=1 label=$emailContributorsLabel translate=false checked=$emailContributors}
 	{/fbvFormSection}

@@ -86,8 +86,8 @@ msgstr "Add Managing Editor as BCC to thank reviewer email"
 msgid "plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label"
 msgstr "Disable the submission confirmation contributors email"
 
-msgid "plugins.generic.pprPlugin.settings.unassignReviewerEmailOverrideEnabled.label"
-msgstr "Override unassign reviewer confirmation email based on assignment status"
+msgid "plugins.generic.pprPlugin.settings.unassignReviewerServiceEnabled.label"
+msgstr "Override the un-assign reviewer workflow: Keep reviewers in submission and custom email template"
 
 msgid "plugins.generic.pprPlugin.settings.reviewUploadFileValidationEnabled.label"
 msgstr "Add the review file validation to the Complete Review flow"

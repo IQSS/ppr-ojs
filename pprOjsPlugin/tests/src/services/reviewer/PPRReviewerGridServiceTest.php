@@ -15,7 +15,7 @@ class PPRReviewerGridServiceTest extends PPRTestCase {
     }
 
     public function test_register_should_not_register_any_hooks_when_unassignReviewerEmailOverrideEnabled_is_false() {
-        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['unassignReviewerEmailOverrideEnabled' => false], true);
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['unassignReviewerServiceEnabled' => false], true);
         $target = new PPRReviewerGridService($pprPluginMock);
         $target->register();
 
@@ -23,7 +23,7 @@ class PPRReviewerGridServiceTest extends PPRTestCase {
     }
 
     public function test_register_should_register_service_hooks_when_unassignReviewerEmailOverrideEnabled_is_true() {
-        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['unassignReviewerEmailOverrideEnabled' => true], false);
+        $pprPluginMock = new PPRPluginMock(self::CONTEXT_ID, ['unassignReviewerServiceEnabled' => true], false);
         $target = new PPRReviewerGridService($pprPluginMock);
         $target->register();
 

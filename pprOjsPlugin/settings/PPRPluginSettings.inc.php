@@ -55,7 +55,7 @@ class PPRPluginSettings {
         'reviewAcceptedEmailEnabled' => ['bool', null],
         'reviewSubmittedEmailEnabled' => ['bool', null],
         'submissionConfirmationContributorsEmailDisabled' => ['bool', null],
-        'unassignReviewerEmailOverrideEnabled' => ['bool', null],
+        'unassignReviewerServiceEnabled' => ['bool', true],
         'emailContributorsEnabled' => ['bool', true],
 
         'accessKeyLifeTime' => ['int', 30],
@@ -256,8 +256,8 @@ class PPRPluginSettings {
         return $this->getValue('submissionConfirmationContributorsEmailDisabled');
     }
 
-    public function unassignReviewerEmailOverrideEnabled() {
-        return $this->getValue('unassignReviewerEmailOverrideEnabled');
+    public function unassignReviewerServiceEnabled() {
+        return $this->getValue('unassignReviewerServiceEnabled');
     }
 
     public function emailContributorsEnabled() {

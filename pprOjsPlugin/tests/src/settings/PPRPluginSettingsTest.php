@@ -56,7 +56,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'reviewSubmittedEmailEnabled' => [null, null],
             'submissionConfirmationContributorsEmailDisabled' => [null, null],
             'emailContributorsEnabled' => [null, true],
-            'unassignReviewerEmailOverrideEnabled' => [null, null],
+            'unassignReviewerServiceEnabled' => [null, true],
             'authorSubmissionSurveyHtml' => [null, null],
             'authorDashboardSurveyHtml' => [null, null],
             'reviewerSurveyHtml' => [null, null],

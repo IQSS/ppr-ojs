@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Service to update the email template used when executing the assign reviewer action
+ * Service to customize the functionality of the assign reviewer action.
  *
- * In order to achieve the these requirements, we need to override the ReviewerGridHandler
+ * In order to achieve the new requirements, we need to override the ReviewerGridHandler
+ * to have control of the UnassignReviewerForm
  */
 class PPRReviewerGridService {
 
@@ -14,7 +15,7 @@ class PPRReviewerGridService {
     }
 
     function register() {
-        if ($this->pprPlugin->getPluginSettings()->unassignReviewerEmailOverrideEnabled()) {
+        if ($this->pprPlugin->getPluginSettings()->unassignReviewerServiceEnabled()) {
             HookRegistry::register('LoadComponentHandler', array($this, 'addPPRReviewerGridHandler'));
         }
     }

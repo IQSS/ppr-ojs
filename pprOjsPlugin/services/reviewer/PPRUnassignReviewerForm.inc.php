@@ -1,14 +1,20 @@
 <?php
 
-import('lib.pkp.controllers.grid.users.reviewer.form.UnassignReviewerForm');
+import('lib.pkp.controllers.grid.users.reviewer.form.ReviewerNotifyActionForm');
 require_once(dirname(__FILE__) . '/../../util/PPRMissingUser.inc.php');
 
 /**
- * Override UnassignReviewerForm to select email template based on the assignment status and set data
+ * This is a copy of the UnassignReviewerForm to customize the OJS functionality
+ * lib.pkp.controllers.grid.users.reviewer.form.UnassignReviewerForm
+ *
+ * Customizations:
+ *  - Email template selection based on the assignment status (requested Vs accepted).
+ *  - Set template data with new email data.
+ *  - Always cancel the review assignment when unassign reviewer is executed.
  *
  * This form is used in the ReviewerGridHandler
  */
-class PPRUnassignReviewerForm extends UnassignReviewerForm {
+class PPRUnassignReviewerForm extends ReviewerNotifyActionForm {
 
     // REQUEST SENT TO REVIEWER, REVIEWER HAS NOT ACCEPTED REQUEST YET
     const UNASSIGN_REQUESTED_REVIEWER_EMAIL = 'PPR_REQUESTED_REVIEWER_UNASSIGN';
@@ -19,7 +25,7 @@ class PPRUnassignReviewerForm extends UnassignReviewerForm {
 
     function __construct($reviewAssignment, $reviewRound, $submission, $pprObjectFactory = null) {
         $this->pprObjectFactory = $pprObjectFactory ?: new PPRObjectFactory();
-        parent::__construct($reviewAssignment, $reviewRound, $submission);
+        parent::__construct($reviewAssignment, $reviewRound, $submission, 'controllers/grid/users/reviewer/form/unassignReviewerForm.tpl');
     }
 
     /**
@@ -66,6 +72,61 @@ class PPRUnassignReviewerForm extends UnassignReviewerForm {
     private function getReviewer($reviewerId) {
         $userDao = DAORegistry::getDAO('UserDAO');
         return $userDao->getById($reviewerId) ?? new PPRMissingUser(__('ppr.user.missing.name'));
+    }
+
+    /**
+     * This is a copy from OJS UnassignReviewerForm.execute.
+     *
+     * We are customizing to always cancel the review assignment. Everything else is left as it is.
+     */
+    function execute(...$functionArgs) {
+        if (!parent::execute(...$functionArgs)) return false;
+
+        $request = Application::get()->getRequest();
+        $submission = $this->getSubmission();
+        $reviewAssignment = $this->getReviewAssignment();
+
+        // Delete or cancel the review assignment.
+        $submissionDao = DAORegistry::getDAO('SubmissionDAO'); /* @var $submissionDao SubmissionDAO */
+        $reviewAssignmentDao = DAORegistry::getDAO('ReviewAssignmentDAO'); /* @var $reviewAssignmentDao ReviewAssignmentDAO */
+        $userDao = DAORegistry::getDAO('UserDAO'); /* @var $userDao UserDAO */
+
+        if (isset($reviewAssignment) && $reviewAssignment->getSubmissionId() == $submission->getId() && !HookRegistry::call('EditorAction::clearReview', array(&$submission, $reviewAssignment))) {
+            $reviewer = $userDao->getById($reviewAssignment->getReviewerId());
+            if (!isset($reviewer)) return false;
+
+            // PPR UPDATE => ALWAYS CANCEL $reviewAssignment, NEVER DELETES
+            $reviewAssignment->setCancelled(true);
+            $reviewAssignmentDao->updateObject($reviewAssignment);
+            // END PPR UPDATE
+
+            // Stamp the modification date
+            $submission->stampModified();
+            $submissionDao->updateObject($submission);
+
+            $notificationDao = DAORegistry::getDAO('NotificationDAO'); /* @var $notificationDao NotificationDAO */
+            $notificationDao->deleteByAssoc(
+                ASSOC_TYPE_REVIEW_ASSIGNMENT,
+                $reviewAssignment->getId(),
+                $reviewAssignment->getReviewerId(),
+                NOTIFICATION_TYPE_REVIEW_ASSIGNMENT
+            );
+
+            // Insert a trivial notification to indicate the reviewer was removed successfully.
+            $currentUser = $request->getUser();
+            $notificationMgr = new NotificationManager();
+            // PPR UPDATE => ALWAYS CANCEL NOTIFICATION MESSAGE
+            $notificationMgr->createTrivialNotification($currentUser->getId(), NOTIFICATION_TYPE_SUCCESS, array('contents' => __('notification.cancelledReviewer')));
+            // END PPR UPDATE
+
+            // Add log
+            import('lib.pkp.classes.log.SubmissionLog');
+            import('classes.log.SubmissionEventLogEntry');
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_REVIEW_CLEAR, 'log.review.reviewCleared', array('reviewAssignmentId' => $reviewAssignment->getId(), 'reviewerName' => $reviewer->getFullName(), 'submissionId' => $submission->getId(), 'stageId' => $reviewAssignment->getStageId(), 'round' => $reviewAssignment->getRound()));
+
+            return true;
+        }
+        return false;
     }
 
     private function getSubmissionEditor($submissionId, $contextId) {

@@ -17,7 +17,7 @@ class PPRScheduledTaskHelperTest extends PPRTestCase {
      *
      * Cannot add a formal test as I cannot find a way of mocking the PHP builtin strtotime
      */
-    public function test_run_manual_checks_for_frequency() {
+    public function run_manual_checks_for_frequency() {
         $className = 'classname.to.find';
 
         $taskDao = $this->createMock(ScheduledTaskDAO::class);

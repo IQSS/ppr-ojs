@@ -58,7 +58,7 @@ Build the OJS Docker image with XDebug support for OJS version 3.4:
 The first time we start the OJS application, the ojs-entry-point script will copy the source code into the ``environment/data/ojs/src`` folder.
 This will take around 5 minutes to complete. After the copy is made, the script will start the Apache server. In subsequent runs, the copy is bypassed on startup.
 
-The OJS appliaction will be ready when you the see the message: ``STARTING OJS...`` in the console log.
+The OJS application will be ready when you the see the message: ``STARTING OJS...`` in the console log.
 
 To start the environment for OJS version 3.3, execute:
 ``make``
@@ -69,6 +69,19 @@ To start the environment for OJS version 3.4, execute:
 Access the application at http://localhost:8080
 
 Follow the on-screen instruction for the one time installation. More information [https://docs.pkp.sfu.ca/admin-guide/3.3/en/install](https://docs.pkp.sfu.ca/admin-guide/3.3/en/install)
+
+### Configure the local SMTP server
+After the initial setup, we need to configure OJS to use the local SMTP server to send emails.
+
+Manually edit the deployed OJS configuration under: ``environment/data/ojs/src/config.inc.php``
+Under the ``email`` section, ensure the following settings are configured:
+```
+[email]
+smtp = On
+smtp_server = smtp
+smtp_port = 25
+smtp_suppress_cert_check = On
+```
 
 ### Clean the data directories
 To start the OJS application fresh, you will need to clean the DB and OJS files within the data directory.
@@ -94,6 +107,48 @@ The Docker image is based on the OJS installation images from https://gitlab.com
 The definition of the PPR test Docker image is located under: ``environment/Dockerfile.test``
 
 # Technical Notes
+
+## Test environment SMTP server
+There is a virtual machine running Docker to host the SMTP server or the test environment.
+
+This is the Docker command use to run the SMTP server using MailDev:
+```
+docker run --rm -itd --name iqss-smtp-ojs -p 1080:1080 -p 1025:1025 \
+  --env MAILDEV_SMTP_PORT=1025 --env MAILDEV_WEB_PORT=1080 --env MAILDEV_MAIL_DIRECTORY=/mail \
+  --mount type=tmpfs,destination=/mail maildev/maildev:2.0.5
+```
+
+Stop the SMTP server with the following command:
+```
+docker rm -f iqss-smtp-ojs
+```
+
+## Add admin permissions to a user
+In order to grant admin permissions to a user, we need to add the user to the ``admin`` and  ``journal manager`` groups.
+The ``admin`` group is group_id = 1 and the ``journal manager`` group is group_id = 2.
+
+Verify group ids
+```
+SELECT * from user_group_settings WHERE setting_value in ('Site Admin', 'default.groups.name.manager');
+```
+
+Get the user id
+```
+SELECT * from users WHERE username = 'username';
+```
+
+Verify what groups the user belongs to
+```
+SELECT * from user_user_groups WHERE user_id = user_id;
+```
+
+Add the admin groups to the user
+```
+INSERT INTO user_user_groups VALUES (1, user_id);
+INSERT INTO user_user_groups VALUES (2, user_id);
+```
+
+
 ## Plugin Development
 When starting the local environment, the contents of the PPR plugin is mounted into the OJS ``plugins/generic`` directory and it will be ready to use.
 

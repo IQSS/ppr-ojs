@@ -70,8 +70,41 @@ Access the application at http://localhost:8080
 
 Follow the on-screen instruction for the one time installation. More information [https://docs.pkp.sfu.ca/admin-guide/3.3/en/install](https://docs.pkp.sfu.ca/admin-guide/3.3/en/install)
 
+ - Create admin account
+ - Primary locale english, no need for additional locales
+ - Client character set, connection character set, and File settings defaults are good.
+ - DB settings:
+    ```
+    Driver: [MySQL]
+    Host: db
+    Username: ojs
+    Password: ojs
+    Database: ojs
+    ```
+ - OAI settings and beacon defaults are good.
+ - [Sample installation settings](docs/ojs-installation-settings.png)
+
+### Post install tasks
+After the initial installation of OJS, we need to create a basic OJS configuration to start using the system.
+
+Create a journal. OJS supports multiple journals within a single installation. We need to create one journal.
+- [Sample journal settings](docs/ojs-create-journal.png)
+
+Enable the PPR plugins. These are disabled by default.
+ - To enable the PPR plugin => ``Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Program Plugin``
+ - To enable the PPR Report plugin => ``Website > Plugins > Report Plugins > IQSS Peer Pre-Review Reviews Report``
+
+Edit the PPR plugin settings to enabled all the features:
+ - ``Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Program Plugin  > Settings``
+ - ``Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Reviews Report  > Settings``
+
+Reload scheduled tasks for the Acron pluging. The Acron plugin is responsible for executing and managing the OJS scheduled tasks
+ - ``Website > Plugins > Generic > Acron Plugin > Reload Scheduled Tasks``
+
+
 ### Configure the local SMTP server
 After the initial setup, we need to configure OJS to use the local SMTP server to send emails.
+The local SMTP server is deployed in the container named smtp. This is as well the host to access it.
 
 Manually edit the deployed OJS configuration under: ``environment/data/ojs/src/config.inc.php``
 Under the ``email`` section, ensure the following settings are configured:

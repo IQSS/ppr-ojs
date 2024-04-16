@@ -45,6 +45,11 @@ class PPRTestCase extends TestCase {
         //RESET HOOKS ON EVERY CALL
         $emptyHooks = [];
         Registry::set('hooks', $emptyHooks);
+
+        //LOAD BASIC LOCALE DATA + PLUGIN LOCALE
+        $locale = AppLocale::getLocale();
+        AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON, LOCALE_COMPONENT_PKP_REVIEWER, LOCALE_COMPONENT_PKP_EDITOR);
+        AppLocale::registerLocaleFile($locale, 'plugins/generic/pprOjsPlugin/locale/en_US/locale.po');
     }
 
     public function countHooks() {

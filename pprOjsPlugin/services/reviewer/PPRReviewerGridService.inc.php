@@ -15,7 +15,7 @@ class PPRReviewerGridService {
     }
 
     function register() {
-        if ($this->pprPlugin->getPluginSettings()->unassignReviewerServiceEnabled()) {
+        if ($this->pprPlugin->getPluginSettings()->reviewerGridServiceEnabled()) {
             HookRegistry::register('LoadComponentHandler', array($this, 'addPPRReviewerGridHandler'));
         }
     }

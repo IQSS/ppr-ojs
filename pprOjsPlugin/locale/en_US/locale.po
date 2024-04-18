@@ -314,6 +314,12 @@ msgstr "Editor First Name"
 msgid "review.ppr.editor.name.label"
 msgstr "Editor Name"
 
+msgid "review.ppr.declined.date"
+msgstr "Declined date: {$date}"
+
+msgid "review.ppr.date.missing"
+msgstr "N/A"
+
 msgid "tasks.ppr.editor.groupName"
 msgstr "Associate Editor"
 

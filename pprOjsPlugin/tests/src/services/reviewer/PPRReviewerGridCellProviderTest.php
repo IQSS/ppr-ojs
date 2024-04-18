@@ -54,6 +54,26 @@ class PPRReviewerGridCellProviderTest extends PPRTestCase {
         }
     }
 
+    public function test_getStatusText_should_return_empty_string_for_unknown_status() {
+        $target = new PPRReviewerGridCellProvider(self::IS_CURRENT_USER_ASSIGNED_AUTHOR);
+        $row = $this->createRow(null);
+        $unknownStatus = 9999;
+        $knownStatuses = [
+            REVIEW_ASSIGNMENT_STATUS_AWAITING_RESPONSE,
+            REVIEW_ASSIGNMENT_STATUS_ACCEPTED,
+            REVIEW_ASSIGNMENT_STATUS_COMPLETE,
+            REVIEW_ASSIGNMENT_STATUS_REVIEW_OVERDUE,
+            REVIEW_ASSIGNMENT_STATUS_RESPONSE_OVERDUE,
+            REVIEW_ASSIGNMENT_STATUS_DECLINED,
+            REVIEW_ASSIGNMENT_STATUS_CANCELLED,
+            REVIEW_ASSIGNMENT_STATUS_RECEIVED,
+            REVIEW_ASSIGNMENT_STATUS_THANKED,
+        ];
+        $this->assertNotContains($unknownStatus, $knownStatuses);
+        $result = $target->_getStatusText($unknownStatus, $row);
+        $this->assertEquals('', $result);
+    }
+
     private function createRow($dateConfirmed) {
         $all_dates = '2024-12-31 00:00:00';
         $row = $this->createMock(ReviewerGridRow::class);

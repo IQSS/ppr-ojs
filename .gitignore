@@ -2,3 +2,6 @@ environment/data
 environment/config.inc.php
 releases
 VERSION
+
+docs/sphinx-guides/build
+venv

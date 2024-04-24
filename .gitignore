@@ -1,3 +1,6 @@
+.DS_Store
+.DS_Store?
+
 environment/data
 environment/config.inc.php
 releases

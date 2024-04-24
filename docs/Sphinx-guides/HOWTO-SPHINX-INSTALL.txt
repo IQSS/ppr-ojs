@@ -40,8 +40,3 @@ documentation project of your own, etc., here's a good link:
 
 http://pythonhosted.org/an_example_pypi_project/sphinx.html
 
-As always, Google is your friend. 
-
-For a super useful quick start doc on how to format your source
-documents in sphinx, remember to consult Eleni's ".rst cheat sheet":
-http://bit.ly/1eGnxxI (Google Doc)

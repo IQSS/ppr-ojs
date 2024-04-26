@@ -1,5 +1,2 @@
 # User Guide
 
-**Contents**
-
-```{toctree}

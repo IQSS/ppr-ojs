@@ -6,6 +6,6 @@
 instalation
 containers
 environmentSetup
-customizations
+devGuidance
 testing
 productionEnvironment

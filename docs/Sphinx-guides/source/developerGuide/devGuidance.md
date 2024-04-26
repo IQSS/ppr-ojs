@@ -1,4 +1,4 @@
-# Customizations
+# Development guidance
 
 ## Plugin Development
 When starting the local environment, the contents of the PPR plugin is mounted into the OJS ``plugins/generic`` directory and it will be ready to use.

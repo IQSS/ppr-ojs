@@ -1,5 +1,7 @@
 # User Guide
 
-**Contents**
 
 ```{toctree}
+submissions
+reviews
+researchDocumentTypes

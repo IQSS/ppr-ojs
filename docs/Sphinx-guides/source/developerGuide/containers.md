@@ -46,4 +46,4 @@ Follow the on-screen instruction for the one time installation. More information
     Database: ojs
     ```
  - OAI settings and beacon defaults are good.
- - [Sample installation settings](docs/ojs-installation-settings.png)
+ ![Sample installation settings](/img/ojs-installation-settings.png)

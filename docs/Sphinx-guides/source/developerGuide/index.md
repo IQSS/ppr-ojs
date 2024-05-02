@@ -9,3 +9,4 @@ environmentSetup
 devGuidance
 testing
 productionEnvironment
+guides

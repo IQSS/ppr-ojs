@@ -4,17 +4,17 @@
 After the initial installation of OJS, we need to create a basic OJS configuration to start using the system.
 
 Create a journal. OJS supports multiple journals within a single installation. We need to create one journal.
-- [Sample journal settings](docs/ojs-create-journal.png)
+![Sample journal settings](/img/ojs-create-journal.png)
 
 Enable the PPR plugins. These are disabled by default.
  - To enable the PPR plugin => ``Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Program Plugin``
  - To enable the PPR Report plugin => ``Website > Plugins > Report Plugins > IQSS Peer Pre-Review Reviews Report``
 
-Edit the PPR plugin settings to enabled all the features:
+Edit the PPR plugin settings to enable all the features:
  - ``Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Program Plugin  > Settings``
  - ``Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Reviews Report  > Settings``
 
-Reload scheduled tasks for the Acron pluging. The Acron plugin is responsible for executing and managing the OJS scheduled tasks
+Reload scheduled tasks for the Acron plugin. The Acron plugin is responsible for executing and managing the OJS scheduled tasks
  - ``Website > Plugins > Generic > Acron Plugin > Reload Scheduled Tasks``
 
 

@@ -16,10 +16,14 @@ The OJS plugin implements customizations for the Harvard Peer Pre-Review Program
  - Installation and Admin Guide (V3.3) [https://docs.pkp.sfu.ca/admin-guide/3.3/en/](https://docs.pkp.sfu.ca/admin-guide/3.3/en/)
  - Development Guide (V3.3) [https://docs.pkp.sfu.ca/dev/documentation/3.3/en/](https://docs.pkp.sfu.ca/dev/documentation/3.3/en/)
 
+## Documentation
+
+We have divided the documentation for this project into 4 different sections that you can find on the following links:
 
 ```{toctree}
 :glob:
 :titlesonly:
+:maxdepth: 1
 userGuide/index
 sysadminGuide/index
 developerGuide/index

@@ -1,4 +1,4 @@
-## Configuration
+# Configuration
 
 The PPR plugin has been divided into 2 components:
 

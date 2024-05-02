@@ -1,4 +1,4 @@
-## System Administrator Guide
+# System Administrator Guide
 In order to deploy into the PKP servers, we need to create ``tar.gz`` file with the plugin folder and
 send it to PKP support: ``support@publicknowledgeproject.org``. They will review the code and deploy into the production servers.
 

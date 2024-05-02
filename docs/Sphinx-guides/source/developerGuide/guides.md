@@ -40,7 +40,7 @@ If you want to clear your directory you can use:
 make clean
 ```
 
-## Building with docker
+## Building With Docker
 
 To build the container guides you can use the following command from the root of the project:
 
@@ -48,6 +48,6 @@ To build the container guides you can use the following command from the root of
 docker run -it --rm -v $(pwd):/docs sphinxdoc/sphinx:7.3.6 bash -c "cd docs/sphinx-guides && pip3 install -r requirements.txt && make html"
 ```
 
-You can also use the following to make clean the build:
+You can also use the following to clean the build:
 ```
 docker run -it --rm -v $(pwd):/docs sphinxdoc/sphinx:7.3.6 bash -c "cd docs/sphinx-guides && pip3 install -r requirements.txt && make clean"

@@ -26,6 +26,6 @@ You can verify the installed version of your plugin by going to:
 
 
 - ``https://SERVER_URL/plugins/generic/pprOjsPlugin/version.xml``
-- ``https://SERVER_URL/plugins/generic/pprOjsPlugin/version.xml``
+- ``https://SERVER_URL/plugins/reports/pprReviewsReportPlugin/version.xml``
 
 Another way to check the versions and release dates of the plugins is within the database on the ``versions`` table.

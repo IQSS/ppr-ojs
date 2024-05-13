@@ -5,7 +5,7 @@ There is a suite of automated tests that run automatically in GitHub when a PR i
 
 The tests used a custom Docker image to execute the tests: ``hmdc/ppr_ojs_test``. More information of how to build this image in the section below.
 
-There is a GitHub action configured on ``test.yaml`` that will execute these tests on pushing on a Pull Request but can also be executed locally with:  
+There is a GitHub action configured on ``.github/workflows/test.yml`` that will execute these tests on commits to ``main`` and on Pull Requests but can also be executed locally with:  
 
 - ``make test`` for the base plugin
 - ``make test_report`` for for the report plugin

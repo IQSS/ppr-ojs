@@ -57,3 +57,6 @@ test:
 
 test_report:
 	docker run --rm --workdir=/var/www/html/plugins/reports/pprReviewsReportPlugin -v $(PWD)/pprReviewsReportPlugin:/var/www/html/plugins/reports/pprReviewsReportPlugin $(PPR_OJS_TEST_IMAGE) tests/run_tests.sh
+
+guides:
+	docker run -it --rm -v $(PWD):/docs sphinxdoc/sphinx:7.3.6 bash -c "cd docs/sphinx-guides && pip3 install -r requirements.txt && make clean && make html"

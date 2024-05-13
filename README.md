@@ -54,6 +54,9 @@ Build the OJS Docker image with XDebug support for OJS version 3.3:
 Build the OJS Docker image with XDebug support for OJS version 3.4:
 ``make docker34``
 
+Build the PPR-OJS documentation also available at [https://ppr-ojs.readthedocs.io/](https://ppr-ojs.readthedocs.io/)
+``make guides``
+
 ### Start the OJS application
 The first time we start the OJS application, the ojs-entry-point script will copy the source code into the ``environment/data/ojs/src`` folder.
 This will take around 5 minutes to complete. After the copy is made, the script will start the Apache server. In subsequent runs, the copy is bypassed on startup.

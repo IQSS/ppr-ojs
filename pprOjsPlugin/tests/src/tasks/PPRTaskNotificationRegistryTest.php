@@ -215,6 +215,27 @@ class PPRTaskNotificationRegistryTest extends PPRTestCase {
         $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
     }
 
+    public function test_registerSubmissionClosedAuthorNotification_inserts_the_expected_notification() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::SUBMISSION_CLOSED_AUTHOR_NOTIFICATION;
+        $userId = $this->getRandomId();
+        $this->addCreateNotificationMock($reviewDueDateNotificationType, $userId, $userId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $target->registerSubmissionClosedAuthorNotification($userId);
+    }
+
+    public function test_getSubmissionClosedAuthorNotification_calls_NotificationDAO() {
+        $reviewDueDateNotificationType = PPRTaskNotificationRegistry::SUBMISSION_CLOSED_AUTHOR_NOTIFICATION;
+        $userId = $this->getRandomId();
+        $this->addGetNotificationMock($reviewDueDateNotificationType, $userId, $userId);
+
+        $target = new PPRTaskNotificationRegistry(self::CONTEXT_ID);
+
+        $result = $target->getSubmissionClosedAuthorNotification($userId);
+        $this->assertEquals($this->EXPECTED_NOTIFICATION_ARRAY, $result);
+    }
+
     public function test_updateDateRead_calls_NotificationDAO() {
         $notificationId = $this->getRandomId();
         $notificationDao = $this->createMock(NotificationDAO::class);

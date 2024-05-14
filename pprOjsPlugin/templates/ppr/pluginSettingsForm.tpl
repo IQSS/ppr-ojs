@@ -113,6 +113,11 @@
 		    </div>
 
 			<div class="subsection">
+				{fbvElement type="checkbox" name="submissionClosedAuthorTaskEnabled" label="plugins.generic.pprPlugin.settings.submissionClosedAuthorTaskEnabled.label" id="submissionClosedAuthorTaskEnabled" checked=$submissionClosedAuthorTaskEnabled}
+				{fbvElement type="text" name="submissionClosedAuthorWaitingDays" label="plugins.generic.pprPlugin.settings.submissionClosedAuthorWaitingDays.label" id="submissionClosedAuthorWaitingDays" value=$submissionClosedAuthorWaitingDays}
+			</div>
+
+			<div class="subsection">
 				{fbvElement type="checkbox" name="scheduledTasksReset" label="plugins.generic.pprPlugin.settings.scheduledTasksReset.label" id="scheduledTasksReset"}
 			</div>
 		{/fbvFormSection}

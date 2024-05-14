@@ -5,7 +5,10 @@ use function PHP81_BC\strftime;
 require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
 
 /**
- * Notification to authors to review the program a period after a review has been sent to them
+ * Notification, in the form of an email, to authors. The email will be sent a period of time after
+ * a review has been sent to them. This is used to send a survey to the author.
+ * The initial requirement was to send an email after a week,
+ * but the time in days is configurable in the plugin settings.
  */
 class PPRReviewSentAuthorNotification extends PPRScheduledTask {
 
@@ -92,6 +95,8 @@ class PPRReviewSentAuthorNotification extends PPRScheduledTask {
             $metrics['sentReviewFiles']++;
 
             //REVIEW FILE HAS BEEN SENT => SET NOTIFICATION FLAG
+            //THIS FLAG IS NEEDED AS THE START POINT TO COUNT THE NUMBER OF DAYS UNTIL WE CAN SEND THE EMAIL
+            //WE USE THE DateRead FIELD TO MARK THAT THE EMAIL WAS SENT
             $reviewerId = $reviewFile->getUploaderUserId();
             $reviewAssignmentId = $reviewFile->getData('assocId');
             $authorNotifications = $pprNotificationRegistry->getReviewSentAuthorNotifications($reviewerId, $reviewAssignmentId);

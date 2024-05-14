@@ -46,6 +46,9 @@ class PPRPluginSettings {
         'reviewUploadFileValidationEnabled' => ['bool', null],
         'reviewAttachmentsOverrideEnabled' => ['bool', null],
 
+        'submissionClosedAuthorTaskEnabled' => ['bool', null],
+        'submissionClosedAuthorWaitingDays' => ['int', 365],
+
         'authorSubmissionSurveyHtml' => ['string', null],
         'authorDashboardSurveyHtml' => ['string', null],
         'reviewerSurveyHtml' => ['string', null],
@@ -230,6 +233,14 @@ class PPRPluginSettings {
 
     public function reviewAttachmentsOverrideEnabled() {
         return $this->getValue('reviewAttachmentsOverrideEnabled');
+    }
+
+    public function submissionClosedAuthorTaskEnabled() {
+        return $this->getValue('submissionClosedAuthorTaskEnabled');
+    }
+
+    public function submissionClosedAuthorWaitingDays() {
+        return $this->getValue('submissionClosedAuthorWaitingDays');
     }
 
     public function fileUploadTextOverrideEnabled() {

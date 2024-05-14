@@ -19,6 +19,7 @@ class PPRFirstNameEmailService {
             'PPR_REVIEW_SUBMITTED',
             'PPR_SUBMISSION_APPROVED',
             'PPR_REVIEW_SENT_AUTHOR',
+            'PPR_SUBMISSION_CLOSED_AUTHOR',
             //BATCH 3
             'REVIEW_REQUEST' ,
             'REVIEW_REQUEST_SUBSEQUENT',

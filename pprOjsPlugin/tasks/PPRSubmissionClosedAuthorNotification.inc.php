@@ -73,6 +73,7 @@ class PPRSubmissionClosedAuthorNotification extends PPRScheduledTask {
             'closedSubmissionsAfterPeriod' => 0,
             'closedSubmissionsWithNotifications' => 0,
             'sendToAuthorMissing' => 0,
+            'reviewFilesMissing' => 0,
             'sentNotifications' => 0,
         ];
 
@@ -107,6 +108,14 @@ class PPRSubmissionClosedAuthorNotification extends PPRScheduledTask {
                     continue;
                 }
 
+                if (!$this->reviewFilesForSubmission($closedSubmission)) {
+                    // ALL CLOSED SUBMISSIONS SHOULD HAVE REVIEW FILES
+                    // LOG TO DEBUG WITH PRODUCT TEAM
+                    $this->log($context, sprintf("reviewFiles not found - closedSubmission=%s", $closedSubmission->getId()));
+                    $metrics['reviewFilesMissing']++;
+                    continue;
+                }
+
                 $authorNotifications = $pprNotificationRegistry->getSubmissionClosedAuthorNotification($closedSubmission->getId());
                 if (empty($authorNotifications)) {
                     $this->sendNotification($closedSubmission, $context);
@@ -118,7 +127,29 @@ class PPRSubmissionClosedAuthorNotification extends PPRScheduledTask {
             }
         }
 
-        $this->log($context, sprintf("Completed - closedSubmissions=%s closedSubmissionsAfterPeriod=%s sendToAuthorMissing=%s closedSubmissionsWithNotifications=%s sentNotifications=%s", $metrics['closedSubmissions'], $metrics['closedSubmissionsAfterPeriod'], $metrics['sendToAuthorMissing'], $metrics['closedSubmissionsWithNotifications'], $metrics['sentNotifications']));
+        $this->log($context, sprintf("Completed - closedSubmissions=%s closedSubmissionsAfterPeriod=%s sendToAuthorMissing=%s reviewFilesMissing=%s closedSubmissionsWithNotifications=%s sentNotifications=%s",
+            $metrics['closedSubmissions'],
+            $metrics['closedSubmissionsAfterPeriod'],
+            $metrics['sendToAuthorMissing'],
+            $metrics['reviewFilesMissing'],
+            $metrics['closedSubmissionsWithNotifications'],
+            $metrics['sentNotifications']));
+    }
+
+    private function reviewFilesForSubmission($submission) {
+        import('lib.pkp.classes.submission.SubmissionFile'); // Bring the file constants.
+        $params = [
+            'submissionIds' => [$submission->getId()],
+            'fileStages' => [SUBMISSION_FILE_REVIEW_ATTACHMENT],
+        ];
+        $submissionFilesIterator = Services::get('submissionFile')->getMany($params);
+        $submissionReviewFiles = iterator_to_array($submissionFilesIterator);
+
+        if (empty($submissionReviewFiles)) {
+            return false;
+        }
+
+        return true;
     }
 
     private function requestedRevisionsForSubmission($submission) {

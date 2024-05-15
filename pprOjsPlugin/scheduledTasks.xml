@@ -24,4 +24,9 @@
 		<descr>Custom notification for authors when a review is sent</descr>
 		<frequency hour="0"/>
 	</task>
+
+	<task class="plugins.generic.pprOjsPlugin.tasks.PPRSubmissionClosedAuthorNotification">
+		<descr>Custom notification for authors a period of time after a submission is closed</descr>
+		<frequency dayofweek="6"/>
+	</task>
 </scheduled_tasks>

@@ -176,6 +176,12 @@ msgstr "Number of days to wait after a review is sent to send notifications to t
 msgid "plugins.generic.pprPlugin.settings.reviewSentAuthorEnabledDate.label"
 msgstr "Date from which submitted review files will be used to send review sent notifications to authors"
 
+msgid "plugins.generic.pprPlugin.settings.submissionClosedAuthorTaskEnabled.label"
+msgstr "Add automated notification to authors after a submission is closed"
+
+msgid "plugins.generic.pprPlugin.settings.submissionClosedAuthorWaitingDays.label"
+msgstr "Number of days to wait after a submission is closed to send a notification to the author"
+
 msgid "plugins.generic.pprPlugin.settings.emailContributorsEnabled.label"
 msgstr "Add checkbox to allow authors to choose if contributors should be notified"
 

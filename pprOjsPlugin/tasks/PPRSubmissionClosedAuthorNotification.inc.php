@@ -100,6 +100,8 @@ class PPRSubmissionClosedAuthorNotification extends PPRScheduledTask {
                 $metrics['closedSubmissionsAfterPeriod']++;
 
                 if (!$this->requestedRevisionsForSubmission($closedSubmission)) {
+                    // ALL CLOSED SUBMISSIONS SHOULD HAVE BEEN SENT TO AUTHOR
+                    // LOG TO DEBUG WITH PRODUCT TEAM
                     $this->log($context, sprintf("sendToAuthor not found - closedSubmission=%s", $closedSubmission->getId()));
                     $metrics['sendToAuthorMissing']++;
                     continue;

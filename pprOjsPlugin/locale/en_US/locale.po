@@ -177,7 +177,7 @@ msgid "plugins.generic.pprPlugin.settings.reviewSentAuthorEnabledDate.label"
 msgstr "Date from which submitted review files will be used to send review sent notifications to authors"
 
 msgid "plugins.generic.pprPlugin.settings.submissionClosedAuthorTaskEnabled.label"
-msgstr "Add automated notification to the author after a submission is closed"
+msgstr "Add automated notification to authors after a submission is closed"
 
 msgid "plugins.generic.pprPlugin.settings.submissionClosedAuthorWaitingDays.label"
 msgstr "Number of days to wait after a submission is closed to send a notification to the author"

@@ -12,7 +12,8 @@ class PPREmailContributorsService {
             'EDITOR_DECISION_RESUBMIT',
             'EDITOR_DECISION_INITIAL_DECLINE',
             'EDITOR_DECISION_DECLINE',
-            'PPR_REVIEW_SENT_AUTHOR'
+            'PPR_REVIEW_SENT_AUTHOR',
+            'PPR_SUBMISSION_APPROVED'
         ];
 
     private $pprPlugin;

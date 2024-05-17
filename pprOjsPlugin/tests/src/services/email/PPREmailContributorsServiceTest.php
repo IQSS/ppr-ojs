@@ -229,7 +229,15 @@ class PPREmailContributorsServiceTest extends PPRTestCase {
     }
 
     public function test_expected_known_templates() {
-        $expectedTemplates =  ['SUBMISSION_ACK', 'EDITOR_DECISION_REVISIONS', 'EDITOR_DECISION_RESUBMIT', 'EDITOR_DECISION_INITIAL_DECLINE', 'EDITOR_DECISION_DECLINE', 'PPR_REVIEW_SENT_AUTHOR'];
+        $expectedTemplates =  [
+            'SUBMISSION_ACK',
+            'EDITOR_DECISION_REVISIONS',
+            'EDITOR_DECISION_RESUBMIT',
+            'EDITOR_DECISION_INITIAL_DECLINE',
+            'EDITOR_DECISION_DECLINE',
+            'PPR_REVIEW_SENT_AUTHOR',
+            'PPR_SUBMISSION_APPROVED'
+        ];
         foreach ($expectedTemplates as $expectedTemplate) {
             $this->assertEquals(true, in_array($expectedTemplate, PPREmailContributorsService::OJS_SEND_TO_CONTRIBUTORS_TEMPLATES));
         }

@@ -4,9 +4,8 @@
 
 ```{toctree}
 :maxdepth: 2
-instalation
-containers
-environmentSetup
+localEnvironment
+deployment
 devGuidance
 testing
 productionEnvironment

@@ -18,7 +18,9 @@ The Docker image is based on the OJS installation images from https://gitlab.com
 
 The definition of the PPR test Docker image is located under: ``environment/Dockerfile.test``
 
-## Test environment SMTP server
+## Test environment
+
+### Test environment SMTP server
 There is a virtual machine running Docker to host the SMTP server or the test environment.
 
 This is the Docker command use to run the SMTP server using MailDev:

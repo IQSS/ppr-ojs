@@ -17,3 +17,4 @@ emailTemplates
 environments
 config
 releases
+productionEnvironment

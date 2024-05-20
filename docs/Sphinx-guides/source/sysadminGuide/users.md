@@ -27,10 +27,26 @@ As an administrator, you have the capability to log in as any user within the sy
 
 Please be aware that all actions you perform will be attributed to this user.
 
-## Making other users a ``Super User``
+## Add admin permissions to a user
+In order to grant admin permissions to a user, we need to add the user to the ``admin`` and  ``journal manager`` groups.
+The ``admin`` group is group_id = 1 and the ``journal manager`` group is group_id = 2.
 
-You can create multiple ``Super Users`` on the application by adding a special group to it but currently this has to be done directly on the Database. 
+Verify group ids
+```
+SELECT * from user_group_settings WHERE setting_value in ('Site Admin', 'default.groups.name.manager');
+```
 
+Get the user id
 ```
-TODO: Document the process of adding super users
+SELECT * from users WHERE username = 'username';
 ```
+
+Verify what groups the user belongs to
+```
+SELECT * from user_user_groups WHERE user_id = user_id;
+```
+
+Add the admin groups to the user
+```
+INSERT INTO user_user_groups VALUES (1, user_id);
+INSERT INTO user_user_groups VALUES (2, user_id);

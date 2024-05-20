@@ -22,3 +22,6 @@ Logs are daily gzipped into the monthly file, eg: ``2024-04-secure-error_log.gz`
 To access the gzipped logs, use ``zless``
 ```
 zless logs/2024-04-secure-error_log.gz
+```
+
+## Production Database

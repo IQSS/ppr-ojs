@@ -1,5 +1,7 @@
 # Making a release
 
+## Making a Build
+
 Inside the GitHub actions, there is a release workflow that can only be run manually at the moment, this workflow will execute the following actions:
 
 - Increase the version number on the ``VERSION`` file by a minor release
@@ -15,12 +17,24 @@ The ``plugin-artifacts`` file will contain the following files:
 - ``pprOjsPlugin-VERSION.tar.gz`` 
 - ``pprReviewsReportPlugin-VERSION.tar.gz``
 
+## Application deployment
+
+Both plugins **need to be upgraded simultaneously**, you can't have different versions of them even if there are no changes on one of them.
+
+### UI based deployment
+
 To deploy the artifact file on the OJS installation you will find the option under ``Upgrade > Upload file`` located on:
 
 - ``Settings > Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Program Plugin`` 
 - ``Settings > Website > Plugins > Report Plugins > IQSS Peer Pre-Review Report``
 
-Both plugins **need to be upgraded simultaneously**, you can't have different versions of them even if there are no changes on one of them.
+### Manual deployment
+
+There is another option to deploy the application by copying the files on the `plugins` directory and decompressing the contents. 
+
+*This is the preferred method by the PKP staff*
+
+## Version Verification
 
 You can verify the installed version of your plugin by going to:
 

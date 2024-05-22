@@ -8,6 +8,5 @@ localEnvironment
 deployment
 devGuidance
 testing
-productionEnvironment
 guides
 useCases/index

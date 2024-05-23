@@ -94,7 +94,8 @@ class PPRFirstNameEmailService {
             error_log("PPR[PPRFirstNameEmailService] processing emailTemplate={$emailTemplate->emailKey}");
             $this->pprObjectFactory->firstNamesManagementService()->addFirstNamesToEmailTemplate($emailTemplate);
         } else {
-            error_log("PPR[PPRFirstNameEmailService] notSupported emailTemplate={$emailTemplate->emailKey}");
+            $emailKey = $emailTemplate->emailKey ?? 'N/A';
+            error_log("PPR[PPRFirstNameEmailService] notSupported emailTemplate={$emailKey}");
         }
 
         return false;

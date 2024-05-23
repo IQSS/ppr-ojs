@@ -45,6 +45,15 @@ div.pkpPublication__header div.pkpHeader__actions{
 /**
   SUBMISSION
  */
+#ppr_start_submissionChecklist label {
+	cursor: default;
+}
+
+#ppr_start_submissionChecklist ul {
+	list-style: revert;
+	padding: revert;
+}
+
 #ppr_confirmation_submissionChecklist {
 	font-size: .875rem;
 	line-height: 1.5rem;

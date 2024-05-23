@@ -115,6 +115,7 @@ class PPRTemplateOverrideServiceTest extends PPRTestCase {
         ];
 
         $expectedTemplatesForSetting['submissionConfirmationChecklistEnabled'] = [
+            'lib/pkp/templates/submission/form/step1.tpl',
             'lib/pkp/templates/submission/form/step4.tpl',
         ];
 

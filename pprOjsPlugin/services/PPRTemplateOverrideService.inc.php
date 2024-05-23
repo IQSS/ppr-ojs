@@ -72,6 +72,7 @@ class PPRTemplateOverrideService {
         }
 
         if ($this->pprPlugin->getPluginSettings()->submissionConfirmationChecklistEnabled()) {
+            $this->overriddenTemplates[] = 'lib/pkp/templates/submission/form/step1.tpl';
             $this->overriddenTemplates[] = 'lib/pkp/templates/submission/form/step4.tpl';
         }
 

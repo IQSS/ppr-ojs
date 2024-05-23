@@ -49,7 +49,7 @@ class PPRFirstNameEmailService {
     private $pprPlugin;
     private $pprObjectFactory;
 
-    function __construct($plugin, $pprObjectFactory = null) {
+    public function __construct($plugin, $pprObjectFactory = null) {
         $this->pprPlugin = $plugin;
         $this->pprObjectFactory = $pprObjectFactory ?: new PPRObjectFactory();
         $this->pprPlugin->import('util.PPRMissingUser');
@@ -91,7 +91,11 @@ class PPRFirstNameEmailService {
     function addFirstNamesToEmailTemplate($hookName, $arguments) {
         $emailTemplate = $arguments[0];
         if ($emailTemplate instanceof SubmissionMailTemplate && $this->isEmailSupported($emailTemplate->emailKey)) {
+            error_log("PPR[PPRFirstNameEmailService] processing emailTemplate={$emailTemplate->emailKey}");
             $this->pprObjectFactory->firstNamesManagementService()->addFirstNamesToEmailTemplate($emailTemplate);
+        } else {
+            $emailKey = $emailTemplate->emailKey ?? 'N/A';
+            error_log("PPR[PPRFirstNameEmailService] notSupported emailTemplate={$emailKey}");
         }
 
         return false;

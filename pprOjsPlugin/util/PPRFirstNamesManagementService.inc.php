@@ -9,11 +9,11 @@ class PPRFirstNamesManagementService {
 
     private $pprSubmissionUtil;
 
-    function __construct($pprSubmissionUtil) {
+    public function __construct($pprSubmissionUtil) {
         $this->pprSubmissionUtil = $pprSubmissionUtil;
     }
 
-    function addFirstNameLabelsToTemplate($templateVariableName) {
+    public function addFirstNameLabelsToTemplate($templateVariableName) {
         // ADD FIRST NAME LABELS FOR REVIEWER, AUTHOR, AND EDITOR IN THE EMAIL BODY EDITOR IN THE FORM
         $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
         $emailVariables = $templateMgr->getTemplateVars($templateVariableName) ?? [];
@@ -32,36 +32,26 @@ class PPRFirstNamesManagementService {
         $templateMgr->assign($templateVariableName, $emailVariables);
     }
 
-    function addFirstNamesToEmailTemplate($emailTemplate) {
+    public function addFirstNamesToEmailTemplate($emailTemplate) {
         $submission = $emailTemplate->submission;
         if (!$submission) {
             error_log(sprintf("PPR[PPRFirstNameReplacementService] emailTemplate=%s - submission is null  - skip", $emailTemplate->emailKey));
             return false;
         }
 
-        // SETTING PRIVATE PARAMS IN THE EMAIL TEMPLATE WILL GET REPLACED IN THE BODY AFTER THIS HOOK COMPLETES
-        // AT THIS POINT REGULAR PARAMETERS HAVE ALREADY BEEN REPLACED
         $submissionAuthor = $this->getSubmissionAuthor($submission->getId());
         $contributorsNames = $this->getContributorsNames($submission, $submissionAuthor);
-        $emailTemplate->addPrivateParam('{$authorName}', htmlspecialchars($submissionAuthor->getFullName()));
-        $emailTemplate->addPrivateParam('{$authorFullName}', htmlspecialchars($submissionAuthor->getFullName()));
-        $emailTemplate->addPrivateParam('{$authorFirstName}', htmlspecialchars($submissionAuthor->getLocalizedGivenName()));
-        $emailTemplate->addPrivateParam('{$contributorsNames}', htmlspecialchars($contributorsNames));
 
         $contextId = $submission->getContextId();
         $submissionEditor = $this->getSubmissionEditor($submission->getId(), $contextId);
-        $emailTemplate->addPrivateParam('{$editorName}', htmlspecialchars($submissionEditor->getFullName()));
-        $emailTemplate->addPrivateParam('{$editorFullName}', htmlspecialchars($submissionEditor->getFullName()));
-        $emailTemplate->addPrivateParam('{$editorFirstName}', htmlspecialchars($submissionEditor->getLocalizedGivenName()));
 
-        // CHECK THE REVIEWER ID MARKER IN TEMPLATE OR REQUEST PARAMETER
+        // CHECK THE REVIEWER ID MARKER IN TEMPLATE
         $reviewerId = $emailTemplate->getData('reviewerId');
         $requestReviewer = $this->getReviewer($reviewerId);
-        $emailTemplate->addPrivateParam('{$reviewerName}', htmlspecialchars($requestReviewer->getFullName()));
-        $emailTemplate->addPrivateParam('{$reviewerFullName}', htmlspecialchars($requestReviewer->getFullName()));
-        $emailTemplate->addPrivateParam('{$reviewerFirstName}', htmlspecialchars($requestReviewer->getLocalizedGivenName()));
-        // firstNameOnly (REVIEWER) IS DEPRECATED. ADDED HERE FOR BACKWARDS COMPATIBILITY FOR advancedsearchreviewerform
-        $emailTemplate->addPrivateParam('{$firstNameOnly}', htmlspecialchars($requestReviewer->getLocalizedGivenName()));
+
+        $tempTemplate = $this->replaceParams($emailTemplate->getBody(), $emailTemplate->getSubject(), $submissionAuthor, $requestReviewer, $submissionEditor, $contributorsNames);
+        $emailTemplate->setBody($tempTemplate->getBody());
+        $emailTemplate->setSubject($tempTemplate->getSubject());
     }
 
     /**
@@ -73,24 +63,7 @@ class PPRFirstNamesManagementService {
         $author = $submission ? $this->getSubmissionAuthor($submission->getId()) : PPRMissingUser::defaultMissingUser();
         $contributorsNames = $submission ? $this->getContributorsNames($submission, $author) : PPRMissingUser::defaultMissingUser()->getLocalizedGivenName();
 
-        // WE NEED ANY EMAIL TEMPLATE TO OVERRIDE THE BODY AND USE THE replaceParams METHOD
-        $mailTemplate = new MailTemplate();
-        $mailTemplate->setBody($originalText);
-        $mailTemplate->assignParams([
-            'reviewerName' =>  htmlspecialchars($reviewer->getFullName()),
-            'reviewerFullName' =>  htmlspecialchars($reviewer->getFullName()),
-            'reviewerFirstName' =>  htmlspecialchars($reviewer->getLocalizedGivenName()),
-            // firstNameOnly (REVIEWER) IS DEPRECATED. ADDED HERE FOR BACKWARDS COMPATIBILITY FOR advancedsearchreviewerform
-            'firstNameOnly' =>  htmlspecialchars($reviewer->getLocalizedGivenName()),
-            'editorName' => htmlspecialchars($editor->getFullName()),
-            'editorFullName' => htmlspecialchars($editor->getFullName()),
-            'editorFirstName' => htmlspecialchars($editor->getLocalizedGivenName()),
-            'authorName' => htmlspecialchars($author->getFullName()),
-            'authorFullName' => htmlspecialchars($author->getFullName()),
-            'authorFirstName' => htmlspecialchars($author->getLocalizedGivenName()),
-            'contributorsNames' => htmlspecialchars($contributorsNames),
-        ]);
-        $mailTemplate->replaceParams();
+        $mailTemplate = $this->replaceParams($originalText, '', $author, $reviewer, $editor, $contributorsNames);
         return $mailTemplate->getBody();
     }
 
@@ -105,9 +78,12 @@ class PPRFirstNamesManagementService {
         } elseif ($reviewId = $request->getUserVar('reviewAssignmentId')) {
             // TRY reviewAssignment REQUEST PARAMETER
             $reviewer = $this->pprSubmissionUtil->getReviewer($reviewId);
-        } elseif ($review = $request->getRouter()->getHandler()->getAuthorizedContextObject(ASSOC_TYPE_REVIEW_ASSIGNMENT)) {
+        } elseif ($request->getRouter()->getHandler()) {
+            $review = $request->getRouter()->getHandler()->getAuthorizedContextObject(ASSOC_TYPE_REVIEW_ASSIGNMENT);
             // LAST CHANCE TO GET A reviewAssignment OBJECT
-            $reviewer = $this->pprSubmissionUtil->getReviewer($review->getId());
+            if ($review) {
+                $reviewer = $this->pprSubmissionUtil->getReviewer($review->getId());
+            }
         }
 
         return $reviewer ?? PPRMissingUser::defaultMissingUser();
@@ -142,5 +118,27 @@ class PPRFirstNamesManagementService {
         $submissionAuthors = $this->pprSubmissionUtil->getSubmissionAuthors($submissionId);
         //GET FIRST AUTHOR
         return empty($submissionAuthors) ? PPRMissingUser::defaultMissingUser() : reset($submissionAuthors);
+    }
+
+    private function replaceParams($body, $subject, $author, $reviewer, $editor, $contributorsNames) {
+        $mailTemplate = new MailTemplate();
+        $mailTemplate->setBody($body);
+        $mailTemplate->setSubject($subject);
+        $mailTemplate->assignParams([
+            'reviewerName' =>  htmlspecialchars($reviewer->getFullName()),
+            'reviewerFullName' =>  htmlspecialchars($reviewer->getFullName()),
+            'reviewerFirstName' =>  htmlspecialchars($reviewer->getLocalizedGivenName()),
+            // firstNameOnly (REVIEWER) IS DEPRECATED. ADDED HERE FOR BACKWARDS COMPATIBILITY FOR advancedsearchreviewerform
+            'firstNameOnly' =>  htmlspecialchars($reviewer->getLocalizedGivenName()),
+            'editorName' => htmlspecialchars($editor->getFullName()),
+            'editorFullName' => htmlspecialchars($editor->getFullName()),
+            'editorFirstName' => htmlspecialchars($editor->getLocalizedGivenName()),
+            'authorName' => htmlspecialchars($author->getFullName()),
+            'authorFullName' => htmlspecialchars($author->getFullName()),
+            'authorFirstName' => htmlspecialchars($author->getLocalizedGivenName()),
+            'contributorsNames' => htmlspecialchars($contributorsNames),
+        ]);
+        $mailTemplate->replaceParams();
+        return $mailTemplate;
     }
 }

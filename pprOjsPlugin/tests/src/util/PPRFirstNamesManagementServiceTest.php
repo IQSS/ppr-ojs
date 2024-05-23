@@ -54,6 +54,22 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $this->assertEquals($reviewer, $result);
     }
 
+    public function test_getReviewer_should_not_break_when_request_handler_is_null() {
+        $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
+        $this->getRequestMock()->method('getUserVar')->withConsecutive(['reviewerId'], ['reviewAssignmentId'])
+            ->willReturnOnConsecutiveCalls(null, null);
+
+        $requestMock = $this->createMock(Request::class);
+        $router = $this->createMock(PKPRouter::class);
+        $router->expects($this->once())->method('getHandler')->willReturn(null);
+        $requestMock->method('getRouter')->willReturn($router);
+        Registry::set('request', $requestMock);
+
+        $target = new PPRFirstNamesManagementService($submissionUtil);
+        $result = $target->getReviewer(null);
+        $this->assertEquals(PPRMissingUser::defaultMissingUser(), $result);
+    }
+
     public function test_getContributorsNames_should_return_author_first_name_when_emailContributors_is_null() {
         $author = $this->getTestUtil()->createAuthor($this->getRandomId(), 'AuthorName', 'AuthorName');
         $submission = $this->getTestUtil()->createSubmissionWithAuthors('PrimaryAuthorName', ['PrimaryAuthorName', 'ContributorName']);
@@ -161,16 +177,17 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
     public function test_addFirstNamesToEmailTemplate_should_add_author_editor_reviewer_names() {
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
         $mailTemplate = $this->createSubmissionEmailTemplate();
+        $mailTemplate->expects($this->once())->method('getBody')->willReturn($this->createTextToReplace());
+        $mailTemplate->expects($this->once())->method('getSubject')->willReturn($this->createTextToReplace());
+
         $this->addEditorAndAuthor($submissionUtil);
         $reviewerId = $this->getRandomId();
         $mailTemplate->method('getData')->with('reviewerId')->willReturn($reviewerId);
         $this->addReviewer($submissionUtil, $reviewerId);
 
-        $mailTemplate->expects($this->exactly(11))->method('addPrivateParam')
-            ->withConsecutive(
-                ['{$authorName}', 'authorFullName'], ['{$authorFullName}', 'authorFullName'], ['{$authorFirstName}', 'authorFirstName'], ['{$contributorsNames}', 'authorFirstName'],
-                ['{$editorName}', 'editorFullName'], ['{$editorFullName}', 'editorFullName'], ['{$editorFirstName}', 'editorFirstName'],
-                ['{$reviewerName}', 'reviewerFullName'], ['{$reviewerFullName}', 'reviewerFullName'], ['{$reviewerFirstName}', 'reviewerFirstName'], ['{$firstNameOnly}', 'reviewerFirstName']);
+        $expectedText = 'Author: authorFullName - authorFullName - authorFirstName - authorFirstName, Editor: editorFullName - editorFullName - editorFirstName, Reviewer: reviewerFullName - reviewerFullName - reviewerFirstName - reviewerFirstName';
+        $mailTemplate->expects($this->once())->method('setBody')->with($expectedText);
+        $mailTemplate->expects($this->once())->method('setSubject')->with($expectedText);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $target->addFirstNamesToEmailTemplate($mailTemplate);
@@ -179,14 +196,17 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
     public function test_addFirstNamesToEmailTemplate_should_handle_missing_author_editor_and_reviewer() {
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
         $mailTemplate = $this->createSubmissionEmailTemplate();
+        $mailTemplate->expects($this->once())->method('getBody')->willReturn($this->createTextToReplace());
+        $mailTemplate->expects($this->once())->method('getSubject')->willReturn($this->createTextToReplace());
+
         $this->addEditorAndAuthor($submissionUtil, true);
 
         $missingName = __('ppr.user.missing.name');
-        $mailTemplate->expects($this->exactly(11))->method('addPrivateParam')
-            ->withConsecutive(
-                ['{$authorName}', $missingName], ['{$authorFullName}', $missingName], ['{$authorFirstName}', $missingName], ['{$contributorsNames}', $missingName],
-                ['{$editorName}', $missingName], ['{$editorFullName}', $missingName], ['{$editorFirstName}', $missingName],
-                ['{$reviewerName}', $missingName], ['{$reviewerFullName}', $missingName], ['{$reviewerFirstName}', $missingName], ['{$firstNameOnly}', $missingName]);
+        $expectedText = sprintf('Author: %s - %s - %s - %s, Editor: %s - %s - %s, Reviewer: %s - %s - %s - %s',
+            $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName, $missingName);
+
+        $mailTemplate->expects($this->once())->method('setBody')->with($expectedText);
+        $mailTemplate->expects($this->once())->method('setSubject')->with($expectedText);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $target->addFirstNamesToEmailTemplate($mailTemplate);

@@ -36,7 +36,8 @@ class PPRSubmissionsReviewsReport {
         }
 
         //PRINT HEADERS
-        $headers = ['OJS ID', 'Authors Name', 'Title of Document', 'Authors Email', 'Authors Category', 'Authors Institution', 'Authors Department', 'Research Document Type', 'Associate Editor', 'Review Status', 'Author - Paper Received'];
+        $headers = ['OJS ID', 'Authors Name', 'Title of Document', 'Authors Email', 'Authors Category', 'Authors Institution', 'Authors Department', 'Research Document Type'];
+        $headers = array_merge($headers, ['Associate Editor', 'Review Status', 'Author - Paper Received', 'Annual Survey']);
         $headers = array_merge($headers, ['Coauthors Name', 'Coauthors Institute', 'Coauthors Email', 'Coauthors Category', 'Coauthors Department']);
         $headers = array_merge($headers, ['Reviewer', 'Reviewer Email', 'Reviewer Institution', 'Reviewer - 1st Email', 'Reviewer - Sent for Review', 'Reviewer - Response Time', 'Reviewer - Due Date']);
         $headers = array_merge($headers, ['Reviewer - Paper Returned', 'Reviewer - Time (days)', 'Author - Date Returned', 'Author - Review Time (days)']);
@@ -96,6 +97,7 @@ class PPRSubmissionsReviewsReport {
                 $row[] = $editor ? $editor->getFullName() : self::PPR_MISSING_DATA;
                 $row[] = $reportUtil->getStatusText($submissionSentToReview, $review ? $review->getStatus(): null);
                 $row[] = $reportUtil->formatDate($submission->getDateSubmitted());
+                $row[] = $reportUtil->formatDate($this->getAnnualSurveyNotificationDate($contextId, $submission->getId()));
 
                 $contributors = $publication->getData('authors');
                 $coauthors = $coauthorsInstitution = $coauthorsEmail = $coauthorsCategory = $coauthorsDepartment = [];
@@ -184,6 +186,21 @@ class PPRSubmissionsReviewsReport {
         }
 
         return $this->userCache[$userId];
+    }
+
+    private function getAnnualSurveyNotificationDate($contextId, $submissionId) {
+        //THESE IDs ARE TAKEN FROM pprOjsPlugin/tasks/PPRTaskNotificationRegistry.inc.php
+        // ANNUAL SURVEY IS SENT IN THE SUBMISSION CLOSED NOTIFICATION
+        $NOTIFICATION_TYPE_PPR_PLUGIN = 80880000;
+        $SUBMISSION_CLOSED_AUTHOR_NOTIFICATION = 80880900;
+        $notificationDao = DAORegistry::getDAO('NotificationDAO');
+        $notificationsIterator = $notificationDao->getByAssoc($SUBMISSION_CLOSED_AUTHOR_NOTIFICATION,
+            $submissionId,
+            $submissionId,
+            $NOTIFICATION_TYPE_PPR_PLUGIN,
+            $contextId);
+        $notifications = $notificationsIterator->toArray();
+        return empty($notifications) ? null : reset($notifications)->getDateCreated();
     }
 
 }

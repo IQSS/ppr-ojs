@@ -25,7 +25,7 @@ For all email templates [see](custom_email_templates)
 -``PPR_REQUESTED_REVIEWER_UNASSIGN`` is sent to the Reviewer when they haven’t responded, and it’s time to move on to another Reviewer. The Associate Editor clicks the "Unassign Reviewer" under the Reviewer's name
 
 ### Accepted Review Emails
-- ``PR_REVIEW_DUE_DATE_REVIEWER`` is a reminder sent to the Reviewer two days before their review is due
+- ``PPR_REVIEW_DUE_DATE_REVIEWER`` is a reminder sent to the Reviewer two days before their review is due
 - ``REVIEW_REMIND_ONECLICK`` is sent to the Reviewer when they have missed their review due date. The Associate Editors clicks the "Send Reminder" button next to a Reviewer's name
 - ``PPR_CONFIRMED_REVIEWER_UNASSIGN`` is sent to the Reviewer when they missed their review due date and it’s time to move on to another Reviewer. The Associate Editor clicks the "Cancel Reviewer” under the Reviewer's name
 - ``PPR_REVIEW_SUBMITTED`` is sent to the reviewer once they upload and click the "Submit Review" blue button

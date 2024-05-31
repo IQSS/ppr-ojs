@@ -1,5 +1,6 @@
 .DS_Store
 .DS_Store?
+.vscode
 
 environment/data
 environment/config.inc.php

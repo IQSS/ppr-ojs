@@ -14,6 +14,7 @@ This will increase the version number, update the PPR plugins version data, and 
 ```{toctree}
 users
 emailTemplates
+emailTemplateVariables
 environments
 config
 releases

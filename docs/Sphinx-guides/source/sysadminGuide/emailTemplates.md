@@ -10,15 +10,13 @@ In this section you will be able to access, add new templates or modify existing
 Each template will consist of the following fields:
 
 - Subject
-- From 
-- To
 - Content
 
 Each email template has its backend class.
 
 ## Adding an email template
 
-We have to be careful when importing or adding email templates, the field that contains the email template accepts rich format text and copying text from some editors can cause issues when these are parsed.
+We have to be careful when importing or adding text to email templates, the field that contains the email template accepts rich format text and copying text from some editors can cause issues when these are parsed.
 
 For a list of all the email templates please [see](custom_email_templates).
 

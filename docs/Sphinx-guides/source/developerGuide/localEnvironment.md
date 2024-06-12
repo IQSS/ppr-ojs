@@ -78,6 +78,23 @@ smtp_port = 25
 smtp_suppress_cert_check = On
 ```
 
+#### Setting up a systemd service and timer to restart the SMTP service automatically if it goes down:
+
+Copy ppr-ojs/environment/monitoring/monitor-smtp.service and monitor-smtp.timer to /etc/systemd/system/ on the machine the smtp server is running
+
+Copy ppr-ojs/environment/monitoring/smtp-monitor.sh to your home directory on the machine the smtp server is running and give it execution permissions
+
+The default directory is /home/core/smtp-monitor.sh but can be changes by editing the monitor-smtp.service file
+
+Start the service:
+```
+sudo systemctl start monitor-smtp.timer
+```
+A log will be generated and can be viewed by:
+```
+cat /tmp/smtp-monitor
+```
+
 ## Clean the data directories
 To start the OJS application fresh, you will need to clean the DB and OJS files within the data directory.
 

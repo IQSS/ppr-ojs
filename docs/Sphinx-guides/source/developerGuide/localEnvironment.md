@@ -78,7 +78,7 @@ smtp_port = 25
 smtp_suppress_cert_check = On
 ```
 
-#### Setting up a systemd service and timer to restart the SMTP service automatically if it goes down:
+### Setting up a systemd service and timer to restart the SMTP service automatically if it goes down:
 
 Copy ppr-ojs/environment/monitoring/monitor-smtp.service and monitor-smtp.timer to /etc/systemd/system/ on the machine the smtp server is running
 

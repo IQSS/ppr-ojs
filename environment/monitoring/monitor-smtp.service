@@ -1,0 +1,6 @@
+[Unit]
+Description=Monitors SMTP docker container and restarts if not running
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sh -c '/home/core/smtp-monitor.sh >> /tmp/smtp-monitor'

@@ -44,13 +44,20 @@ Follow the on-screen instruction for the one time installation. More information
     Database: ojs
     ```
  - OAI settings and beacon defaults are good.
- ![Sample installation settings](/img/ojs-installation-settings.png)
+
+```{dropdown} Sample installation settings
+[![Sample installation settings](/img/ojs-installation-settings.png)](/img/ojs-installation-settings.png)
+```
+
 
 ## Post install tasks
 After the initial installation of OJS, we need to create a basic OJS configuration to start using the system.
 
 Create a journal. OJS supports multiple journals within a single installation. We need to create one journal.
-- [Sample journal settings](/img/ojs-create-journal.png)
+
+```{dropdown} Sample journal settings
+[![Sample journal settings](/img/ojs-create-journal.png)](/img/ojs-create-journal.png)
+```
 
 Enable the PPR plugins. These are disabled by default.
 - To enable the PPR plugin => ``Website > Plugins > Generic Plugins > IQSS Peer Pre-Review Program Plugin``

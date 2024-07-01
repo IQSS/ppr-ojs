@@ -36,7 +36,7 @@
 		}
 	</style>
 
-	<!-- PPR ELIGIBILITY CHECKBOX -->
+	<!-- PPR ELIGIBILITY CHECKBOX - ISSUE 020-->
 	<input class="ppr_toggle" type="checkbox" name="eligibility" value="1" required {if $eligibility} checked="checked"{/if}>
 	{capture assign="eligibilityPageUrl"}{url router=$smarty.const.ROUTE_PAGE page='Eligibility' escape=false}{/capture}
 	<label class="ppr_eligibility_label"> {translate key="registration.ppr.eligibility.label" pageUrl=$eligibilityPageUrl}</label>

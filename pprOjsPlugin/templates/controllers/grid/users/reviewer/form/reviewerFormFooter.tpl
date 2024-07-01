@@ -53,7 +53,7 @@
 	</div>
 
 	{if $pprPluginSettings->hideReviewMethodEnabled()}
-		{** PPR - DEFAULT TO DOUBLE ANONYMOUS **}
+		{** PPR - DEFAULT TO DOUBLE ANONYMOUS  - ISSUE 024 **}
 		<input type="hidden" name="reviewMethod" value="{constant('SUBMISSION_REVIEW_METHOD_DOUBLEANONYMOUS')}" />
 	{else}
 		{fbvFormSection list=true title="editor.submissionReview.reviewType"}

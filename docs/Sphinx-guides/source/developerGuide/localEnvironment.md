@@ -93,8 +93,9 @@ Copy ppr-ojs/environment/monitoring/smtp-monitor.sh to your home directory on th
 
 The default directory is /home/core/smtp-monitor.sh but can be changes by editing the monitor-smtp.service file
 
-Start the service:
+Start the service (and enable startup on reboot):
 ```
+sudo systemctl enable monitor-smtp.timer
 sudo systemctl start monitor-smtp.timer
 ```
 A log will be generated and can be viewed by:

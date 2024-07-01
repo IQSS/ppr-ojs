@@ -15,7 +15,7 @@
 </script>
 
 {**
-  PPR REQUIREMENT TO ADD SUBMISSION CHECKLIST TO THE CONFIRMATION PAGE
+  PPR REQUIREMENT TO ADD SUBMISSION CHECKLIST TO THE CONFIRMATION PAGE - ISSUE 022
 *}
 {* Submission checklist *}
 {if $currentContext->getLocalizedData('submissionChecklist')}

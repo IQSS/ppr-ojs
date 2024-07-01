@@ -10,9 +10,11 @@ class PPRReviewReminderEmailService {
     const TEMPLATE = 'PPR_REVIEW_REQUEST_DUE_DATE_REVIEWER';
 
     private $pprPlugin;
+    private $pprObjectFactory;
 
-    public function __construct($plugin) {
+    public function __construct($plugin, $pprObjectFactory = null) {
         $this->pprPlugin = $plugin;
+        $this->pprObjectFactory = $pprObjectFactory ?: new PPRObjectFactory();
     }
 
     function register() {
@@ -27,15 +29,7 @@ class PPRReviewReminderEmailService {
         $reviewAssignment = $reviewReminderForm->getReviewAssignment();
 
         // ADD name and firstName AS A LABELS FOR REVIEWER, AUTHOR, AND EDITOR IN THE EMAIL BODY IN THE FORM
-        $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
-        $emailVariables = $templateMgr->getTemplateVars('emailVariables');
-        $emailVariables['reviewerName'] = __('review.ppr.reviewer.name.label');
-        $emailVariables['reviewerFirstName'] = __('review.ppr.reviewer.firstName.label');
-        $emailVariables['authorName'] = __('review.ppr.author.name.label');
-        $emailVariables['authorFirstName'] = __('review.ppr.author.firstName.label');
-        $emailVariables['editorName'] = __('review.ppr.editor.name.label');
-        $emailVariables['editorFirstName'] = __('review.ppr.editor.firstName.label');
-        $templateMgr->assign('emailVariables', $emailVariables);
+        $this->pprObjectFactory->firstNamesManagementService()->addFirstNameLabelsToTemplate('emailVariables');
 
         if (!$reviewAssignment->getDateConfirmed()) {
             import('lib.pkp.classes.mail.MailTemplate');

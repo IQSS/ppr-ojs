@@ -31,7 +31,7 @@
 
 	{include file="submission/form/categories.tpl"}
 
-	{* PPR SUBMISSION CHECKLIST OVERRIDE *}
+	{* PPR SUBMISSION CHECKLIST OVERRIDE - ISSUE 022 *}
 	{* REMOVE CHECKBOXES => JUST DISPLAY THE CHECKLIST *}
 	{if $currentContext->getLocalizedData('submissionChecklist')}
 		{fbvFormSection list="true" label="submission.submit.submissionChecklist" description="submission.submit.submissionChecklistDescription" id="ppr_start_submissionChecklist"}

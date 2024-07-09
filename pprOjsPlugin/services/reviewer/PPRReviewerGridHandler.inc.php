@@ -7,6 +7,8 @@ require_once(dirname(__FILE__) . '/PPRReviewerGridCellProvider.inc.php');
 /**
  * Custom ReviewerGridHandler to control the form used when unassigning reviewers
  * and the text for the "considered" column in the reviewers list panel.
+ *
+ * Issue 092
  */
 class PPRReviewerGridHandler extends ReviewerGridHandler {
 

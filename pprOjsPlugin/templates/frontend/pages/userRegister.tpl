@@ -14,6 +14,7 @@
 <div class="page page_register">
 	{include file="frontend/components/breadcrumbs.tpl" currentTitleKey="user.register"}
 	<!-- PPR CUSTOM REGISTRATION HEADING -->
+	<!-- ISSUE 111 -->
 	<h1>{translate key="registration.ppr.title"}</h1>
 	<p>{translate key="registration.ppr.description"}</p>
 	<!-- PPR STYLING => ADDED IN TEMPLATE TO SUPPORT ENABLING AND DISABLING THROUGH SETTINGS -->
@@ -37,6 +38,7 @@
 	</style>
 
 	<!-- PPR ELIGIBILITY CHECKBOX -->
+	<!-- ISSUE 020, ISSUE 111 -->
 	<input class="ppr_toggle" type="checkbox" name="eligibility" value="1" required {if $eligibility} checked="checked"{/if}>
 	{capture assign="eligibilityPageUrl"}{url router=$smarty.const.ROUTE_PAGE page='Eligibility' escape=false}{/capture}
 	<label class="ppr_eligibility_label"> {translate key="registration.ppr.eligibility.label" pageUrl=$eligibilityPageUrl}</label>

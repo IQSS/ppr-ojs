@@ -5,6 +5,8 @@
  *
  * In order to achieve the new requirements, we need to override the ReviewerGridHandler
  * to have control of the UnassignReviewerForm
+ *
+ * Issue 092, Issue 136
  */
 class PPRReviewerGridService {
 

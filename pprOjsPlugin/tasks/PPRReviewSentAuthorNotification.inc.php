@@ -9,6 +9,8 @@ require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
  * a review has been sent to them. This is used to send a survey to the author.
  * The initial requirement was to send an email after a week,
  * but the time in days is configurable in the plugin settings.
+ *
+ * Issue 114
  */
 class PPRReviewSentAuthorNotification extends PPRScheduledTask {
 

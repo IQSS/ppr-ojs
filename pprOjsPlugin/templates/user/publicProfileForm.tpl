@@ -59,6 +59,7 @@
 	{/fbvFormSection}
 
 	<!-- PPR PROGRAM - REMOVE BIO -->
+	<!-- ISSUE 084 -->
 	{if !$pprPluginSettings->hideUserBioEnabled()}
 		{fbvFormSection}
 			{fbvElement type="textarea" label="user.biography" multilingual="true" name="biography" id="biography" rich=true value=$biography}

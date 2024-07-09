@@ -5,6 +5,8 @@ require_once(dirname(__FILE__) . '/PPRAuthorGridCellProvider.inc.php');
 
 /**
  * Custom AuthorGridHandler to control the columns that are displayed in the contributors component
+ *
+ * Issue 050, Issue 064
  */
 class PPRAuthorGridHandler extends AuthorGridHandler {
 

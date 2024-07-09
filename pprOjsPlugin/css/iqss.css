@@ -1,6 +1,6 @@
 
 /**
-  HIDE COPYEDITING AND PRODUCTION TABS
+  HIDE COPYEDITING (ISSUE 013) AND PRODUCTION TABS
  */
 #stageTabs li.stageId4.ui-tab {
 	display: none;
@@ -13,6 +13,7 @@
 /**
   PUBLICATION
   HIDE TABS
+  ISSUE 055
  */
 div.pkpPublication .pkpTabs__buttons #contributors-button {
 	display: none;
@@ -37,6 +38,8 @@ div.pkpPublication .pkpTabs__buttons #issue-button {
 /**
   PUBLICATION
   HIDE ACTION BUTTONS
+
+  ISSUE 095
  */
 div.pkpPublication__header div.pkpHeader__actions{
 	display: none;
@@ -61,6 +64,8 @@ div.pkpPublication__header div.pkpHeader__actions{
 
 /**
   Remove the Other file type added by OJS automatically
+
+  Issue 115
  */
 button.-linkButton.listPanel--submissionFiles__setGenreButton:nth-last-child(1) {
 	display: none;
@@ -69,6 +74,7 @@ button.-linkButton.listPanel--submissionFiles__setGenreButton:nth-last-child(1) 
 /**
   WORKFLOW - SUBMISSION
   HIDE ACCEPT AND SKIP REVIEW BUTTON - NOT REQUIRED BY PPR
+  ISSUE 033
  */
 #submissionWorkflow #editorialActions a.pkp_linkaction_accept {
 	display: none;
@@ -282,5 +288,12 @@ span.ppr-attachments-sent {
 }
 
 fieldset#submissionSpecific ul.checkbox_and_radiobutton > li:last-child {
+	display: none;
+}
+
+/* To hide notification/reviewer interest opt-in */
+form#register .optin-email,
+form#register #reviewerOptinGroup
+{
 	display: none;
 }

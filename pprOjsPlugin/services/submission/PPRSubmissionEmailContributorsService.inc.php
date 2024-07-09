@@ -2,7 +2,8 @@
 
 /**
  * Service to add the submission emailContributors custom field to the create submission > metadata form
- * 
+ *
+ * Issue 083
  */
 class PPRSubmissionEmailContributorsService {
     const EMAIL_CONTRIBUTORS_FIELD = 'emailContributors';

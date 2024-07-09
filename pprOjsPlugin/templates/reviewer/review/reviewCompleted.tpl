@@ -2,6 +2,7 @@
 {** THIS WILL ALLOW TO ADD DATA BEFORE OR AFTER A TEMPLATE WITHOUT OVERRIDING ITS CONTENTS *}
 {include file="reviewer/review/reviewCompleted.tpl.load_ojs"}
 
+{** ISSUE 098 *}
 {if $pprPluginSettings->reviewerSurveyHtml()}
     <div class="ppr-survey">
         {$pprPluginSettings->reviewerSurveyHtml()}

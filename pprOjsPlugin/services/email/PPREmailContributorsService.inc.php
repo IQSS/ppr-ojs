@@ -2,6 +2,10 @@
 
 /**
  * Service to manage the emails sent to contributors from different actions in OJS.
+ *
+ * emailContributors custom submission field is managed in PPRSubmissionEmailContributorsService
+ *
+ * Issue 079, Issue 081, Issue 083, Issue 093
  */
 class PPREmailContributorsService {
 

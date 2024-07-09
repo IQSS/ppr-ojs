@@ -26,6 +26,7 @@
 {/if}
 
 {if $pprPluginSettings->reviewUploadFileValidationEnabled()}
+    {** ISSUE 067 *}
     {** REVIEW FILE VALIDATION MESSAGE *}
     {assign var="modalId" value="uploadReviewFileMessage"|uniqid|escape}
     {include file="ppr/modalMessage.tpl" modalId=$modalId

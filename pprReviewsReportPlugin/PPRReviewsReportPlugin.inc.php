@@ -4,6 +4,8 @@ import('lib.pkp.classes.plugins.ReportPlugin');
 
 /**
  * PPR Submission and Review report plugin
+ *
+ * Issue 045
  */
 class PPRReviewsReportPlugin extends ReportPlugin {
 

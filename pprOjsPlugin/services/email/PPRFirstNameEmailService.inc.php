@@ -2,6 +2,8 @@
 
 /**
  * Service to add author and editor first name to all SubmissionMailTemplates and forms
+ *
+ * Issue 065, Issue 127
  */
 class PPRFirstNameEmailService {
     const SUPPORTED_EMAILS =

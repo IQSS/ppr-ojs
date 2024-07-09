@@ -4,6 +4,8 @@ import('lib.pkp.classes.controllers.grid.DataObjectGridCellProvider');
 
 /**
  * This is based on PKPAuthorGridCellProvider
+ *
+ * Issue 050, Issue 064
  */
 class PPRAuthorGridCellProvider extends DataObjectGridCellProvider {
 

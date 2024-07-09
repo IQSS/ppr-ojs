@@ -2,6 +2,8 @@
 
 /**
  * Service to add the managing editor to emails related to reviews
+ *
+ * Issue 070
  */
 class PPRReviewAddEditorEmailService {
 

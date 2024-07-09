@@ -9,6 +9,8 @@ require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
  * a submission is closed. This is used to send a survey to the author.
  * The initial requirement was to send an email after a year of the closed submission,
  * but the time in days is configurable in the plugin settings.
+ *
+ * Issue 141
  */
 class PPRSubmissionClosedAuthorNotification extends PPRScheduledTask {
 

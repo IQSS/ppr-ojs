@@ -1,7 +1,7 @@
 {** TRICK TO LOAD THE OJS TEMPLATE WITH THE SAME NAME *}
 {** THIS WILL ALLOW TO ADD DATA BEFORE OR AFTER A TEMPLATE WITHOUT OVERRIDING ITS CONTENTS *}
 {include file="submission/form/step2.tpl.load_ojs"}
-
+{** ISSUE 063 *}
 {assign var="modalId" value="uploadSubmissionFileMessage"|uniqid|escape}
 {include file="ppr/modalMessage.tpl" modalId=$modalId
     modalHeader="submission.ppr.files.validation.header"|translate

@@ -4,6 +4,8 @@
  * Service to show a submission completed survey to an author only once.
  * This survey is shown in the complete page in the author submission workflow.
  * See SubmissionHandler->step
+ *
+ * Issue 125
  */
 class PPRAuthorSubmissionSurveyService {
 

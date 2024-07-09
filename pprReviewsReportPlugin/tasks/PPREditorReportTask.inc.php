@@ -7,6 +7,8 @@ require_once(dirname(__FILE__) . '/../reports/PPRSubmissionsReviewsReport.inc.ph
 
 /**
  * Task to send the submissions/review report to a list of recipients configured in the plugin settings
+ *
+ * Issue 089, Issue 135, Issue 142
  */
 class PPREditorReportTask extends ScheduledTask {
 

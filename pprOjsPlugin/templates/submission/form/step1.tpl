@@ -33,6 +33,7 @@
 
 	{* PPR SUBMISSION CHECKLIST OVERRIDE *}
 	{* REMOVE CHECKBOXES => JUST DISPLAY THE CHECKLIST *}
+	{* ISSUE 145 *}
 	{if $currentContext->getLocalizedData('submissionChecklist')}
 		{fbvFormSection list="true" label="submission.submit.submissionChecklist" description="submission.submit.submissionChecklistDescription" id="ppr_start_submissionChecklist"}
 			{foreach name=checklist from=$currentContext->getLocalizedData('submissionChecklist') key=checklistId item=checklistItem}

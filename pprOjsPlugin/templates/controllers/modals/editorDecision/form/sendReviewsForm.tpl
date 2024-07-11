@@ -5,6 +5,7 @@
 {if $pprPluginSettings->hideReviewRoundSelectionEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
 	<script type="text/javascript">
 		{** HIDE REQUIRE REVISIONS ROUND SECTION *}
+		{** ISSUE 085 *}
 		$('form#sendReviews [id="decisionRevisions"]').closest('div').hide();
 	</script>
 {/if}
@@ -12,10 +13,12 @@
 {if $pprPluginSettings->hideSendToReviewersEnabled() && in_array($decision, [constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS'), constant('SUBMISSION_EDITOR_DECISION_DECLINE')])}
 	<script type="text/javascript">
 		{** HIDE SEND TO REVIEWERS SECTION *}
+		{** ISSUE 072 *}
 		$('form#sendReviews [id="bccReviewers[]"]').closest('div').hide();
 	</script>
 {/if}
 
+{** ISSUE 061 *}
 {if $pprPluginSettings->submissionRequestRevisionsFileValidationEnabled() && $decision === constant('SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS')}
 	{** ONLY ADD FILE VALIDATION FOR REQUEST REVISIONS ACTION *}
 	{assign var="modalId" value="requestRevisionsFileMessage"|uniqid|escape}

@@ -2,6 +2,8 @@
 
 /**
  * Service to send an email when a reviewer accepts a review
+ *
+ * Issue 112
  */
 class PPRReviewAcceptedService {
 

@@ -36,6 +36,7 @@
 	{/fbvFormSection}
 
 	<!-- REMOVED PREFERRED PUBLIC NAME -->
+	<!-- ISSUE 09 -->
 	{if !$pprPluginSettings->hidePreferredPublicNameEnabled()}
 		{fbvFormSection for="preferredPublicName" description="user.preferredPublicName.description"}
 			{fbvElement type="text" label="user.preferredPublicName" multilingual="true" name="preferredPublicName" id="preferredPublicName" value=$preferredPublicName size=$fbvStyles.size.LARGE}

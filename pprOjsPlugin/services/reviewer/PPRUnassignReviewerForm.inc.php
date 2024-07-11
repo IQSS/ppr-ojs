@@ -13,6 +13,8 @@ require_once(dirname(__FILE__) . '/../../util/PPRMissingUser.inc.php');
  *  - Always cancel the review assignment when unassign reviewer is executed.
  *
  * This form is used in the ReviewerGridHandler
+ *
+ * Issue 092
  */
 class PPRUnassignReviewerForm extends ReviewerNotifyActionForm {
 

@@ -3,6 +3,8 @@
 /**
  * Service to add/update components in the OJS workflow page
  * Workflow page controls the submission and review workflows
+ *
+ * Issue 036, Issue 037, Issue 050, Issue 052
  */
 class PPRWorkflowService {
     private $pprPlugin;
@@ -16,6 +18,7 @@ class PPRWorkflowService {
         }
 
         if ($this->pprPlugin->getPluginSettings()->submissionCommentsForReviewerEnabled()) {
+            //ISSUE 037
             HookRegistry::register('Template::Workflow', array($this, 'addCommentsForReviewerToWorkflow'));
         }
 
@@ -24,11 +27,13 @@ class PPRWorkflowService {
         }
 
         if ($this->pprPlugin->getPluginSettings()->displayContributorsEnabled()) {
+            // ISSUE 050, ISSUE 052, ISSUE 064
             HookRegistry::register('Template::Workflow', array($this, 'addContributorsToWorkflow'));
             HookRegistry::register('LoadComponentHandler', array($this, 'addPPRAuthorGridHandler'));
         }
 
         if ($this->pprPlugin->getPluginSettings()->displaySuggestedReviewersEnabled()) {
+            //ISSUE 036
             HookRegistry::register('Template::Workflow', array($this, 'addSuggestedReviewersToWorkflow'));
         }
     }

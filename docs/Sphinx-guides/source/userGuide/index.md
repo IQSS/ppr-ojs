@@ -5,3 +5,4 @@
 submissions
 reviews
 researchDocumentTypes
+surveys

@@ -3,6 +3,8 @@
 /**
  * Service to manage the review reminder action from the reviewers component.
  * This is the component in the front end used to send notifications to reviewers.
+ *
+ * Issue 076
  */
 class PPRReviewReminderEmailService {
 

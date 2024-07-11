@@ -6,6 +6,8 @@ require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
 
 /**
  * Custom review due date notification for editors logic
+ *
+ * Issue 057
  */
 class PPRReviewDueDateEditorNotification extends PPRScheduledTask {
 

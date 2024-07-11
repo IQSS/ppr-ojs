@@ -7,6 +7,8 @@ require_once(dirname(__FILE__) . '/PPRScheduledTask.inc.php');
 
 /**
  * Task to send reviewers a review due date reminder. Based on OJS ReviewReminder class
+ *
+ * Issue 058, Issue 071, Issue 120
  */
 class PPRReviewReminder extends PPRScheduledTask {
 

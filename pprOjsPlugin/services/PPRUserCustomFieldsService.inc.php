@@ -2,6 +2,8 @@
 
 /**
  * Service to manage the new user/author custom fields required for PPR
+ *
+ * Issue 023
  */
 class PPRUserCustomFieldsService {
     const CATEGORY_DROPDOWN = 'categories';

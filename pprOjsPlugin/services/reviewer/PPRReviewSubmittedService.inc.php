@@ -2,6 +2,8 @@
 
 /**
  * Service to send an email to the reviewer when a review is submitted
+ *
+ * Issue 118
  */
 class PPRReviewSubmittedService {
 

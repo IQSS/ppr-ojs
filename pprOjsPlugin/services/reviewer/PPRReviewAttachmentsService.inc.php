@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Service to customize the send review files attachment component
+ *
+ * In order to achieve the new requirements, we need to override the ReviewAttachmentGridHandler
+ * to have control of the ReviewAttachmentGridCellProvider
+ *
+ * Issue 109
+ */
 class PPRReviewAttachmentsService {
 
     private $pprPlugin;

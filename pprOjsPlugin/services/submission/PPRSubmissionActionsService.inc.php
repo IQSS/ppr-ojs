@@ -7,6 +7,8 @@ import('lib.pkp.classes.linkAction.request.AjaxModal');
  * Service to attach additional functionality to editor actions panel:
  *  - Add the close submission functionality
  *  - Add the submission approved email to authors
+ *
+ * Issue 060, Issue 108
  */
 class PPRSubmissionActionsService {
 

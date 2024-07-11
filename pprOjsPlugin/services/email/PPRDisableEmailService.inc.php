@@ -2,6 +2,8 @@
 
 /**
  * Service to disable email notifications
+ *
+ * Issue 068, Issue 078
  */
 class PPRDisableEmailService {
 

@@ -4,6 +4,8 @@
  * Service to add the submission researchType custom field to the create submission > metadata form
  *
  * This services adds the custom field to the add reviewer form
+ *
+ * Issue 074, Issue 090
  */
 class PPRSubmissionResearchTypeService {
     const RESEARCH_TYPE_FIELD = 'researchType';

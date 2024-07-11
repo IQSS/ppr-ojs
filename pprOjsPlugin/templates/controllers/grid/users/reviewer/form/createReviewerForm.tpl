@@ -60,6 +60,7 @@
 	{/fbvFormSection}
 
 	<!-- REMOVED REVIEWER INTERESTS -->
+	<!-- ISSUE 056 -->
 
 	{fbvFormSection title="user.affiliation" required="true"}
 		{fbvElement type="text" multilingual="true" name="affiliation" id="affiliation" value=$affiliation size=$fbvStyles.size.LARGE required="true"}

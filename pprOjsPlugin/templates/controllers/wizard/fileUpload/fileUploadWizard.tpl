@@ -15,6 +15,7 @@
 
 {assign var=uploadWizardId value="fileUploadWizard"|uniqid}
 {** PPR PROGRAM - OVERRIDE FILE UPLOAD WIZARD TEXT *}
+{** ISSUE 119 *}
 <script type="text/javascript">
 	// Attach the JS file upload wizard handler.
 	$(function() {ldelim}

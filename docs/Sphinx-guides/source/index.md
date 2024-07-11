@@ -28,3 +28,4 @@ userGuide/index
 sysadminGuide/index
 developerGuide/index
 features
+featureDescriptions

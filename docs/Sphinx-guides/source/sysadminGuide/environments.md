@@ -21,9 +21,6 @@ Some of the settings that can be configured in this file are:
 
 In this environment, you will also find the `plugins` folder which will contain the plugin code, the reports plugin will be located in the `reports` directory while the main PPR plugin is located in the `generic` folder.
 
-
-- [Test-AWS](http://harvard-ojs-elb-1311151854.eu-west-1.elb.amazonaws.com/iqss/login)
-
 ## Sandbox environment
 
 - [Sandbox-PKP](https://iqss.sandbox.sfulib8.publicknowledgeproject.org)

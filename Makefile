@@ -10,7 +10,7 @@ PWD := $(shell pwd)
 OJS_VERSION = 3_3_0-14
 PHP_VERSION = php7
 
-dev34 docker34:   OJS_VERSION = 3_4_0rc3
+dev34 docker34:   OJS_VERSION = 3_4_0-4
 dev34 docker34:   PHP_VERSION = php81
 
 PPR_OJS_IMAGE = hmdc/ppr_ojs:$(OJS_VERSION)

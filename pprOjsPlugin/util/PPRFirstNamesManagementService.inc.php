@@ -69,11 +69,15 @@ class PPRFirstNamesManagementService {
 
     public function getReviewer($reviewerId) {
         $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
         $reviewer = null;
         if ($reviewerId) {
             $reviewer = $this->pprSubmissionUtil->getUser($reviewerId);
         } elseif ($reviewerId = $request->getUserVar('reviewerId')) {
             // TRY reviewerId REQUEST PARAMETER
+            $reviewer = $this->pprSubmissionUtil->getUser($reviewerId);
+        } elseif ($reviewerId = $templateMgr->getTemplateVars('reviewerId')) {
+            // TRY reviewerId IN TEMPLATE MANAGER
             $reviewer = $this->pprSubmissionUtil->getUser($reviewerId);
         } elseif ($reviewId = $request->getUserVar('reviewAssignmentId')) {
             // TRY reviewAssignment REQUEST PARAMETER

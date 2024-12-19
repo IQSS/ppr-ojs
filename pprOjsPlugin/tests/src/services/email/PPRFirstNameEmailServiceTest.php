@@ -36,13 +36,15 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         $target = new PPRFirstNameEmailService($pprPluginMock);
         $target->register();
 
-        $this->assertEquals(7, $this->countHooks());
+        $this->assertEquals(9, $this->countHooks());
         $this->assertEquals(1, count($this->getHooks('Mail::send')));
         $this->assertEquals(1, count($this->getHooks('reviewreminderform::display')));
         $this->assertEquals(1, count($this->getHooks('thankreviewerform::display')));
         $this->assertEquals(1, count($this->getHooks('sendreviewsform::display')));
         $this->assertEquals(1, count($this->getHooks('TemplateManager::fetch')));
         $this->assertEquals(1, count($this->getHooks('advancedsearchreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('createreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('createreviewerform::execute')));
         $this->assertEquals(1, count($this->getHooks('LoadComponentHandler')));
     }
 

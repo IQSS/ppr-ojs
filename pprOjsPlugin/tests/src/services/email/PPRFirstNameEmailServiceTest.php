@@ -6,6 +6,7 @@ import('services.email.PPRFirstNameEmailService');
 
 import('lib.pkp.controllers.grid.users.reviewer.form.ThankReviewerForm');
 import('lib.pkp.controllers.grid.users.reviewer.form.ReviewReminderForm');
+import('lib.pkp.controllers.grid.users.reviewer.form.CreateReviewerForm');
 
 class PPRFirstNameEmailServiceTest extends PPRTestCase {
 
@@ -36,13 +37,15 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         $target = new PPRFirstNameEmailService($pprPluginMock);
         $target->register();
 
-        $this->assertEquals(7, $this->countHooks());
+        $this->assertEquals(9, $this->countHooks());
         $this->assertEquals(1, count($this->getHooks('Mail::send')));
         $this->assertEquals(1, count($this->getHooks('reviewreminderform::display')));
         $this->assertEquals(1, count($this->getHooks('thankreviewerform::display')));
         $this->assertEquals(1, count($this->getHooks('sendreviewsform::display')));
         $this->assertEquals(1, count($this->getHooks('TemplateManager::fetch')));
         $this->assertEquals(1, count($this->getHooks('advancedsearchreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('createreviewerform::display')));
+        $this->assertEquals(1, count($this->getHooks('createreviewerform::execute')));
         $this->assertEquals(1, count($this->getHooks('LoadComponentHandler')));
     }
 
@@ -144,6 +147,29 @@ class PPRFirstNameEmailServiceTest extends PPRTestCase {
         $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
         $result = $target->addFirstNameLabelsToAdvancedSearchReviewerForm('advancedsearchreviewerform::display', [null]);
         $this->assertEquals(false, $result);
+    }
+
+    public function test_addFirstNameLabelsToCreateReviewerForm_should_delegate_to_pprFirstNamesManagementService() {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+
+        $objectFactory->expects($this->atLeastOnce())->method('firstNamesManagementService');
+        $objectFactory->firstNamesManagementService()->expects($this->once())->method('addFirstNameLabelsToTemplate');
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
+        $result = $target->addFirstNameLabelsToCreateReviewerForm('createreviewerform::display', [null]);
+        $this->assertEquals(false, $result);
+    }
+
+    public function test_addCreatedReviewerId_should_update_template_manager_with_reviewerId() {
+        $objectFactory = $this->getTestUtil()->createObjectFactory();
+        $form = $this->createMock(CreateReviewerForm::class);
+        $reviewerId = $this->getRandomId();
+        $form->method('getData')->with('reviewerId')->willReturn($reviewerId);
+
+        $target = new PPRFirstNameEmailService($this->defaultPPRPlugin, $objectFactory);
+        $target->addCreatedReviewerId('createreviewerform::execute', [$form]);
+        $templateManager = TemplateManager::getManager();
+        $this->assertEquals($reviewerId, $templateManager->getTemplateVars('reviewerId'));
     }
 
     public function test_addFirstNamesToThankReviewerForm_should_update_form_message_variable_with_firstNamesManagementService_result() {

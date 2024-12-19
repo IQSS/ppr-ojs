@@ -66,6 +66,8 @@ class PPRFirstNameEmailService {
             HookRegistry::register('TemplateManager::fetch', array($this, 'replaceFirstNameInTemplateText'));
 
             HookRegistry::register('advancedsearchreviewerform::display', array($this, 'addFirstNameLabelsToAdvancedSearchReviewerForm'));
+            HookRegistry::register('createreviewerform::display', array($this, 'addFirstNameLabelsToCreateReviewerForm'));
+            HookRegistry::register('createreviewerform::execute', array($this, 'addCreatedReviewerId'));
 
             HookRegistry::register('LoadComponentHandler', array($this, 'addPPRStageParticipantGridHandler'));
         }
@@ -107,6 +109,19 @@ class PPRFirstNameEmailService {
         $this->pprObjectFactory->firstNamesManagementService()->addFirstNameLabelsToTemplate('emailVariables');
 
         return false;
+    }
+
+    function addFirstNameLabelsToCreateReviewerForm($hookName, $arguments) {
+        $this->pprObjectFactory->firstNamesManagementService()->addFirstNameLabelsToTemplate('emailVariables');
+
+        return false;
+    }
+
+    function addCreatedReviewerId($hookName, $arguments) {
+        $form = $arguments[0];
+        $reviewerId = $form->getData('reviewerId');
+        $templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+        $templateMgr->assign(['reviewerId' => $reviewerId]);
     }
 
     function addFirstNamesToThankReviewerForm($hookName, $arguments) {

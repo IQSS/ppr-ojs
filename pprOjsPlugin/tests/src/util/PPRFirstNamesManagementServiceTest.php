@@ -5,6 +5,12 @@ import('tests.src.PPRTestCase');
 
 class PPRFirstNamesManagementServiceTest extends PPRTestCase {
 
+    public function setUp(): void {
+        parent::setUp();
+        # RESET TEMPLATE MANAGER DATA
+        TemplateManager::getManager()->setData([]);
+    }
+
     public function test_getReviewer_should_use_reviewerId_if_provided() {
         $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
         $reviewerId = $this->getRandomId();
@@ -20,6 +26,18 @@ class PPRFirstNamesManagementServiceTest extends PPRTestCase {
         $reviewerId = $this->getRandomId();
         $reviewer = $this->addReviewer($submissionUtil, $reviewerId);
         $this->getRequestMock()->method('getUserVar')->with('reviewerId')->willReturn($reviewerId);
+
+        $target = new PPRFirstNamesManagementService($submissionUtil);
+        $result = $target->getReviewer(null);
+        $this->assertEquals($reviewer, $result);
+    }
+
+    public function test_getReviewer_should_use_template_manager_reviewerId_when_parameter_and_request_reviewerId_not_set() {
+        $submissionUtil = $this->createMock(PPRSubmissionUtil::class);
+        $reviewerId = $this->getRandomId();
+        $reviewer = $this->addReviewer($submissionUtil, $reviewerId);
+        $this->getRequestMock()->method('getUserVar')->with('reviewerId')->willReturn(null);
+        TemplateManager::getManager()->assign('reviewerId', $reviewerId);
 
         $target = new PPRFirstNamesManagementService($submissionUtil);
         $result = $target->getReviewer(null);

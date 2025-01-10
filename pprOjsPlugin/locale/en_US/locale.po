@@ -80,6 +80,9 @@ msgstr "Send review submitted confirmation email to reviewer"
 msgid "plugins.generic.pprPlugin.settings.reviewReminderEmailOverrideEnabled.label"
 msgstr "Add review reminder action email template override based on review being accepted"
 
+msgid "plugins.generic.pprPlugin.settings.globalEmailSender.label"
+msgstr "Global email sender"
+
 msgid "plugins.generic.pprPlugin.settings.reviewAddEditorToBccEnabled.label"
 msgstr "Add Managing Editor as BCC to thank reviewer email"
 

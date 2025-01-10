@@ -63,6 +63,7 @@ class PPRPluginSettings {
 
         'accessKeyLifeTime' => ['int', 30],
         'fileUploadTextOverrideEnabled' => ['bool', null],
+        'globalEmailSender' => ['string', 'peerprereview@iq.harvard.edu'],
     );
     private $pprPlugin;
 
@@ -287,9 +288,12 @@ class PPRPluginSettings {
         return $this->getValue('reviewerSurveyHtml');
     }
 
-
     public function accessKeyLifeTime() {
         return $this->getValue('accessKeyLifeTime');
+    }
+
+    public function globalEmailSender() {
+        return $this->getValue('globalEmailSender');
     }
 
     private function getValue($propertyName) {

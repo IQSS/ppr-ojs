@@ -93,6 +93,7 @@
 			{fbvElement type="checkbox" name="submissionApprovedEmailEnabled" label="plugins.generic.pprPlugin.settings.submissionApprovedEmailEnabled.label" id="submissionApprovedEmailEnabled" checked=$submissionApprovedEmailEnabled}
 			{fbvElement type="checkbox" name="submissionConfirmationContributorsEmailDisabled" label="plugins.generic.pprPlugin.settings.submissionConfirmationContributorsEmailDisabled.label" id="submissionConfirmationContributorsEmailDisabled" checked=$submissionConfirmationContributorsEmailDisabled}
 			{fbvElement type="checkbox" name="emailContributorsEnabled" label="plugins.generic.pprPlugin.settings.emailContributorsEnabled.label" id="emailContributorsEnabled" checked=$emailContributorsEnabled}
+			{fbvElement type="text" name="globalEmailSender" label="plugins.generic.pprPlugin.settings.globalEmailSender.label" id="globalEmailSender" value=$globalEmailSender}
 		{/fbvFormSection}
 
 		{fbvFormSection title="plugins.generic.pprPlugin.settings.section.tasks" list="true"}

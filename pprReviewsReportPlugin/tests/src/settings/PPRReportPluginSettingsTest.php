@@ -17,6 +17,7 @@ class PPRReportPluginSettingsTest extends PPRTestCase {
             // fieldName => [methodName, defaultValue]
             'submissionsReviewsReportEnabled' => [null, null],
             'submissionsReviewsReportRecipients' => [null, []],
+            'globalEmailSender' => [null, 'peerprereview@iq.harvard.edu'],
         );
 
         foreach (PPRReportPluginSettings::CONFIG_VARS as $configVar => $varInfo) {

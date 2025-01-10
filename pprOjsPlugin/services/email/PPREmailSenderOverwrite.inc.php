@@ -14,7 +14,7 @@ class PPREmailSenderOverwrite {
 
     function register() {
 
-        //$globalEmailSender = $this->pprPlugin->getPluginSettings()->globalEmailSender();
+        $globalEmailSender = $this->pprPlugin->getPluginSettings()->globalEmailSender();
 
         if (!empty($globalEmailSender)) {
             HookRegistry::register('Mail::send', array($this, 'overwriteSender'));
@@ -26,11 +26,11 @@ class PPREmailSenderOverwrite {
      */
     function overwriteSender($hookName, $hookArgs) {
         
-        //$globalEmailSender = $this->pprPlugin->getPluginSettings()->globalEmailSender();
+        $globalEmailSender = $this->pprPlugin->getPluginSettings()->globalEmailSender();
 
         $mail = $hookArgs[0];
-        //$mail->setFrom($globalEmailSender, 'Peer Pre-Review');
-        $mail->setFrom('peerprereview@iq.harvard.edu', 'Peer Pre-Review');
+        $mail->setFrom($globalEmailSender, 'Peer Pre-Review');
+        //$mail->setFrom('peerprereview@iq.harvard.edu', 'Peer Pre-Review');
         return false; 
     }
 

@@ -64,7 +64,7 @@ class PPRPluginSettingsTest extends PPRTestCase {
             'reviewerSurveyHtml' => [null, null],
             'accessKeyLifeTime' => [null, 30],
             'fileUploadTextOverrideEnabled' => [null, null],
-            'globalEmailSender' => [null, 'peerprereview@iq.harvard.edu'],
+            'globalEmailSender' => [null, 'peerprereview@pre-review.iq.harvard.edu'],
         );
 
         foreach (PPRPluginSettings::CONFIG_VARS as $configVar => $varInfo) {

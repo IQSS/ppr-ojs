@@ -30,7 +30,6 @@ class PPREmailSenderOverwrite {
 
         $mail = $hookArgs[0];
         $mail->setFrom($globalEmailSender, 'Peer Pre-Review');
-        //$mail->setFrom('peerprereview@iq.harvard.edu', 'Peer Pre-Review');
         return false; 
     }
 

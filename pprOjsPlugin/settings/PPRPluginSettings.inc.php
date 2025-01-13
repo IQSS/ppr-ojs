@@ -63,7 +63,7 @@ class PPRPluginSettings {
 
         'accessKeyLifeTime' => ['int', 30],
         'fileUploadTextOverrideEnabled' => ['bool', null],
-        'globalEmailSender' => ['string', 'peerprereview@iq.harvard.edu'],
+        'globalEmailSender' => ['string', 'peerprereview@pre-review.iq.harvard.edu'],
     );
     private $pprPlugin;
 

@@ -63,6 +63,7 @@ Additionally, we use other plugins and customizations made by other contributors
 - Send submission approved confirmation email to author
 - Removes the Coauthors from the submission confirmation email the Author receives
 - Add a checkbox to allow authors to choose if contributors should be notified
+- Global email Sender
 
 ### Scheduled Tasks
 

@@ -20,11 +20,11 @@ ENV = env PPR_OJS_IMAGE=$(PPR_OJS_IMAGE)
 dev dev34: down up
 
 down:
-	cd environment && $(ENV) docker compose down -v || :
+	cd environment && $(ENV) docker-compose down -v || :
 
 up:
 	rm -rf environment/data/ojs/logs
-	cd environment && $(ENV) docker compose up --build $(DETACHED_MODE)
+	cd environment && $(ENV) docker-compose up --build $(DETACHED_MODE)
 
 release: new_version
 	$(eval RELEASE_VERSION = $(shell cat VERSION))

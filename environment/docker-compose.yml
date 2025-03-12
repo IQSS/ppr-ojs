@@ -60,6 +60,7 @@ services:
     ports:
       - "${HTTP_PORT:-8081}:80"
       - "${HTTPS_PORT:-443}:443"
+      - "9003:9003"
     volumes:
       - ./data/ojs/src:/tmp/ojs-src
       - ../pprOjsPlugin:/tmp/ojs-src/plugins/generic/pprOjsPlugin

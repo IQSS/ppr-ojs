@@ -29,8 +29,8 @@ class PPREmailSenderOverwrite {
         $globalEmailSender = $this->pprPlugin->getPluginSettings()->globalEmailSender();
 
         $mail = $hookArgs[0];
-        $mail->setFrom($globalEmailSender, 'Harvard rapidPeer.');
-        $mail->setReplyTo($globalEmailSender, 'Harvard rapidPeer.');
+        $mail->setFrom($globalEmailSender, 'Harvard rapidPeer');
+        $mail->setReplyTo($globalEmailSender, 'Harvard rapidPeer');
         return false; 
     }
 
